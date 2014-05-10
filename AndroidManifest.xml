@@ -11,7 +11,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-	<activity android:name="CrapperMapperAdd" android:label="Add a new Toilet">
-	</activity>
+	<activity android:name="CrapperMapperEmergency" android:label="I NEED A SHITTER NOW" />
+	<activity android:name="CrapperMapperList" android:label="List of favorites... you know... for reasons" />
+	<activity android:name="CrapperMapperAdd" android:label="Add a new location" />
+	<activity android:name="CrapperMapperRecent" android:label="Recent visitations" />
+	<activity android:name="CrapperMapperLocation" android:label="Around me" />
+	<activity android:name="CrapperMapperUser" android:label="User data" />
     </application>
 </manifest>
