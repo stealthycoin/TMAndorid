@@ -3,6 +3,7 @@
       package="com.brilliantsquid.crappermapper"
       android:versionCode="1"
       android:versionName="1.0">
+	<uses-sdk android:minSdkVersion="7"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity android:name="CrapperMapperMenu"
                   android:label="Crapper Mapper">
@@ -17,5 +18,6 @@
 	<activity android:name="CrapperMapperRecent" android:label="Recent visitations" />
 	<activity android:name="CrapperMapperLocation" android:label="Around me" />
 	<activity android:name="CrapperMapperUser" android:label="User data" />
+	
     </application>
 </manifest>
