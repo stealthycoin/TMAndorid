@@ -5,11 +5,13 @@
       android:versionName="1.0">
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity android:name="CrapperMapperMenu"
-                  android:label="@string/app_name">
+                  android:label="Crapper Mapper">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+	<activity android:name="CrapperMapperAdd" android:label="Add a new Toilet">
+	</activity>
     </application>
 </manifest>
