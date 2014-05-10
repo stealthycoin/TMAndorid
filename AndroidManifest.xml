@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.brilliantsquid.crappermapper"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:name="CrapperMapperMenu"
-                  android:label="Crapper Mapper">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-	<activity android:name="CrapperMapperEmergency" android:label="I NEED A SHITTER NOW" />
-	<activity android:name="CrapperMapperList" android:label="List of favorites... you know... for reasons" />
-	<activity android:name="CrapperMapperAdd" android:label="Add a new location" />
-	<activity android:name="CrapperMapperRecent" android:label="Recent visitations" />
-	<activity android:name="CrapperMapperLocation" android:label="Around me" />
-	<activity android:name="CrapperMapperUser" android:label="User data" />
-    </application>
+	  package="com.brilliantsquid.crappermapper"
+	  android:versionCode="1"
+	  android:versionName="1.0">
+
+  <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+  <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+    <activity android:name="CrapperMapperMenu"
+              android:label="Crapper Mapper">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name="com.brilliantsquid.crapeprmapper.CrapperMapperEmergency" 
+	      android:label="I NEED A SHITTER NOW" />
+    <activity android:name="CrapperMapperList" android:label="List of favorites... you know... for reasons" />
+    <activity android:name="CrapperMapperAdd" android:label="Add a new location" />
+    <activity android:name="CrapperMapperRecent" android:label="Recent visitations" />
+    <activity android:name="CrapperMapperLocation" android:label="Around me" />
+    <activity android:name="CrapperMapperUser" android:label="User data" />
+  </application>
 </manifest>
