@@ -15,6 +15,7 @@ public class CrapperMapperList extends Activity
         setContentView(R.layout.list);
         Intent intent = getIntent();
         String search_key = intent.getStringExtra("key");
+        System.out.println("OUTPUT TEXT: ");
         System.out.println(search_key);
         
     }   
