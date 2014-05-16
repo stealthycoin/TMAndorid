@@ -3,6 +3,7 @@ package com.brilliantsquid.crappermapper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.content.Intent;
 import android.view.View;
 
@@ -17,6 +18,8 @@ public class CrapperMapperMenu extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+
 
 	emergencyButton = (ImageButton)findViewById(R.id.button1);
 	emergencyButton.setOnClickListener(new View.OnClickListener() {
@@ -29,6 +32,7 @@ public class CrapperMapperMenu extends Activity
 	listButton.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View v) {
 		    Intent intent = new Intent(CrapperMapperMenu.this,CrapperMapperList.class);
+		    intent.putExtra("key", "");
 		    startActivity(intent);
 		}
 	    });
@@ -60,5 +64,18 @@ public class CrapperMapperMenu extends Activity
 		    startActivity(intent);
 		}
 	    });
+    }
+    
+    /*
+     * Handles the searching from top of menu
+     */
+    public void do_search(View v){
+    	Intent intent = new Intent();
+    	intent.setClass(this, CrapperMapperList.class);
+    	TextView tv = (TextView)findViewById(R.id.editText1);
+    	String text = tv.getText().toString();
+    	tv.setText("");
+    	intent.putExtra("key", text);
+    	startActivity(intent);
     }
 }

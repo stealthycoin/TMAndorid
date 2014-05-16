@@ -3,7 +3,7 @@
 	  package="com.brilliantsquid.crappermapper"
 	  android:versionCode="1"
 	  android:versionName="1.0">
-  <uses-sdk android:minSdkVersion="7"/>
+  <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.INTERNET" /> 
   <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
@@ -14,9 +14,9 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name="CrapperMapperEmergency" android:label="I NEED A SHITTER NOW" />
-    <activity android:name="CrapperMapperList" android:label="List of favorites... you know... for reasons" />
-    <activity android:name="CrapperMapperAdd" android:label="Add a new location" />
+    <activity android:name="CrapperMapperEmergency" android:label="I Got Diarrhea!" />
+    <activity android:name="CrapperMapperList" android:label="Restroom Search" />
+    <activity android:name="CrapperMapperAdd" android:label="Add Restroom" />
     <activity android:name="CrapperMapperRecent" android:label="Recent visitations" />
     <activity android:name="CrapperMapperLocation" android:label="Around me" />
     <activity android:name="CrapperMapperUser" android:label="User data" />
