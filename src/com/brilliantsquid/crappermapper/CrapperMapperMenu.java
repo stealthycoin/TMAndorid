@@ -32,6 +32,7 @@ public class CrapperMapperMenu extends Activity
 	listButton.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View v) {
 		    Intent intent = new Intent(CrapperMapperMenu.this,CrapperMapperList.class);
+		    intent.putExtra("key", "");
 		    startActivity(intent);
 		}
 	    });
@@ -65,11 +66,16 @@ public class CrapperMapperMenu extends Activity
 	    });
     }
     
+    /*
+     * Handles the searching from top of menu
+     */
     public void do_search(View v){
-    	Intent nextIntent = new Intent();
-    	nextIntent.setClass(this, CrapperMapperList.class);
+    	Intent intent = new Intent();
+    	intent.setClass(this, CrapperMapperList.class);
     	TextView tv = (TextView)findViewById(R.id.editText1);
-    	nextIntent.putExtra("key",tv.getText().toString());
-    	startActivity(nextIntent);
+    	String text = tv.getText().toString();
+    	tv.setText("");
+    	intent.putExtra("key", text);
+    	startActivity(intent);
     }
 }

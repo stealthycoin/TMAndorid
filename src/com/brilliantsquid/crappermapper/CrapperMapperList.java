@@ -14,8 +14,8 @@ public class CrapperMapperList extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        System.out.println(name);
+        String search_key = intent.getStringExtra("key");
+        System.out.println(search_key);
         
     }   
     
