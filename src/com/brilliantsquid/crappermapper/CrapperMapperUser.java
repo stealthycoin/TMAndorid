@@ -63,6 +63,9 @@ public class CrapperMapperUser extends Activity
 			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("POST");
+			connection.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
+			connection.addRequestProperty("User-Agent", "Mozilla");
+			connection.addRequestProperty("Referer", "google.com");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 		} catch (MalformedURLException e) {
