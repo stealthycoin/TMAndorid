@@ -72,10 +72,10 @@ public class CrapperMapperUser extends Activity
 		}
     }
     
-    private class LoginTask extends AsyncTask {
+    private class LoginTask extends AsyncTask<String,String,String> {
 
 		@Override
-		protected Object doInBackground(Object... args) {
+		protected String doInBackground(String... args) {
 			String submission = (String)args[0];
 			
 			OutputStream out;
