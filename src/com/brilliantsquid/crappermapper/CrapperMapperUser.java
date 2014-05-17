@@ -42,20 +42,7 @@ public class CrapperMapperUser extends Activity
         cManager = new CookieManager();
         CookieHandler.setDefault(cManager);
         
-        //create a connection to toilet.brilliantsquid.com
-        URL url;
-		try {
-			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
-			connection = (HttpURLConnection)url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setDoInput(true);
-			connection.setDoOutput(true);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+        createURLConnection();
 		username = (EditText)findViewById(R.id.username);
 		password = (EditText)findViewById(R.id.pass);
 		login = (Button)findViewById(R.id.login);
@@ -69,6 +56,22 @@ public class CrapperMapperUser extends Activity
 		});
     }
 
+    private void createURLConnection() {
+        //create a connection to toilet.brilliantsquid.com
+    	URL url;
+		try {
+			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
+			connection = (HttpURLConnection)url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
     private class LoginTask extends AsyncTask {
 
 		@Override
@@ -81,19 +84,18 @@ public class CrapperMapperUser extends Activity
 				out.write(submission.getBytes(Charset.forName("UTF-8")));
 				
 				String response = connection.getResponseMessage();
-				Log.v(TAG,response);
+
+				return response;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 			
 			return null;
 		}
 		
 		protected void onPostExecute(String result) {
-			
+			Log.v(TAG, result);
+			createURLConnection();
 		}
-    	
     }
-    
 }
