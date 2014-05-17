@@ -45,7 +45,7 @@ public class CrapperMapperUser extends Activity
         //create a connection to toilet.brilliantsquid.com
         URL url;
 		try {
-			url = new URL("toilet.brilliantsquid.com/api/user/login/");
+			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
@@ -79,6 +79,9 @@ public class CrapperMapperUser extends Activity
 			try {
 				out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(submission.getBytes(Charset.forName("UTF-8")));
+				
+				String response = connection.getResponseMessage();
+				Log.v(TAG,response);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
