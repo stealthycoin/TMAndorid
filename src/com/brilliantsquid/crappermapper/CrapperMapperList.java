@@ -26,7 +26,7 @@ public class CrapperMapperList extends Activity
      * Handles the searching from top of menu
      */
     public void do_search(View v){
-    	TextView tv = (TextView)findViewById(R.id.editText1);
+    	TextView tv = (TextView)findViewById(R.id.username);
     	String text = tv.getText().toString();
     	tv.setText("");
     	//Query the site and post the results to listing
