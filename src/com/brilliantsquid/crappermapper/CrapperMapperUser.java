@@ -1,12 +1,18 @@
 package com.brilliantsquid.crappermapper;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import android.app.Activity;
@@ -19,12 +25,12 @@ import android.widget.EditText;
 
 import java.net.CookieManager;
 import java.nio.charset.Charset;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CrapperMapperUser extends Activity
 {
 	private final String TAG = "USER";
-	
-	private String csrf;
 	
 	private HttpURLConnection connection;
 	private CookieManager cManager;
@@ -56,25 +62,14 @@ public class CrapperMapperUser extends Activity
 				new LoginTask().execute(submission);
 			}
 		});
+		//do not allow login until CSRF token has been aquired
+		login.setClickable(false);
 		
 		
 		//we need to get the CSRF token so we can login
-		csrf = getCSRF();
+		new GetCSRFTask().execute();
     }
 
-    private String getCSRF() {
-    	URL url;
-    	try {
-    		url = new URL("http://toilet.brilliantsquid.com/signin/");
-    		connection = (HttpURLConnection)url.openConnection();
-    	
-    	} catch (MalformedURLException e) {
-    		e.printStackTrace();
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
-    	return null;
-    }
     
     private void createURLConnection() {
         //create a connection to toilet.brilliantsquid.com
@@ -84,14 +79,64 @@ public class CrapperMapperUser extends Activity
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
+			connection.addRequestProperty("Host", "toilet.brilliantsquid.com");
 			connection.addRequestProperty("User-Agent", "Mozilla");
-			connection.addRequestProperty("Referer", "google.com");
+			connection.addRequestProperty("Origin", "http://toilet.brilliantsquid.com");
+			connection.addRequestProperty("Referer", "http://toilet.brilliantsquid.com/signin/");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+    }
+    
+    private class GetCSRFTask extends AsyncTask<String,String,String> {
+
+		@Override
+		protected String doInBackground(String... args) {
+			HttpURLConnection urlConnection;
+			try {
+				URL url = new URL("http://toilet.brilliantsquid.com/signin/");
+				urlConnection = (HttpURLConnection) url.openConnection();
+	    		InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+	    		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+	    		
+	    		String line, result = "";
+	    		while ((line = br.readLine()) != null) {
+	    			result += line;
+	    		}
+	    		
+	    		return result;
+	    	}
+	    	catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+			return null;
+		}
+		
+		protected void onPostExecute(String result) {
+			/* 
+			 * Parse result
+			 * Should look something like this
+			 * name='csrfmiddlewaretoken' value='ovCPHoz09hPuQkEKMxgbpBpR4uZqD9wm'
+			 * 
+			 */
+			Pattern p = Pattern.compile("name='csrfmiddlewaretoken' value='(.*?)'");
+			Matcher m = p.matcher(result);
+			if (m.find()) {
+				//group 1 should be the token
+				cookie = new HttpCookie("csrftoken", m.group(1));
+				cookie.setPath("/");
+				cookie.setDomain("toilet.brilliantsquid.com");
+				//found and set token, enable button
+				Log.v(TAG, "csrf: " + m.group(1));
+				login.setClickable(true);
+			}
+			else {
+				//report error
+			}
 		}
     }
     
@@ -103,13 +148,18 @@ public class CrapperMapperUser extends Activity
 			
 			OutputStream out;
 			try {
+				cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), cookie);
+				Log.v(TAG,cManager.getCookieStore().get(new URI("toilet.brilliantsquid.com")).toString());
+				//Uncomment these to get a bad request instead of forbidden
+				//connection.addRequestProperty("X-CSRFToken", cookie.getValue());
+				//connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(submission.getBytes(Charset.forName("UTF-8")));
 				
 				String response = connection.getResponseMessage();
 
 				return response;
-			} catch (IOException e) {
+			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
 			
