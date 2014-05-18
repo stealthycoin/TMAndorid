@@ -24,6 +24,8 @@ public class CrapperMapperUser extends Activity
 {
 	private final String TAG = "USER";
 	
+	private String csrf;
+	
 	private HttpURLConnection connection;
 	private CookieManager cManager;
 	private HttpCookie cookie; 
@@ -54,8 +56,26 @@ public class CrapperMapperUser extends Activity
 				new LoginTask().execute(submission);
 			}
 		});
+		
+		
+		//we need to get the CSRF token so we can login
+		csrf = getCSRF();
     }
 
+    private String getCSRF() {
+    	URL url;
+    	try {
+    		url = new URL("http://toilet.brilliantsquid.com/signin/");
+    		connection = (HttpURLConnection)url.openConnection();
+    	
+    	} catch (MalformedURLException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+    
     private void createURLConnection() {
         //create a connection to toilet.brilliantsquid.com
     	URL url;
