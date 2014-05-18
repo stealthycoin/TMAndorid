@@ -3,8 +3,6 @@ package com.brilliantsquid.crappermapper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 public class CrapperMapperList extends Activity
 {
@@ -22,15 +20,6 @@ public class CrapperMapperList extends Activity
         
     }   
     
-    /*
-     * Handles the searching from top of menu
-     */
-    public void do_search(View v){
-    	TextView tv = (TextView)findViewById(R.id.editText1);
-    	String text = tv.getText().toString();
-    	tv.setText("");
-    	//Query the site and post the results to listing
-    }
     
 }
 

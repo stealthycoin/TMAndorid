@@ -85,6 +85,7 @@ public class CrapperMapperMenu extends Activity
     /*
      * Handles the searching from top of menu
      */
+    /*
     public void do_search(View v){
     	Intent intent = new Intent();
     	intent.setClass(this, CrapperMapperList.class);
@@ -94,4 +95,5 @@ public class CrapperMapperMenu extends Activity
     	intent.putExtra("key", text);
     	startActivity(intent);
     }
+    */
 }
