@@ -35,6 +35,7 @@ public class CrapperMapperUser extends Activity
 	private HttpURLConnection connection;
 	private CookieManager cManager;
 	private HttpCookie cookie; 
+	private String csrf;
 	
 	private EditText username, password;
 	private Button login;
@@ -83,6 +84,8 @@ public class CrapperMapperUser extends Activity
 			connection.addRequestProperty("User-Agent", "Mozilla");
 			connection.addRequestProperty("Origin", "http://toilet.brilliantsquid.com");
 			connection.addRequestProperty("Referer", "http://toilet.brilliantsquid.com/signin/");
+			//this might also be causing bad request
+			connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 		} catch (MalformedURLException e) {
@@ -127,6 +130,7 @@ public class CrapperMapperUser extends Activity
 			Matcher m = p.matcher(result);
 			if (m.find()) {
 				//group 1 should be the token
+				csrf = m.group(1);
 				cookie = new HttpCookie("csrftoken", m.group(1));
 				cookie.setPath("/");
 				cookie.setDomain("toilet.brilliantsquid.com");
@@ -150,9 +154,9 @@ public class CrapperMapperUser extends Activity
 			try {
 				cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), cookie);
 				Log.v(TAG,cManager.getCookieStore().get(new URI("toilet.brilliantsquid.com")).toString());
-				//Uncomment these to get a bad request instead of forbidden
-				//connection.addRequestProperty("X-CSRFToken", cookie.getValue());
-				//connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+				//these two below cause bad request, which is odd because wireshark is saying I send these from my browser
+				connection.addRequestProperty("X-CSRFToken", csrf);
+				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(submission.getBytes(Charset.forName("UTF-8")));
 				
