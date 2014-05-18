@@ -17,3 +17,5 @@ launch:
 	adb shell am start -a android.intent.action.MAIN -n $(PKG)/$(PKG).$(ACT)
 run: install launch
 	echo "Installed and launched"
+update:
+	android update project --path .././TMAndorid
