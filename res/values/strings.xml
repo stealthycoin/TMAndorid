@@ -6,4 +6,5 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_help">Help</string>
     <string name="action_check_updates">Update</string>
+    <string name="search_hint">Search Restroom By Name</string>
 </resources>
