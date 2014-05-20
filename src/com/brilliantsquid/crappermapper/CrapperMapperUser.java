@@ -79,13 +79,13 @@ public class CrapperMapperUser extends Activity
 			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("POST");
-			connection.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
+			/*connection.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
 			connection.addRequestProperty("Host", "toilet.brilliantsquid.com");
 			connection.addRequestProperty("User-Agent", "Mozilla");
 			connection.addRequestProperty("Origin", "http://toilet.brilliantsquid.com");
 			connection.addRequestProperty("Referer", "http://toilet.brilliantsquid.com/signin/");
-			//this might also be causing bad request
-			connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			*///this might also be causing bad request
+			//connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 		} catch (MalformedURLException e) {
@@ -122,7 +122,7 @@ public class CrapperMapperUser extends Activity
 		protected void onPostExecute(String result) {
 			/* 
 			 * Parse result
-			 * Should look something like this
+			 * Should look something like this:
 			 * name='csrfmiddlewaretoken' value='ovCPHoz09hPuQkEKMxgbpBpR4uZqD9wm'
 			 * 
 			 */
@@ -139,6 +139,7 @@ public class CrapperMapperUser extends Activity
 				login.setClickable(true);
 			}
 			else {
+				Log.v(TAG, "Failed to get data");
 				//report error
 			}
 		}
@@ -153,16 +154,27 @@ public class CrapperMapperUser extends Activity
 			OutputStream out;
 			try {
 				cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), cookie);
-				Log.v(TAG,cManager.getCookieStore().get(new URI("toilet.brilliantsquid.com")).toString());
+				//Log.v(TAG,cManager.getCookieStore().get(new URI("toilet.brilliantsquid.com")).toString());
 				//these two below cause bad request, which is odd because wireshark is saying I send these from my browser
 				connection.addRequestProperty("X-CSRFToken", csrf);
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+				Log.v(TAG, "headers: " + connection.getRequestProperties().toString());
 				out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(submission.getBytes(Charset.forName("UTF-8")));
+				out.close();
 				
-				String response = connection.getResponseMessage();
+				InputStream in = new BufferedInputStream(connection.getInputStream());
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				
+				String line, result = "";
+	    		while ((line = br.readLine()) != null) {
+	    			result += line;
+	    		}
+	    		in.close();
+				
+				String response = connection.getHeaderFields().toString();
 
-				return response;
+				return response + "\n\n" + result;
 			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
