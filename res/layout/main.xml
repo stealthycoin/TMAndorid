@@ -12,7 +12,7 @@
         android:layout_weight="0.19" >
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/username"
             android:layout_width="188dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.72"

@@ -80,7 +80,7 @@ public class CrapperMapperMenu extends Activity
     public void do_search(View v){
     	Intent intent = new Intent();
     	intent.setClass(this, CrapperMapperList.class);
-    	TextView tv = (TextView)findViewById(R.id.editText1);
+    	TextView tv = (TextView)findViewById(R.id.username);
     	String text = tv.getText().toString();
     	tv.setText("");
     	intent.putExtra("key", text);

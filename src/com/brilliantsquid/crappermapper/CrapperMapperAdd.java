@@ -31,7 +31,7 @@ public class CrapperMapperAdd extends Activity
 
 	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 35000, 10, locationListener);
 
-	name = (EditText)findViewById(R.id.editText1);
+	name = (EditText)findViewById(R.id.username);
 	male = (CheckBox)findViewById(R.id.checkBox1);
 	female = (CheckBox)findViewById(R.id.checkBox2);
 	submit = (Button)findViewById(R.id.button1);
