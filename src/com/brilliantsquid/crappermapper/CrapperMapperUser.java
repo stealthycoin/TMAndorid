@@ -79,13 +79,6 @@ public class CrapperMapperUser extends Activity
 			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("POST");
-			/*connection.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
-			connection.addRequestProperty("Host", "toilet.brilliantsquid.com");
-			connection.addRequestProperty("User-Agent", "Mozilla");
-			connection.addRequestProperty("Origin", "http://toilet.brilliantsquid.com");
-			connection.addRequestProperty("Referer", "http://toilet.brilliantsquid.com/signin/");
-			*///this might also be causing bad request
-			//connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 		} catch (MalformedURLException e) {
@@ -155,10 +148,8 @@ public class CrapperMapperUser extends Activity
 			try {
 				cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), cookie);
 				//Log.v(TAG,cManager.getCookieStore().get(new URI("toilet.brilliantsquid.com")).toString());
-				//these two below cause bad request, which is odd because wireshark is saying I send these from my browser
 				connection.addRequestProperty("X-CSRFToken", csrf);
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
-				Log.v(TAG, "headers: " + connection.getRequestProperties().toString());
 				out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(submission.getBytes(Charset.forName("UTF-8")));
 				out.close();
@@ -172,9 +163,31 @@ public class CrapperMapperUser extends Activity
 	    		}
 	    		in.close();
 				
-				String response = connection.getHeaderFields().toString();
-
-				return response + "\n\n" + result;
+	    		//Log.v(TAG, connection.getHeaderFields().toString());
+	    		
+	    		//if we didnt fail to login set the sessionID cookie (hopefully, documentation sucks for this)
+	    		if (result.equals("\"Success\"")) {
+	    			String[] newCookie = connection.getHeaderField("Set-Cookie").toString().split(";");
+	    			HttpCookie c = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);
+	    			for (int i = 1 ; i < newCookie.length ; i++) {
+	    				if (newCookie[i].trim().equals("httponly")) {
+	    					//c.setHttpOnly(true); android doesnt have this I guess...?
+	    					//its in the docs but is red in eclipse
+	    				}
+	    				else {
+	    					String[] field = newCookie[i].split("=");
+	    					if (field[0].trim().equals("Max-Age")) {
+	    						c.setMaxAge(Long.valueOf(field[1]));
+	    					}
+	    					else if (field[0].trim().equals("Max-Age")) {
+	    						c.setPath(field[1]);
+	    					}
+	    				}
+	    			}
+	    			cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), c);
+	    		}
+	    		
+				return  result;//might have to return the sessionID in case cookies fail like I assume they will
 			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
