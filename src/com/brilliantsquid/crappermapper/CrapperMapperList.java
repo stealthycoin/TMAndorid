@@ -1,10 +1,15 @@
 package com.brilliantsquid.crappermapper;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.SearchView;
 
-public class CrapperMapperList extends Activity
+public class CrapperMapperList extends BaseActivity
 {
 	String search;
     /** Called when the activity is first created. */
@@ -19,6 +24,8 @@ public class CrapperMapperList extends Activity
         System.out.println(search_key);
         
     }   
+    
+    
     
     
 }
