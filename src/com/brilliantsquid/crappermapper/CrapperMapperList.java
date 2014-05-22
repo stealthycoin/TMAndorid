@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 public class CrapperMapperList extends BaseActivity
 {
