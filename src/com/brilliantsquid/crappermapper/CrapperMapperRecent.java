@@ -1,9 +1,14 @@
 package com.brilliantsquid.crappermapper;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.SearchView;
 
-public class CrapperMapperRecent extends Activity
+public class CrapperMapperRecent extends BaseActivity
 {
     /** Called when the activity is first created. */
     @Override
@@ -12,4 +17,5 @@ public class CrapperMapperRecent extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recent);
     }
+    
 }

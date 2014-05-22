@@ -1,15 +1,11 @@
 package com.brilliantsquid.crappermapper;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
-public class CrapperMapperMenu extends Activity
+public class CrapperMapperMenu extends BaseActivity
 {
 
     ImageButton emergencyButton, listButton, addButton, recentButton, locationButton, userButton;
@@ -66,17 +62,12 @@ public class CrapperMapperMenu extends Activity
 	    });
     }
     
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main_actions, menu);
- 
-        return super.onCreateOptionsMenu(menu);
-    }
+
     
     /*
      * Handles the searching from top of menu
      */
+    /*
     public void do_search(View v){
     	Intent intent = new Intent();
     	intent.setClass(this, CrapperMapperList.class);
@@ -86,4 +77,5 @@ public class CrapperMapperMenu extends Activity
     	intent.putExtra("key", text);
     	startActivity(intent);
     }
+    */
 }

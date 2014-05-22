@@ -1,26 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	  package="com.brilliantsquid.crappermapper"
-	  android:versionCode="1"
-	  android:versionName="1.0">
-  <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.INTERNET" /> 
-  <application android:label="@string/app_name" 
-      android:icon="@drawable/ic_launcher"
-      android:theme="@style/Theme.Toilet">
-    <activity android:name="CrapperMapperMenu"
-              android:label="Crapper Mapper">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-    <activity android:name="CrapperMapperEmergency" android:label="I Got Diarrhea!" />
-    <activity android:name="CrapperMapperList" android:label="Restroom Search" />
-    <activity android:name="CrapperMapperAdd" android:label="Add Restroom" />
-    <activity android:name="CrapperMapperRecent" android:label="Recent visitations" />
-    <activity android:name="CrapperMapperLocation" android:label="Around me" />
-    <activity android:name="CrapperMapperUser" android:label="User data" />
-  </application>
+    package="com.brilliantsquid.crappermapper"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Toilet" >
+        <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
+            android:label="Crapper Mapper" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperEmergency"
+            android:label="I Got Diarrhea!" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperList"
+            android:label="Restroom Search"
+            android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperAdd"
+            android:label="Add Restroom" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperRecent"
+            android:label="Recent visitations" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperLocation"
+            android:label="Around me" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperUser"
+            android:label="User data" />
+        <activity
+            android:name="com.brilliantsquid.crappermapper.SearchResultsActivity"
+            android:label="@string/title_activity_search_results"
+            android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name="com.brilliantsquid.crappermapper.BaseActivity"
+            android:label="@string/title_activity_base" >
+        </activity>
+        
+    </application>
+
 </manifest>

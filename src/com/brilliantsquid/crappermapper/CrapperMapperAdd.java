@@ -1,17 +1,22 @@
 package com.brilliantsquid.crappermapper;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.Location;
 import android.util.Log;
 
-public class CrapperMapperAdd extends Activity
+public class CrapperMapperAdd extends BaseActivity
 {
     
     EditText name;
@@ -74,4 +79,5 @@ public class CrapperMapperAdd extends Activity
 	    // called when the status of the GPS provider changes
         }
     }
+
 }

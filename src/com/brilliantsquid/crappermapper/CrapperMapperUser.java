@@ -27,8 +27,14 @@ import java.net.CookieManager;
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.app.SearchManager;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.SearchView;
 
-public class CrapperMapperUser extends Activity
+public class CrapperMapperUser extends BaseActivity
 {
 	private final String TAG = "USER";
 	
@@ -200,4 +206,6 @@ public class CrapperMapperUser extends Activity
 			createURLConnection();
 		}
     }
+    
+
 }
