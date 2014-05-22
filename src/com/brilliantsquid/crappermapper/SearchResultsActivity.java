@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SearchResultsActivity extends BaseActivity {
 
@@ -44,6 +45,7 @@ public class SearchResultsActivity extends BaseActivity {
              * 2. Making webrequest and displaying the data 
              * For now we just display the query only
              */
+            Toast.makeText(getApplicationContext(), "SEARCH!", Toast.LENGTH_SHORT).show();
             txtQuery.setText("Search Query: " + query);
  
         }

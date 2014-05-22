@@ -1,18 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.os.Bundle;
-import android.widget.ImageButton;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.content.Context;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 public class CrapperMapperMenu extends BaseActivity
 {

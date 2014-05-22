@@ -12,13 +12,13 @@
     <item android:id="@+id/action_location_found"
           android:icon="@drawable/ic_action_location_found"
           android:title="@string/action_location_found"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="never" />
      
     <!-- Refresh -->
     <item android:id="@+id/action_refresh"
           android:icon="@drawable/ic_action_refresh"
           android:title="@string/action_refresh"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="never" />
      
     <!-- Help -->
     <item android:id="@+id/action_help"
@@ -31,6 +31,12 @@
           android:icon="@drawable/ic_action_refresh"
           android:title="@string/action_check_updates"
           android:showAsAction="never" />
+    
+    <!-- Help -->
+    <item android:id="@+id/action_new"
+          android:icon="@drawable/ic_action_new"
+          android:title="@string/action_new"
+          android:showAsAction="ifRoom"/>
     
     
    
