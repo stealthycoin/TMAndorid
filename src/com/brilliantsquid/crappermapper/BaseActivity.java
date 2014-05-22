@@ -45,18 +45,8 @@ public class BaseActivity extends Activity {
         	Intent intent = new Intent(this,CrapperMapperAdd.class);
 		    startActivity(intent);
         	return true;
-        case R.id.action_location_found:
-        	Toast.makeText(getApplicationContext(), "location!", Toast.LENGTH_SHORT).show();
-            // location found
-            return true;
-        case R.id.action_refresh:
-            // refresh
-            return true;
         case R.id.action_help:
             // help action
-            return true;
-        case R.id.action_check_updates:
-            // check for updates action
             return true;
         default:
             return super.onOptionsItemSelected(item);

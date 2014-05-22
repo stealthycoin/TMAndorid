@@ -15,6 +15,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Toilet" >
+        <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
             android:label="Crapper Mapper" >
@@ -59,6 +62,7 @@
             android:name="com.brilliantsquid.crappermapper.BaseActivity"
             android:label="@string/title_activity_base" >
         </activity>
+        
     </application>
 
 </manifest>
