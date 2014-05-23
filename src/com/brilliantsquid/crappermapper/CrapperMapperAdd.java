@@ -1,5 +1,6 @@
 package com.brilliantsquid.crappermapper;
 
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;

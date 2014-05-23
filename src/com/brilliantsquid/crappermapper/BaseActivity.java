@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+
 public class BaseActivity extends Activity {
 
 	@Override
