@@ -12,6 +12,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_new">Add Restroom</string>
+    <string name="action_map">Map</string>
+    <string name="action_emergency">I Gotta Go!</string>
+    <string name="action_account">Account</string>
     <string name="title_activity_base">BaseActivity</string>
 
 </resources>
