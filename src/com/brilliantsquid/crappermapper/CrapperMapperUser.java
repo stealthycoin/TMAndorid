@@ -194,8 +194,10 @@ public class CrapperMapperUser extends BaseActivity
 	    		}
 	    		
 				return  result;//might have to return the sessionID in case cookies fail like I assume they will
-			} catch (IOException | URISyntaxException e) {
-				e.printStackTrace();
+			} catch (IOException  e) {
+			    e.printStackTrace();
+			} catch (URISyntaxException e) {
+			    e.printStackTrace();
 			}
 			
 			return null;
