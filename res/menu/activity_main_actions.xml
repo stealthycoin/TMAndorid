@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
+    <!-- Emergency -->
+    <item android:id="@+id/action_Emergency"
+          android:icon="@drawable/ic_action_warning"
+          android:title="@string/action_emergency"
+          android:showAsAction="always"/>
+    
+    <!-- Add -->
+    <item android:id="@+id/action_new"
+          android:icon="@drawable/ic_action_new"
+          android:title="@string/action_new"
+          android:showAsAction="always"/>
+    
+    <!-- Map -->
+    <item android:id="@+id/action_Map"
+          android:icon="@drawable/ic_action_map"
+          android:title="@string/action_map"
+          android:showAsAction="always"/>
+    
     <!-- Search / will display always -->
     <item android:id="@+id/action_search"
           android:icon="@drawable/ic_action_search"
           android:title="@string/action_search"
-          android:showAsAction="always"
-    	  android:actionViewClass="android.widget.SearchView"/>
+          android:showAsAction="always"/>
      
     <!-- Help -->
     <item android:id="@+id/action_help"
@@ -14,12 +31,12 @@
           android:title="@string/action_help"
           android:showAsAction="never"/>
     
-    <!-- Add -->
-    <item android:id="@+id/action_new"
-          android:icon="@drawable/ic_action_new"
-          android:title="@string/action_new"
-          android:showAsAction="ifRoom"/>
+    <!-- Account -->
+    <item android:id="@+id/action_account"
+          android:icon="@drawable/ic_action_help"
+          android:title="@string/action_account"
+          android:showAsAction="never"/>
     
-    
+
    
 </menu>
