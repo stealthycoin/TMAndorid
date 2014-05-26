@@ -22,13 +22,14 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 interface GetCallbackInterface {
     void onDownloadFinished(String result);
 }
 
 public class QuerySingleton {
-	private static final String targetSite = "toilet.brilliantsquid.com";
+	private static final String targetSite = "http://toilet.brilliantsquid.com";
 	private static QuerySingleton instance = null;
 	private static Context context;
 	
@@ -92,14 +93,15 @@ public class QuerySingleton {
 		
 		@Override
 		protected String doInBackground(String... arg0) {
-			HttpURLConnection urlConnection;
 			try {
-				URL url = new URL(targetSite + "/" + arg0);
-				urlConnection = (HttpURLConnection) url.openConnection();
-				cm.getCookieStore().add(new URI(targetSite), sessionID);
-				connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+				URL url = new URL(targetSite + "/" + arg0[0]);
+				connection = (HttpURLConnection) url.openConnection();
+				if (sessionID != null) {
+					cm.getCookieStore().add(new URI(targetSite), sessionID);
+					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+				}
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
-	    		InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+	    		InputStream in = new BufferedInputStream(connection.getInputStream());
 	    		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 	    		StringBuilder sb = new StringBuilder();
 	    		
@@ -138,13 +140,15 @@ public class QuerySingleton {
 		
 		@Override
 		protected String doInBackground(String... arg0) {
-			HttpURLConnection urlConnection;
 			try {
-				URL url = new URL(targetSite + "/" + arg0);
-				urlConnection = (HttpURLConnection) url.openConnection();
-				cm.getCookieStore().add(new URI(targetSite), csrf);
-				cm.getCookieStore().add(new URI(targetSite), sessionID);
-				connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+				URL url = new URL(targetSite + "/" + arg0[0]);
+				connection = (HttpURLConnection) url.openConnection();
+				if (sessionID != null) {
+					cm.getCookieStore().add(new URI(targetSite), csrf);
+					cm.getCookieStore().add(new URI(targetSite), sessionID);
+					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+				}
+
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				
 				StringBuilder queryset = new StringBuilder();
