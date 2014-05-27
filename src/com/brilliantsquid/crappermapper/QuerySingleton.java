@@ -60,7 +60,7 @@ public class QuerySingleton implements GetCallbackInterface {
 		urlDirectory = new HashMap<String,String>();
 		urlDirectory.put("api/Toilet/get/", "");
 		urlDirectory.put("api/user/login/", "signin/");
-		urlDirectory.put("api/Toilet/get/", "");
+		urlDirectory.put("api/toilet/create/", "addrestroom/");
 	}
 	
 	public static boolean hasBeenInit() {
@@ -208,7 +208,7 @@ public class QuerySingleton implements GetCallbackInterface {
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
 				
-				Log.v("qs", connection.getHeaderFields().toString());
+				//Log.v("qs", connection.getHeaderFields().toString());
 				
 				InputStream in = new BufferedInputStream(connection.getInputStream());
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
