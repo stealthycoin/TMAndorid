@@ -59,11 +59,6 @@ public class CrapperMapperLocation extends BaseActivity
  
     @Override
     protected void onPause(){
-    	if (googleMap == null){
-    		
-    	}else
-    		
-    	}
     	super.onPause();
     }
 }
