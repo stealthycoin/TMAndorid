@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +29,11 @@ interface GetCallbackInterface {
     void onDownloadFinished(String result);
 }
 
-public class QuerySingleton {
+interface PostCallbackInterface {
+	void onPostFinished(String result);
+}
+
+public class QuerySingleton implements GetCallbackInterface {
 	private static final String targetSite = "http://toilet.brilliantsquid.com";
 	private static QuerySingleton instance = null;
 	private static Context context;
@@ -39,10 +44,23 @@ public class QuerySingleton {
 	private HttpURLConnection connection;
 	
 	
+	//data to make the next post, when its pre-req get finishes up
+	private Map<String,String> variables;
+	private String url;
+	private PostCallbackInterface callback;
+	private Map<String,String> urlDirectory;
+	
 	public QuerySingleton(Context ctx) {
 		context = ctx;
 		cm = new CookieManager();
 		CookieHandler.setDefault(cm);
+		
+		//This is what page contains the csrf we need given a particular api call. I will check to see if any csrf will do,
+		//in which case this is not required, we could always just query the homepage.
+		urlDirectory = new HashMap<String,String>();
+		urlDirectory.put("api/Toilet/get/", "");
+		urlDirectory.put("api/user/login/", "signin/");
+		urlDirectory.put("api/Toilet/get/", "");
 	}
 	
 	public static boolean hasBeenInit() {
@@ -72,10 +90,25 @@ public class QuerySingleton {
 		new getTask(callback).execute(s_url);
 	}
 	
+
+	public void sendPost(String s_url, Map<String,String> variables, PostCallbackInterface callback) {
+		url = s_url;
+		this.variables = variables;
+		this.callback = callback;
+		String pre_get = urlDirectory.get(s_url);
+		if (pre_get == null) {
+			pre_get = "";
+		}
+		//call get first to load a csrf token
+		sendGet(pre_get, this);
+	}
 	
-	
-	public void sendPost(String s_url, Map<String,String> variables, GetCallbackInterface callback) {
-		new postTask(variables, callback).execute(s_url);
+	/**
+	 * This gets called when a get request that was triggered as a pre-req for a post terminates
+	 */
+	@Override
+	public void onDownloadFinished(String result) {
+		new postTask(variables, callback).execute(url);
 	}
 	
 	
@@ -130,10 +163,10 @@ public class QuerySingleton {
 	
 	private class postTask extends AsyncTask<String,Void,String> {
 
-		final GetCallbackInterface callback;
+		final PostCallbackInterface callback;
 		final Map<String, String> variables;
 		
-		postTask(Map<String, String> _variables, GetCallbackInterface _callback) {
+		postTask(Map<String, String> _variables, PostCallbackInterface _callback) {
 			callback = _callback;
 			variables = _variables;
 		}
@@ -204,7 +237,7 @@ public class QuerySingleton {
 		}
 		
 		protected void onPostExecute(String result) {
-			callback.onDownloadFinished(result);
+			callback.onPostFinished(result);
 		}
 	}
 }
