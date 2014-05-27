@@ -37,7 +37,6 @@ public class CrapperMapperLocation extends BaseActivity
     /**
      * function to load map. If map is not created it will create it for you
      * */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void initializeMap() {
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
