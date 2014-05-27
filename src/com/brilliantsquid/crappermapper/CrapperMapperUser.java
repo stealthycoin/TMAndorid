@@ -69,7 +69,7 @@ public class CrapperMapperUser extends BaseActivity
 				new LoginTask().execute(submission);
 			}
 		});
-		//do not allow login until CSRF token has been aquired
+		//do not allow login until CSRF token has been acquired
 		login.setClickable(false);
 		
 		

@@ -143,14 +143,19 @@ public class QuerySingleton {
 			try {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("POST");
+				connection.setDoInput(true);
+				connection.setDoOutput(true);
 				if (sessionID != null) {
-					cm.getCookieStore().add(new URI(targetSite), csrf);
 					cm.getCookieStore().add(new URI(targetSite), sessionID);
-					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
 				}
+				if (csrf != null) {
+					cm.getCookieStore().add(new URI(targetSite), csrf);
+					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+				}
+					
 
-				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
-				
 				StringBuilder queryset = new StringBuilder();
 				//translate map to post request
 				boolean first = true;
@@ -163,18 +168,23 @@ public class QuerySingleton {
 					queryset.append(variables.get(key));
 					first = false;
 				}
-				
+				Log.v("qs", queryset.toString());
+				Log.v("qs", connection.getRequestProperties().toString());
+				Log.v("qs", connection.toString());
 				OutputStream out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
 				
+				Log.v("qs", connection.getHeaderFields().toString());
+				
 				InputStream in = new BufferedInputStream(connection.getInputStream());
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-				
+
 				String line, result = "";
 	    		while ((line = br.readLine()) != null) {
 	    			result += line;
 	    		}
+
 	    		in.close();
 	    		
 	    		//if we need to set the session id cookie
