@@ -37,26 +37,30 @@ public class BaseActivity extends Activity {
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Take appropriate action for each action item click
+		Intent intent = null;
         switch (item.getItemId()) {
         case R.id.action_search:
-        	//Toast.makeText(getApplicationContext(), "SEARCH!", Toast.LENGTH_SHORT).show();
-            // search action
+        	intent = new Intent(this,CrapperMapperMenu.class);
+		    startActivity(intent);
             return true;
         case R.id.action_new:
-        	Intent intent = new Intent(this,CrapperMapperAdd.class);
+        	intent = new Intent(this,CrapperMapperAdd.class);
 		    startActivity(intent);
         	return true;
         case R.id.action_help:
             // help action
             return true;
         case R.id.action_Emergency:
-        	
+        	intent = new Intent(this,CrapperMapperEmergency.class);
+		    startActivity(intent);
         	return true;
         case R.id.action_Map:
-        	
+        	intent = new Intent(this,CrapperMapperLocation.class);
+		    startActivity(intent);
         	return true;
         case R.id.action_account:
-        	
+        	intent = new Intent(this,CrapperMapperUser.class);
+		    startActivity(intent);
         	return true;
         case R.id.action_settings:
         	
