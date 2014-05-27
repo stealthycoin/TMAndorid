@@ -71,3 +71,4 @@ public class BaseActivity extends Activity {
             return super.onOptionsItemSelected(item);
         }
 	}
+}
