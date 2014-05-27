@@ -58,6 +58,7 @@ public class BaseActivity extends Activity {
 
 	    Intent intentLoc = new Intent(this,CrapperMapperLocation.class);
 	    startActivity(intentLoc);
+
         	return true;
         case R.id.action_account:
         	intent = new Intent(this,CrapperMapperUser.class);
