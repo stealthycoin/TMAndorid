@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterface
+public class CrapperMapperMenu extends BaseActivity implements PostCallbackInterface, GetCallbackInterface
 {
     QuerySingleton qs;
     
@@ -28,7 +28,8 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
     }
 
 	@Override
-	public void onDownloadFinished(String result) {
+	public void onPostFinished(String result) {
+		//when post finishes
 		if (result != null) {
 			Log.v("filter1", result);
 		}
@@ -37,11 +38,17 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
 		}
 	}
 	
+	@Override
+	public void onDownloadFinished(String result) {
+		//when get finishes
+		
+	}
+	
 	public void server_request() {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
 		/*try {
-			//obj.put("name__icontains","barn");
+			obj.put("name__icontains","barn");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,14 +62,8 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
         //Log.v("filter1", variables.toString());
         
         qs = QuerySingleton.getInstance(this);
-        ///THis is important, it acquires a csrf token that we can use to make a request.
-        qs.sendGet("", this);
-        //qs.sendGet("signin/", this);
-        try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
         qs.sendPost("api/Toilet/get/", variables, this);
 	}
+
+
 }
