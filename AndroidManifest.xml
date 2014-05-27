@@ -29,6 +29,8 @@
         android:uiOptions="splitActionBarWhenNarrow">
         <meta-data android:name="android.support.UI_OPTIONS"
            android:value="splitActionBarWhenNarrow" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
             android:label="Crapper Mapper" >
