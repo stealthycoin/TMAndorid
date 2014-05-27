@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,7 +14,8 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
 {
 
     QuerySingleton qs;
-
+    boolean ready;
+    
     /** Called when the activity is first created. 
      * @throws JSONException */
     @Override
@@ -22,11 +24,15 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        Intent ni = new Intent(this, CrapperMapperUser.class);
+        //startActivity(ni);
+        ready = false;
         server_request();
     }
 
 	@Override
 	public void onDownloadFinished(String result) {
+		ready = true;
 		if (result != null) {
 			Log.v("filter1", result);
 		}
@@ -55,6 +61,12 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
         
         qs = QuerySingleton.getInstance(this);
         //qs.sendGet("signin", this);
+        qs.sendGet("signin/", this);
+        try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         qs.sendPost("api/user/login/", variables, this);
 	}
 }

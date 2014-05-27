@@ -147,12 +147,14 @@ public class QuerySingleton {
 				connection.setDoInput(true);
 				connection.setDoOutput(true);
 				if (sessionID != null) {
-					cm.getCookieStore().add(new URI(targetSite), csrf);
 					cm.getCookieStore().add(new URI(targetSite), sessionID);
+				}
+				if (csrf != null) {
+					cm.getCookieStore().add(new URI(targetSite), csrf);
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
 					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				}
-
+					
 
 				StringBuilder queryset = new StringBuilder();
 				//translate map to post request
@@ -172,6 +174,8 @@ public class QuerySingleton {
 				OutputStream out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
+				
+				Log.v("qs", connection.getHeaderFields().toString());
 				
 				InputStream in = new BufferedInputStream(connection.getInputStream());
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
