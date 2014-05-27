@@ -53,7 +53,8 @@ public class BaseActivity extends Activity {
         	
         	return true;
         case R.id.action_Map:
-        	
+        	Intent intentLoc = new Intent(this,CrapperMapperLocation.class);
+		    startActivity(intentLoc);
         	return true;
         case R.id.action_account:
         	
