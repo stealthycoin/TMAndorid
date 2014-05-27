@@ -12,9 +12,7 @@ import android.util.Log;
 
 public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterface
 {
-
     QuerySingleton qs;
-    boolean ready;
     
     /** Called when the activity is first created. 
      * @throws JSONException */
@@ -26,13 +24,11 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
         
         Intent ni = new Intent(this, CrapperMapperUser.class);
         //startActivity(ni);
-        ready = false;
         server_request();
     }
 
 	@Override
 	public void onDownloadFinished(String result) {
-		ready = true;
 		if (result != null) {
 			Log.v("filter1", result);
 		}
@@ -44,29 +40,29 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
 	public void server_request() {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
-		try {
+		/*try {
 			//obj.put("name__icontains","barn");
-			obj.put("start",0);
-			obj.put("end",10);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		//variables.put("filters", obj.toString());
-		variables.put("username","toilet");
-		variables.put("password","jcrowepoops667");
+		variables.put("start","0");
+		variables.put("end","10");
+		variables.put("filters", obj.toString());
 		
         //Log.v("filter1", variables.toString());
         
         qs = QuerySingleton.getInstance(this);
-        //qs.sendGet("signin", this);
-        qs.sendGet("signin/", this);
+        ///THis is important, it acquires a csrf token that we can use to make a request.
+        qs.sendGet("", this);
+        //qs.sendGet("signin/", this);
         try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-        qs.sendPost("api/user/login/", variables, this);
+        qs.sendPost("api/Toilet/get/", variables, this);
 	}
 }
