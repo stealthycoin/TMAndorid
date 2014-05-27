@@ -27,7 +27,12 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
 
 	@Override
 	public void onDownloadFinished(String result) {
-		Log.v("filter1", result);
+		if (result != null) {
+			Log.v("filter1", result);
+		}
+		else {
+			Log.v("filter1", "It was null");
+		}
 	}
 	
 	public void server_request() {
@@ -42,12 +47,14 @@ public class CrapperMapperMenu extends BaseActivity implements GetCallbackInterf
 			e.printStackTrace();
 		}
 		
-		variables.put("filters", obj.toString());
+		//variables.put("filters", obj.toString());
+		variables.put("username","toilet");
+		variables.put("password","jcrowepoops667");
 		
         //Log.v("filter1", variables.toString());
         
         qs = QuerySingleton.getInstance(this);
         //qs.sendGet("signin", this);
-        qs.sendPost("api/Toilet/get", variables, this);
+        qs.sendPost("api/user/login/", variables, this);
 	}
 }
