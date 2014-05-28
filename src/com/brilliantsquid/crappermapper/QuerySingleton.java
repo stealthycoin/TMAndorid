@@ -43,6 +43,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	private HttpCookie csrf, sessionID;
 	private HttpURLConnection connection;
 	
+	private final String TAG = "ADD";
 	
 	//data to make the next post, when its pre-req get finishes up
 	private Map<String,String> variables;
@@ -132,6 +133,8 @@ public class QuerySingleton implements GetCallbackInterface {
 				if (sessionID != null) {
 					cm.getCookieStore().add(new URI(targetSite), sessionID);
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+					Log.v(TAG, "sessionID=" + sessionID.getValue());
+					connection.setRequestProperty("Cookie", "sessionID=" + sessionID.getValue());
 				}
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 	    		InputStream in = new BufferedInputStream(connection.getInputStream());
@@ -221,9 +224,12 @@ public class QuerySingleton implements GetCallbackInterface {
 	    		in.close();
 	    		
 	    		//if we need to set the session id cookie
-	    		if (result.equals("\"Success\"") && arg0.equals("http://toilet.brilliantsquid.com/api/user/login/")) {
+	    		if (result.equals("\"Success\"")) {
 	    			String[] newCookie = connection.getHeaderField("Set-Cookie").toString().split(";");
-	    			sessionID = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);	
+	    			if (newCookie[0].split("=")[0] == "sessionid") {
+	    				Log.v(TAG, "Acquired sessionid = " + newCookie[0].split("=")[1]);
+	    				sessionID = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);
+	    			}
 	    		}
 	    		
 	    		return result;

@@ -54,15 +54,22 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 			e.printStackTrace();
 		}*/
 		
+		
+		
 		//variables.put("filters", obj.toString());
-		variables.put("start","0");
-		variables.put("end","10");
-		variables.put("filters", obj.toString());
 		
         //Log.v("filter1", variables.toString());
         
         qs = QuerySingleton.getInstance(this);
-        qs.sendPost("api/Toilet/get/", variables, this);
+        variables.put("username", "toilet");
+        variables.put("password", "jcrowepoops667");
+        qs.sendPost("api/user/login", variables, this);
+        
+        /*variables.clear();
+        variables.put("start","0");
+		variables.put("end","10");
+		variables.put("filters", obj.toString());
+        qs.sendPost("api/Toilet/get/", variables, this);*/
 	}
 
 
