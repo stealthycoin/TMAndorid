@@ -40,7 +40,8 @@ public class QuerySingleton implements GetCallbackInterface {
 	
 	private CookieManager cm;
 	
-	private HttpCookie csrf, sessionID;
+	private HttpCookie csrf;
+	private String sessionID;
 	private HttpURLConnection connection;
 	
 	private final String TAG = "qs";
@@ -132,10 +133,9 @@ public class QuerySingleton implements GetCallbackInterface {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				connection = (HttpURLConnection) url.openConnection();
 				if (sessionID != null) {
-					cm.getCookieStore().add(new URI(targetSite), sessionID);
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
-					Log.v(TAG, "sessionID=" + sessionID.getValue());
-					connection.setRequestProperty("Cookie", "sessionID=" + sessionID.getValue());
+					Log.v(TAG, "sessionid=" + sessionID);
+					connection.setRequestProperty("Cookies", "sessionid=" + sessionID);
 				}
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 	    		InputStream in = new BufferedInputStream(connection.getInputStream());
@@ -154,9 +154,6 @@ public class QuerySingleton implements GetCallbackInterface {
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
-			catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
 			return null;
 		}
 		
@@ -186,8 +183,7 @@ public class QuerySingleton implements GetCallbackInterface {
 				
 				if (sessionID != null) {
 					Log.v(TAG,sessionID.toString());
-					cm.getCookieStore().add(new URI(targetSite), sessionID);
-					connection.addRequestProperty("Cookie", "sessionid="+sessionID.getValue());
+					connection.addRequestProperty("Cookies", "sessionid="+sessionID);
 				}
 				else {
 					Log.v(TAG,"Sessionid null");
@@ -235,7 +231,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	    			String[] newCookie = connection.getHeaderField("Set-Cookie").toString().split(";");
 	    			if (newCookie[0].split("=")[0].equals("sessionid")) {
 	    				Log.v(TAG, "Acquired sessionid = " + newCookie[0].split("=")[1]);
-	    				sessionID = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);
+	    				sessionID = newCookie[0].split("=")[1];
 	    			}
 	    		}
 	    		
