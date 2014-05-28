@@ -40,9 +40,11 @@ public class QuerySingleton implements GetCallbackInterface {
 	
 	private CookieManager cm;
 	
-	private HttpCookie csrf, sessionID;
+	private HttpCookie csrf;
+	private String sessionID;
 	private HttpURLConnection connection;
 	
+	private final String TAG = "qs";
 	
 	//data to make the next post, when its pre-req get finishes up
 	private Map<String,String> variables;
@@ -50,8 +52,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	private PostCallbackInterface callback;
 	private Map<String,String> urlDirectory;
 	
-	public QuerySingleton(Context ctx) {
-		context = ctx;
+	public QuerySingleton() {
 		cm = new CookieManager();
 		CookieHandler.setDefault(cm);
 		
@@ -60,16 +61,16 @@ public class QuerySingleton implements GetCallbackInterface {
 		urlDirectory = new HashMap<String,String>();
 		urlDirectory.put("api/Toilet/get/", "");
 		urlDirectory.put("api/user/login/", "signin/");
-		urlDirectory.put("api/Toilet/get/", "");
+		urlDirectory.put("api/toilet/create/", "addrestroom/");
 	}
 	
 	public static boolean hasBeenInit() {
 		return context != null;
 	}
 	
-	public static synchronized QuerySingleton getInstance(Context ctx) {
-		if (context == null) {
-			instance = new QuerySingleton(ctx);
+	public static synchronized QuerySingleton getInstance() {
+		if (instance == null) {
+			instance = new QuerySingleton();
 		}
 		return instance;
 	}
@@ -92,6 +93,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	
 
 	public void sendPost(String s_url, Map<String,String> variables, PostCallbackInterface callback) {
+		Log.v(TAG,"Firing post");
 		url = s_url;
 		this.variables = variables;
 		this.callback = callback;
@@ -130,8 +132,9 @@ public class QuerySingleton implements GetCallbackInterface {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				connection = (HttpURLConnection) url.openConnection();
 				if (sessionID != null) {
-					cm.getCookieStore().add(new URI(targetSite), sessionID);
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+					Log.v(TAG, "sessionid=" + sessionID);
+					connection.setRequestProperty("Cookies", "sessionid=" + sessionID);
 				}
 				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 	    		InputStream in = new BufferedInputStream(connection.getInputStream());
@@ -150,9 +153,6 @@ public class QuerySingleton implements GetCallbackInterface {
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
-			catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
 			return null;
 		}
 		
@@ -179,8 +179,13 @@ public class QuerySingleton implements GetCallbackInterface {
 				connection.setRequestMethod("POST");
 				connection.setDoInput(true);
 				connection.setDoOutput(true);
+				
 				if (sessionID != null) {
-					cm.getCookieStore().add(new URI(targetSite), sessionID);
+					Log.v(TAG,sessionID.toString());
+					connection.addRequestProperty("Cookies", "sessionid="+sessionID);
+				}
+				else {
+					Log.v(TAG,"Sessionid null");
 				}
 				if (csrf != null) {
 					cm.getCookieStore().add(new URI(targetSite), csrf);
@@ -208,7 +213,7 @@ public class QuerySingleton implements GetCallbackInterface {
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
 				
-				Log.v("qs", connection.getHeaderFields().toString());
+				//Log.v("qs", connection.getHeaderFields().toString());
 				
 				InputStream in = new BufferedInputStream(connection.getInputStream());
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -221,9 +226,12 @@ public class QuerySingleton implements GetCallbackInterface {
 	    		in.close();
 	    		
 	    		//if we need to set the session id cookie
-	    		if (result.equals("\"Success\"") && arg0.equals("http://toilet.brilliantsquid.com/api/user/login/")) {
+	    		if (result.equals("\"Success\"")) {
 	    			String[] newCookie = connection.getHeaderField("Set-Cookie").toString().split(";");
-	    			sessionID = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);	
+	    			if (newCookie[0].split("=")[0].equals("sessionid")) {
+	    				Log.v(TAG, "Acquired sessionid = " + newCookie[0].split("=")[1]);
+	    				sessionID = newCookie[0].split("=")[1];
+	    			}
 	    		}
 	    		
 	    		return result;

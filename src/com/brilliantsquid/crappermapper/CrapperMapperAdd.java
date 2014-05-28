@@ -1,6 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,13 +20,14 @@ import android.location.LocationManager;
 import android.location.Location;
 import android.util.Log;
 
-public class CrapperMapperAdd extends BaseActivity
+public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterface
 {
-    
+    final String TAG = "ADD";
     EditText name;
     CheckBox male,female;
     Button submit;
     Location currentLocation;
+    QuerySingleton qs;
     
     /** Called when the activity is first created. */
     @Override
@@ -42,6 +46,8 @@ public class CrapperMapperAdd extends BaseActivity
 	female = (CheckBox)findViewById(R.id.checkBox2);
 	submit = (Button)findViewById(R.id.button1);
 
+	qs = QuerySingleton.getInstance();
+	
 	submit.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View v) {
 			if (currentLocation != null) {
@@ -52,6 +58,15 @@ public class CrapperMapperAdd extends BaseActivity
 				boolean f = female.isChecked();
 				
 				//roll up request and send it away!
+				Map<String,String> args = new HashMap<String,String>();
+				args.put("name", n);
+				args.put("male",   m ? "True" : "False");
+				args.put("female", f ? "True" : "False");
+				args.put("lat",String.valueOf(lat));
+				args.put("lng",String.valueOf(lng));
+				Log.v(TAG, args.toString());
+				
+				qs.sendPost("api/toilet/create/", args, CrapperMapperAdd.this);
 			}
 		}
 	    });
@@ -80,5 +95,11 @@ public class CrapperMapperAdd extends BaseActivity
 	    // called when the status of the GPS provider changes
         }
     }
+
+	@Override
+	public void onPostFinished(String result) {
+		if (result == null) result = "null";
+		Log.v(TAG, "Add query finished " + result);
+	}
 
 }

@@ -12,6 +12,8 @@ import android.util.Log;
 
 public class CrapperMapperMenu extends BaseActivity implements PostCallbackInterface, GetCallbackInterface
 {
+	
+	private final String TAG = "MENU";
     QuerySingleton qs;
     
     /** Called when the activity is first created. 
@@ -29,19 +31,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 
 	@Override
 	public void onPostFinished(String result) {
-		//when post finishes
-		if (result != null) {
-			Log.v("filter1", result);
-		}
-		else {
-			Log.v("filter1", "It was null");
-		}
-	}
-	
-	@Override
-	public void onDownloadFinished(String result) {
-		//when get finishes
-		
+		Log.v(TAG, "Finished trying to login:\n" + result);
 	}
 	
 	public void server_request() {
@@ -54,15 +44,28 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 			e.printStackTrace();
 		}*/
 		
+		
+		
 		//variables.put("filters", obj.toString());
-		variables.put("start","0");
-		variables.put("end","10");
-		variables.put("filters", obj.toString());
 		
         //Log.v("filter1", variables.toString());
         
-        qs = QuerySingleton.getInstance(this);
-        qs.sendPost("api/Toilet/get/", variables, this);
+        qs = QuerySingleton.getInstance();
+        variables.put("username", "toilet");
+        variables.put("password", "jcrowepoops667");
+        qs.sendPost("api/user/login/", variables, this);
+        
+        /*variables.clear();
+        variables.put("start","0");
+		variables.put("end","10");
+		variables.put("filters", obj.toString());
+        qs.sendPost("api/Toilet/get/", variables, this);*/
+	}
+
+	@Override
+	public void onDownloadFinished(String result) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
