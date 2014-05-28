@@ -50,7 +50,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		
         //Log.v("filter1", variables.toString());
         
-        qs = QuerySingleton.getInstance(this);
+        qs = QuerySingleton.getInstance();
         variables.put("username", "toilet");
         variables.put("password", "jcrowepoops667");
         qs.sendPost("api/user/login/", variables, this);

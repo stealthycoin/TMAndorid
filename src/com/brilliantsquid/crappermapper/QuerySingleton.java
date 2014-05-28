@@ -52,8 +52,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	private PostCallbackInterface callback;
 	private Map<String,String> urlDirectory;
 	
-	public QuerySingleton(Context ctx) {
-		context = ctx;
+	public QuerySingleton() {
 		cm = new CookieManager();
 		CookieHandler.setDefault(cm);
 		
@@ -69,9 +68,9 @@ public class QuerySingleton implements GetCallbackInterface {
 		return context != null;
 	}
 	
-	public static synchronized QuerySingleton getInstance(Context ctx) {
-		if (context == null) {
-			instance = new QuerySingleton(ctx);
+	public static synchronized QuerySingleton getInstance() {
+		if (instance == null) {
+			instance = new QuerySingleton();
 		}
 		return instance;
 	}

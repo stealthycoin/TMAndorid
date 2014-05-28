@@ -46,7 +46,7 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 	female = (CheckBox)findViewById(R.id.checkBox2);
 	submit = (Button)findViewById(R.id.button1);
 
-	qs = new QuerySingleton(this);
+	qs = QuerySingleton.getInstance();
 	
 	submit.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View v) {
