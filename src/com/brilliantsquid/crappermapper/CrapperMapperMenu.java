@@ -58,54 +58,63 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		
 		JSONObject jObject = null;
 		JSONArray jArray = null;
-		try {
-			jArray = new JSONArray(result);
+
+			try {
+				jArray = new JSONArray(result);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//jObject = new JSONObject(result);
 			//jArray = jObject.getJSONArray();
 		
-			for(int i = 0; i < jArray.length(); ++i){
+			for(int i = 0; jArray!= null && i < jArray.length(); ++i){
 				HashMap<String, String> map = new HashMap<String, String>();
-				
-				JSONObject obj = jArray.getJSONObject(i);
-				JSONObject fields = obj.getJSONObject("fields");
-				
-				//Parse out json data
-				int reviews = fields.getInt("numberOfReviews");
-				String toilet = fields.getString("name");
-				double rating = Double.valueOf(fields.getString("rating"));
-				int pk = obj.getInt("pk");
-				boolean male = obj.getBoolean("male");
-				boolean female = obj.getBoolean("female");
-				
-				//Put the objects into the listview's hashmap
-				map.put(KEY_ID, String.valueOf(pk));
-				map.put(KEY_TOILET, toilet);
-				map.put(KEY_STARS, String.valueOf(rating));
-				map.put(KEY_REVIEWS, String.valueOf(reviews));
-				
-				toiletList.add(map);
-				
-				list=(ListView)findViewById(R.id.list);
-				
-				// Getting adapter by passing xml data ArrayList
-		        adapter=new LazyAdapter(this, toiletList);        
-		        list.setAdapter(adapter);
-		        
-
-		        // Click event for single list row
-		        list.setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-					}
-				});		
-				
-				Log.v(TAG, "pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
+				try{
+					JSONObject obj = jArray.getJSONObject(i);
+					JSONObject fields = obj.getJSONObject("fields");
+					
+					//Parse out json data
+					int reviews = fields.getInt("numberOfReviews");
+					String toilet = fields.getString("name");
+					double rating = Double.valueOf(fields.getString("rating"));
+					int pk = obj.getInt("pk");
+					boolean male = obj.getBoolean("male");
+					boolean female = obj.getBoolean("female");
+					
+					//Put the objects into the listview's hashmap
+					map.put(KEY_ID, String.valueOf(pk));
+					map.put(KEY_TOILET, toilet);
+					map.put(KEY_STARS, String.valueOf(rating));
+					map.put(KEY_REVIEWS, String.valueOf(reviews));
+					
+					toiletList.add(map);
+					
+					
+					Log.v(TAG, "pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+			
+			list=(ListView)findViewById(R.id.list);
+			
+			// Getting adapter by passing xml data ArrayList
+	        adapter=new LazyAdapter(this, toiletList);        
+	        list.setAdapter(adapter);
+	        
+
+	        // Click event for single list row
+	        list.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+				}
+			});		
+			
+
 		
 		
 		
