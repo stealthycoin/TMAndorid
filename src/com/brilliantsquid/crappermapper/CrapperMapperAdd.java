@@ -66,15 +66,6 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 				args.put("lng",String.valueOf(lng));
 				Log.v(TAG, args.toString());
 				
-				Map<String,String> auth = new HashMap<String,String>();
-				auth.put("username","toilet");
-				auth.put("password", "jcrowepoops667");
-				qs.sendPost("api/user/login/", auth, new PostCallbackInterface() {
-					@Override
-					public void onPostFinished(String result) {
-						Log.v(TAG, "Maybe logged in");
-					}
-				});
 				qs.sendPost("api/toilet/create/", args, CrapperMapperAdd.this);
 			}
 		}
@@ -107,8 +98,8 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 
 	@Override
 	public void onPostFinished(String result) {
-		// TODO Auto-generated method stub
-		
+		if (result == null) result = "null";
+		Log.v(TAG, "Add query finished " + result);
 	}
 
 }

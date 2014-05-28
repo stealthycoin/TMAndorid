@@ -43,7 +43,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	private HttpCookie csrf, sessionID;
 	private HttpURLConnection connection;
 	
-	private final String TAG = "ADD";
+	private final String TAG = "qs";
 	
 	//data to make the next post, when its pre-req get finishes up
 	private Map<String,String> variables;
@@ -93,6 +93,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	
 
 	public void sendPost(String s_url, Map<String,String> variables, PostCallbackInterface callback) {
+		Log.v(TAG,"Firing post");
 		url = s_url;
 		this.variables = variables;
 		this.callback = callback;
@@ -182,8 +183,14 @@ public class QuerySingleton implements GetCallbackInterface {
 				connection.setRequestMethod("POST");
 				connection.setDoInput(true);
 				connection.setDoOutput(true);
+				
 				if (sessionID != null) {
+					Log.v(TAG,sessionID.toString());
 					cm.getCookieStore().add(new URI(targetSite), sessionID);
+					connection.addRequestProperty("Cookie", "sessionid="+sessionID.getValue());
+				}
+				else {
+					Log.v(TAG,"Sessionid null");
 				}
 				if (csrf != null) {
 					cm.getCookieStore().add(new URI(targetSite), csrf);
@@ -226,7 +233,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	    		//if we need to set the session id cookie
 	    		if (result.equals("\"Success\"")) {
 	    			String[] newCookie = connection.getHeaderField("Set-Cookie").toString().split(";");
-	    			if (newCookie[0].split("=")[0] == "sessionid") {
+	    			if (newCookie[0].split("=")[0].equals("sessionid")) {
 	    				Log.v(TAG, "Acquired sessionid = " + newCookie[0].split("=")[1]);
 	    				sessionID = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);
 	    			}
