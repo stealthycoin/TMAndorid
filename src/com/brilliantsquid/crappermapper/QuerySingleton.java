@@ -3,6 +3,7 @@ package com.brilliantsquid.crappermapper;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -62,6 +63,14 @@ public class QuerySingleton implements GetCallbackInterface {
 		urlDirectory.put("api/Toilet/get/", "");
 		urlDirectory.put("api/user/login/", "signin/");
 		urlDirectory.put("api/toilet/create/", "addrestroom/");
+	}
+	
+	public static void setContext(Context ctx) {
+		context = ctx;
+	}
+	
+	public void setSessionID(String id) {
+		sessionID = id;
 	}
 	
 	public static boolean hasBeenInit() {
@@ -132,11 +141,12 @@ public class QuerySingleton implements GetCallbackInterface {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				connection = (HttpURLConnection) url.openConnection();
 				if (sessionID != null) {
-					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
-					Log.v(TAG, "sessionid=" + sessionID);
 					connection.setRequestProperty("Cookies", "sessionid=" + sessionID);
 				}
-				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+				if (csrf != null) {
+					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
+					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+				}
 	    		InputStream in = new BufferedInputStream(connection.getInputStream());
 	    		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 	    		StringBuilder sb = new StringBuilder();
@@ -231,6 +241,16 @@ public class QuerySingleton implements GetCallbackInterface {
 	    			if (newCookie[0].split("=")[0].equals("sessionid")) {
 	    				Log.v(TAG, "Acquired sessionid = " + newCookie[0].split("=")[1]);
 	    				sessionID = newCookie[0].split("=")[1];
+	    				//oh we loooged in good boi
+	    				//lets save that seshid
+	    				FileOutputStream outputStream;
+	    				try {
+	    				  outputStream = context.openFileOutput("logindata", Context.MODE_PRIVATE);
+	    				  outputStream.write(sessionID.getBytes());
+	    				  outputStream.close();
+	    				} catch (Exception e) {
+	    				  e.printStackTrace();
+	    				}
 	    			}
 	    		}
 	    		
