@@ -48,7 +48,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 
 	@Override
 	public void onPostFinished(String result) {
-		Log.v(TAG, "Finished getting toilets:\n" + result);
+		//Log.v(TAG, "Finished getting toilets:\n" + result);
 		
         summon_list(result);
 		
@@ -58,61 +58,60 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		
 		JSONObject jObject = null;
 		JSONArray jArray = null;
-
-			try {
-				jArray = new JSONArray(result);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//jObject = new JSONObject(result);
-			//jArray = jObject.getJSONArray();
 		
-			for(int i = 0; jArray!= null && i < jArray.length(); ++i){
-				HashMap<String, String> map = new HashMap<String, String>();
-				try{
-					JSONObject obj = jArray.getJSONObject(i);
-					JSONObject fields = obj.getJSONObject("fields");
-					
-					//Parse out json data
-					int reviews = fields.getInt("numberOfReviews");
-					String toilet = fields.getString("name");
-					double rating = Double.valueOf(fields.getString("rating"));
-					int pk = obj.getInt("pk");
-					boolean male = obj.getBoolean("male");
-					boolean female = obj.getBoolean("female");
-					
-					//Put the objects into the listview's hashmap
-					map.put(KEY_ID, String.valueOf(pk));
-					map.put(KEY_TOILET, toilet);
-					map.put(KEY_STARS, String.valueOf(rating));
-					map.put(KEY_REVIEWS, String.valueOf(reviews));
-					
-					toiletList.add(map);
-					
-					
-					Log.v(TAG, "pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			list=(ListView)findViewById(R.id.list);
-			
-			// Getting adapter by passing xml data ArrayList
-	        adapter=new LazyAdapter(this, toiletList);        
-	        list.setAdapter(adapter);
-	        
+		ArrayList<HashMap<String, String>> toiletList = new ArrayList<HashMap<String, String>>();
 
-	        // Click event for single list row
-	        list.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
+		try {
+			jArray = new JSONArray(result);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
+					
+					HashMap<String, String> map = new HashMap<String, String>();
+					try{
+						JSONObject obj = jArray.getJSONObject(i);
+						JSONObject fields = obj.getJSONObject("fields");
+						//Parse out json data
+						int reviews = fields.getInt("numberOfReviews");
+						String toilet = fields.getString("name");
+						double rating = Double.valueOf(fields.getString("rating"));
+						int pk = obj.getInt("pk");
+						//String male = obj.getString("male");
+						//String female = obj.getString("female");
+						
+						//Put the objects into the listview's hashmap
+						map.put(KEY_ID, String.valueOf(pk));
+						map.put(KEY_TOILET, toilet);
+						map.put(KEY_STARS, String.valueOf(rating));
+						map.put(KEY_REVIEWS, String.valueOf(reviews));
+						Log.v(TAG,"REALLY BITCH?: " + map);
+						toiletList.add(map);
+						
+						Log.v(TAG, "START!!  pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			});		
+				list=(ListView)findViewById(R.id.list);
+	
+				// Getting adapter by passing xml data ArrayList
+		        adapter=new LazyAdapter(this, toiletList);        
+		        list.setAdapter(adapter);
+		        
+	
+		        // Click event for single list row
+		        list.setOnItemClickListener(new OnItemClickListener() {
+	
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+					}
+				});		
 			
 
 		

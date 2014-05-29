@@ -21,7 +21,6 @@ public class LazyAdapter extends BaseAdapter {
     private static LayoutInflater inflater=null;
     
     public LazyAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
-    	Log.v("MENU", "map: " + d.toString());
         activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,13 +48,13 @@ public class LazyAdapter extends BaseAdapter {
         TextView duration = (TextView)vi.findViewById(R.id.reviews); // duration
         ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image
         
-        HashMap<String, String> song = new HashMap<String, String>();
-        song = data.get(position);
+        HashMap<String, String> toilet = new HashMap<String, String>();
+        toilet = data.get(position);
         
         // Setting all values in listview
-        title.setText(song.get(CrapperMapperMenu.KEY_TOILET));
-        artist.setText(song.get(CrapperMapperMenu.KEY_STARS));
-        duration.setText(song.get(CrapperMapperMenu.KEY_REVIEWS));
+        title.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
+        artist.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
+        duration.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
         //imageLoader.DisplayImage(song.get(CustomizedListView.KEY_THUMB_URL), thumb_image);
         return vi;
     }
