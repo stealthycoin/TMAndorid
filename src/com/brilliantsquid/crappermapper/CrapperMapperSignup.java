@@ -3,8 +3,6 @@ package com.brilliantsquid.crappermapper;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,17 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.Toast;
-import android.os.Build;
 
 public class CrapperMapperSignup extends BaseActivity implements PostCallbackInterface {
 
 	private final String TAG = "SIGNUP"; 
 	
-	private Button signup;
 	private TextView username, pass, pass2;
 	private CheckBox male, female;
 	

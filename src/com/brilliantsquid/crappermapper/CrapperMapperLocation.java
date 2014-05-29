@@ -12,8 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -26,11 +24,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class CrapperMapperLocation extends BaseActivity implements 
 PostCallbackInterface, 
@@ -43,7 +38,6 @@ OnInfoWindowClickListener
     private double lat;
     private double lng;
     private gps location;
-    private JSONArray carl;
     
     static final String KEY_LAT = "lat";
     static final String KEY_LNG = "lng";
@@ -112,12 +106,7 @@ OnInfoWindowClickListener
     }
 	
 	public void toiletFinder(String result){
-		
-		JSONObject jObject = null;
 		JSONArray jArray = null;
-		
-		ArrayList<HashMap<String, String>> toiletList = new ArrayList<HashMap<String, String>>();
-
 
 		try {
 			jArray = new JSONArray(result);

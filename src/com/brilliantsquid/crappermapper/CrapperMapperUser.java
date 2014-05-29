@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class CrapperMapperUser extends BaseActivity implements PostCallbackInterface
 {
-	private final String TAG = "USER";
 	
 	private EditText username, password;
 	private Button login, logout, signup;
