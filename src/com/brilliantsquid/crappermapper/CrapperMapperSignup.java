@@ -49,8 +49,8 @@ public class CrapperMapperSignup extends BaseActivity implements PostCallbackInt
 	public void sendSignupQuery(View v) {
 		Log.v(TAG,"Sending query");
 		if (pass.getText().toString().equals(pass2.getText().toString())) {
-			if (username.getText().toString().length() < 5) {
-				Toast.makeText(this, "Username must be 5 characters minimum", Toast.LENGTH_LONG);
+			if (username.getText().toString().length() < 2) {
+				Toast.makeText(this, "Username must be 2 characters minimum", Toast.LENGTH_LONG);
 			}
 			else {
 				Map<String,String> variables = new HashMap<String,String>();

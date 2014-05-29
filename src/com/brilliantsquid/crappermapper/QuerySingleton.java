@@ -3,6 +3,7 @@ package com.brilliantsquid.crappermapper;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -164,6 +165,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
+			
 			return null;
 		}
 		
@@ -260,7 +262,11 @@ public class QuerySingleton implements GetCallbackInterface {
 				
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
+			} 
+			catch (FileNotFoundException e) {
+				Toast.makeText((Context)callback, "Network connectivitiy issue.", Toast.LENGTH_LONG).show();
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 			return null;
