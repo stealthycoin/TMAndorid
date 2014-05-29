@@ -36,6 +36,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
             android:label="Crapper Mapper" >
             <intent-filter>
@@ -45,19 +47,29 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperEmergency"
             android:label="I Got Diarrhea!" />
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperList"
             android:label="Restroom Search"
             android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu" />
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperAdd"
             android:label="Add Restroom" />
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperRecent"
             android:label="Recent visitations" />
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperLocation"
             android:label="Around me" />
 
@@ -66,9 +78,13 @@
             android:value="AIzaSyB2aVzckvHdEcF6oGeGWKYYOou9kXTR83A" />
 
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperUser"
             android:label="User data" />
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu" >
@@ -81,10 +97,14 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.BaseActivity"
             android:label="@string/title_activity_base" >
         </activity>
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperSingleToiletView"
             android:label="@string/title_activity_crapper_mapper_single_toilet_view"
             android:parentActivityName="com.brilliantsquid.crappermapper.BaseActivity" >
@@ -93,6 +113,8 @@
                 android:value="com.brilliantsquid.crappermapper.BaseActivity" />
         </activity>
         <activity
+            android:screenOrientation="portrait"
+   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperSignup"
             android:label="@string/title_activity_crapper_mapper_signup" >
         </activity>
