@@ -73,6 +73,9 @@ public class QuerySingleton implements GetCallbackInterface {
 		sessionID = id;
 	}
 	
+	public boolean loggedIn() {
+		return sessionID != null;
+	}
 	public static boolean hasBeenInit() {
 		return context != null;
 	}
@@ -203,7 +206,7 @@ public class QuerySingleton implements GetCallbackInterface {
 					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				}
 					
-
+				String userpass = "";
 				StringBuilder queryset = new StringBuilder();
 				//translate map to post request
 				boolean first = true;
@@ -215,6 +218,10 @@ public class QuerySingleton implements GetCallbackInterface {
 					queryset.append("=");
 					queryset.append(variables.get(key));
 					first = false;
+					//if this is a login it has a uername, and we can grab the username/pass to save for the future
+					if (key.equals("username")) {
+						userpass = variables.get("username") + "\n" + variables.get("password");
+					}
 				}
 				Log.v("qs", queryset.toString());
 				Log.v("qs", connection.getRequestProperties().toString());
@@ -241,12 +248,11 @@ public class QuerySingleton implements GetCallbackInterface {
 	    			if (newCookie[0].split("=")[0].equals("sessionid")) {
 	    				Log.v(TAG, "Acquired sessionid = " + newCookie[0].split("=")[1]);
 	    				sessionID = newCookie[0].split("=")[1];
-	    				//oh we loooged in good boi
-	    				//lets save that seshid
 	    				FileOutputStream outputStream;
 	    				try {
 	    				  outputStream = context.openFileOutput("logindata", Context.MODE_PRIVATE);
-	    				  outputStream.write(sessionID.getBytes());
+	    				  Log.v(TAG, "Saving: " + userpass);
+	    				  outputStream.write(userpass.getBytes());
 	    				  outputStream.close();
 	    				} catch (Exception e) {
 	    				  e.printStackTrace();

@@ -4,16 +4,11 @@ package com.brilliantsquid.crappermapper;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Button;
-import android.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.widget.Toast;
 import android.view.View;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -60,13 +55,17 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 				//roll up request and send it away!
 				Map<String,String> args = new HashMap<String,String>();
 				args.put("name", n);
-				args.put("male",   m ? "True" : "False");
-				args.put("female", f ? "True" : "False");
+				args.put("male",   m ? "True" : "False"); //server rejects these 
+				args.put("female", f ? "True" : "False"); //and copies user settings
 				args.put("lat",String.valueOf(lat));
 				args.put("lng",String.valueOf(lng));
-				Log.v(TAG, args.toString());
-				
-				qs.sendPost("api/toilet/create/", args, CrapperMapperAdd.this);
+				if (qs.loggedIn()) {
+					qs.sendPost("api/toilet/create/", args, CrapperMapperAdd.this);
+				}
+				else {
+					Toast.makeText(CrapperMapperAdd.this, "You must be logged in.", Toast.LENGTH_LONG).show();
+					CrapperMapperUser.login(CrapperMapperAdd.this);
+				}
 			}
 		}
 	    });
