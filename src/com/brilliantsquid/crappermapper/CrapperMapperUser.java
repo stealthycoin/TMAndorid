@@ -1,50 +1,29 @@
 package com.brilliantsquid.crappermapper;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.CookieHandler;
-import java.net.HttpCookie;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import java.net.CookieManager;
-import java.nio.charset.Charset;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import android.app.SearchManager;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.widget.SearchView;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CrapperMapperUser extends BaseActivity
+
+public class CrapperMapperUser extends BaseActivity implements PostCallbackInterface
 {
 	private final String TAG = "USER";
 	
-	private HttpURLConnection connection;
-	private CookieManager cManager;
-	private HttpCookie cookie; 
-	private String csrf;
-	
 	private EditText username, password;
 	private Button login;
+	
+	QuerySingleton qs;
 	
     /** Called when the activity is first created. */
     @Override
@@ -53,161 +32,75 @@ public class CrapperMapperUser extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user);
         
-        //cookie manager setup
-        cManager = new CookieManager();
-        CookieHandler.setDefault(cManager);
+        qs = QuerySingleton.getInstance();
         
-        createURLConnection();
-		username = (EditText)findViewById(R.id.username);
+    	username = (EditText)findViewById(R.id.username);
 		password = (EditText)findViewById(R.id.pass);
 		login = (Button)findViewById(R.id.login);
 		
 		login.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String submission = "username=" + username.getText().toString() + "&password=" + password.getText().toString();
-				new LoginTask().execute(submission);
+				Map<String,String> vars = new HashMap<String,String>();
+				vars.put("username", username.getText().toString());
+				vars.put("password", password.getText().toString());
+				qs.sendPost("api/user/login/", vars, CrapperMapperUser.this);
 			}
 		});
-		//do not allow login until CSRF token has been acquired
-		login.setClickable(false);
-		
-		
-		//we need to get the CSRF token so we can login
-		new GetCSRFTask().execute();
     }
 
-    
-    private void createURLConnection() {
-        //create a connection to toilet.brilliantsquid.com
-    	URL url;
-		try {
-			url = new URL("http://toilet.brilliantsquid.com/api/user/login/");
-			connection = (HttpURLConnection)url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setDoInput(true);
-			connection.setDoOutput(true);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	@Override
+	public void onPostFinished(String result) {
+		if (result.equals("\"Success\"")) {
+			Toast.makeText(this, "Welcome " + username.getText().toString(), Toast.LENGTH_LONG).show();
+			finish();
 		}
-    }
-    
-    private class GetCSRFTask extends AsyncTask<String,String,String> {
-
-		@Override
-		protected String doInBackground(String... args) {
-			HttpURLConnection urlConnection;
+		else {
+			Toast.makeText(this, "Login failed.", Toast.LENGTH_LONG).show();
+			password.setText("");
+		}
+	}
+	
+	/**
+	 * 
+	 * Attempts to log the user in. If it cannot, it brings up the User activity.
+	 * 
+	 * @param ctx Context making the login request
+	 */
+	public static void login(Context ctx) {
+		if (!QuerySingleton.getInstance().loggedIn()) {
+			Map<String,String> variables = new HashMap<String, String>();
 			try {
-				URL url = new URL("http://toilet.brilliantsquid.com/signin/");
-				urlConnection = (HttpURLConnection) url.openConnection();
-	    		InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-	    		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-	    		
-	    		String line, result = "";
-	    		while ((line = br.readLine()) != null) {
-	    			result += line;
-	    		}
-	    		
-	    		return result;
-	    	}
-	    	catch (IOException e) {
-	    		e.printStackTrace();
-	    	}
-			return null;
-		}
-		
-		protected void onPostExecute(String result) {
-			/* 
-			 * Parse result
-			 * Should look something like this:
-			 * name='csrfmiddlewaretoken' value='ovCPHoz09hPuQkEKMxgbpBpR4uZqD9wm'
-			 * 
-			 */
-			Pattern p = Pattern.compile("name='csrfmiddlewaretoken' value='(.*?)'");
-			Matcher m = p.matcher(result);
-			if (m.find()) {
-				//group 1 should be the token
-				csrf = m.group(1);
-				cookie = new HttpCookie("csrftoken", m.group(1));
-				cookie.setPath("/");
-				cookie.setDomain("toilet.brilliantsquid.com");
-				//found and set token, enable button
-				Log.v(TAG, "csrf: " + m.group(1));
-				login.setClickable(true);
+				Log.v("LOGIN", "Logging in from saved data ");
+				FileInputStream fs = ctx.openFileInput("logindata");
+				StringBuilder builder = new StringBuilder();
+				int ch;
+				while((ch = fs.read()) != -1){
+				    builder.append((char)ch);
+				}
+				Log.v("LOGIN", "saved data: " + builder.toString());
+				String[] cookies = builder.toString().split("\n");
+				variables.put("username", cookies[0]);
+				variables.put("password", cookies[1]);
+				//now we have cookies that lead to a successful login in the past
+				QuerySingleton.getInstance().sendPost("api/user/login/", variables, new PostCallbackInterface() {
+	
+					public void onPostFinished(String result) {
+						Log.v("LOGIN", result);
+					}
+					
+				});
 			}
-			else {
-				Log.v(TAG, "Failed to get data");
-				//report error
+			catch (FileNotFoundException e) {
+				Log.v("LOGIN", "Opening login activity, no credientials found");
+				Intent intent = new Intent(ctx, CrapperMapperUser.class);
+				ctx.startActivity(intent);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
-    }
-    
-    private class LoginTask extends AsyncTask<String,String,String> {
-
-		@Override
-		protected String doInBackground(String... args) {
-			String submission = (String)args[0];
-			
-			OutputStream out;
-			try {
-				cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), cookie);
-				//Log.v(TAG,cManager.getCookieStore().get(new URI("toilet.brilliantsquid.com")).toString());
-				connection.addRequestProperty("X-CSRFToken", csrf);
-				connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
-				out = new BufferedOutputStream(connection.getOutputStream());
-				out.write(submission.getBytes(Charset.forName("UTF-8")));
-				out.close();
-				
-				InputStream in = new BufferedInputStream(connection.getInputStream());
-				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-				
-				String line, result = "";
-	    		while ((line = br.readLine()) != null) {
-	    			result += line;
-	    		}
-	    		in.close();
-				
-	    		//Log.v(TAG, connection.getHeaderFields().toString());
-	    		
-	    		//if we didnt fail to login set the sessionID cookie (hopefully, documentation sucks for this)
-	    		if (result.equals("\"Success\"")) {
-	    			String[] newCookie = connection.getHeaderField("Set-Cookie").toString().split(";");
-	    			HttpCookie c = new HttpCookie(newCookie[0].split("=")[0],newCookie[0].split("=")[1]);
-	    			for (int i = 1 ; i < newCookie.length ; i++) {
-	    				if (newCookie[i].trim().equals("httponly")) {
-	    					//c.setHttpOnly(true); android doesnt have this I guess...?
-	    					//its in the docs but is red in eclipse
-	    				}
-	    				else {
-	    					String[] field = newCookie[i].split("=");
-	    					if (field[0].trim().equals("Max-Age")) {
-	    						c.setMaxAge(Long.valueOf(field[1]));
-	    					}
-	    					else if (field[0].trim().equals("Max-Age")) {
-	    						c.setPath(field[1]);
-	    					}
-	    				}
-	    			}
-	    			cManager.getCookieStore().add(new URI("toilet.brilliantsquid.com"), c);
-	    		}
-	    		
-				return  result;//might have to return the sessionID in case cookies fail like I assume they will
-			} catch (IOException  e) {
-			    e.printStackTrace();
-			} catch (URISyntaxException e) {
-			    e.printStackTrace();
-			}
-			
-			return null;
-		}
-		
-		protected void onPostExecute(String result) {
-			Log.v(TAG, result);
-			createURLConnection();
-		}
-    }
+	}
     
 
 }

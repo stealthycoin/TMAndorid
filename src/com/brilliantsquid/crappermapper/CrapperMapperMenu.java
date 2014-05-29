@@ -44,8 +44,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
         
-        Intent ni = new Intent(this, CrapperMapperUser.class);
-        //startActivity(ni);
+        //try to log the user in
+        CrapperMapperUser.login(this);
+        
         server_request();
     }
 
@@ -131,46 +132,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	public void server_request() {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
+		//if we aren't logged in try to make the user log in
 		
-		
-		/*try {
-			obj.put("name__icontains","barn");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		//variables.put("filters", obj.toString());
-		
-        //Log.v("filter1", variables.toString());
-        
-        //variables.put("username", "toilet");
-        //variables.put("password", "jcrowepoops667");
-        //qs.sendPost("api/user/login/", variables, this);
-        //log in the user if possible
-		
-		try {
-			Log.v(TAG, "Logging in from saved data");
-			FileInputStream fs = this.openFileInput("logindata");
-			StringBuilder builder = new StringBuilder();
-			int ch;
-			while((ch = fs.read()) != -1){
-			    builder.append((char)ch);
-			}
-			qs.setSessionID(builder.toString());
-		}
-		catch (FileNotFoundException e) {
-			Log.v(TAG, "Loggin in user as admin");
-			variables.put("username", "toilet");
-			variables.put("password", "jcrowepoops667");
-			qs.sendPost("api/user/login/", variables, this);
-		}
-		catch (IOException e) {
-			//it shouldn't do this unless it fails to read the file after the file exists
-			e.printStackTrace();
-		}
-        
-        //variables.clear();
+		//get a few toilets, should send current location
         variables.put("start","0");
 		variables.put("end","10");
 		variables.put("filters", obj.toString());
