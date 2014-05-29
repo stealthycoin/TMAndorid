@@ -41,7 +41,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		rating = (TextView)findViewById(R.id.ratingField);
 		
 		Intent intent = getIntent();
-		String pk = intent.getStringExtra("pk");
+		String pk = intent.getStringExtra("id");
 		pk = "4602";
 		Map<String,String> vars = new HashMap<String,String>();
 		vars.put("start","0");
