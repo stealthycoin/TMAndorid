@@ -1,6 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
 import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +40,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        qs = QuerySingleton.getInstance();
+        QuerySingleton.setContext(this);
         
         Intent ni = new Intent(this, CrapperMapperUser.class);
         //startActivity(ni);
@@ -134,16 +140,35 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 			e.printStackTrace();
 		}*/
 		
-		
-		
 		//variables.put("filters", obj.toString());
 		
         //Log.v("filter1", variables.toString());
         
-        qs = QuerySingleton.getInstance();
         //variables.put("username", "toilet");
         //variables.put("password", "jcrowepoops667");
         //qs.sendPost("api/user/login/", variables, this);
+        //log in the user if possible
+		
+		try {
+			Log.v(TAG, "Logging in from saved data");
+			FileInputStream fs = this.openFileInput("logindata");
+			StringBuilder builder = new StringBuilder();
+			int ch;
+			while((ch = fs.read()) != -1){
+			    builder.append((char)ch);
+			}
+			qs.setSessionID(builder.toString());
+		}
+		catch (FileNotFoundException e) {
+			Log.v(TAG, "Loggin in user as admin");
+			variables.put("username", "toilet");
+			variables.put("password", "jcrowepoops667");
+			qs.sendPost("api/user/login/", variables, this);
+		}
+		catch (IOException e) {
+			//it shouldn't do this unless it fails to read the file after the file exists
+			e.printStackTrace();
+		}
         
         //variables.clear();
         variables.put("start","0");
