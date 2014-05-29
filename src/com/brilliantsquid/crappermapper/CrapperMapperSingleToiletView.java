@@ -42,7 +42,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		Intent intent = getIntent();
 		String pk = intent.getStringExtra("id");
-		pk = "4602";
+		//pk = "4602";
+		Log.v(TAG,"ID is: " + pk);
 		Map<String,String> vars = new HashMap<String,String>();
 		vars.put("start","0");
 		vars.put("end", "10");

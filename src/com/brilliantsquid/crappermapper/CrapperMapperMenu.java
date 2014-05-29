@@ -113,8 +113,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						
-						Intent intent = getIntent();
-						intent.putExtra("id", id);
+						Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
+						intent.putExtra("id", String.valueOf(id));
+						startActivity(intent);
 						
 						Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
 					}
