@@ -138,7 +138,7 @@ OnInfoWindowClickListener
 						String pk = obj.getString("pk");
 						
 						MarkerOptions marker = new MarkerOptions().position(new LatLng(lat, lng)).title(toilet).snippet(pk);
-						Marker markerz = googleMap.addMarker(marker);						
+						googleMap.addMarker(marker);						
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
