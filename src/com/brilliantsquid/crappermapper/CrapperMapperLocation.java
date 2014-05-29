@@ -1,54 +1,70 @@
 package com.brilliantsquid.crappermapper;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.widget.SearchView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class CrapperMapperLocation extends BaseActivity implements
-GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener
+public class CrapperMapperLocation extends BaseActivity implements 
+PostCallbackInterface, 
+GetCallbackInterface, 
+OnInfoWindowClickListener
 {    
- // Google Map
+ private static final String TAG = null;
+	// Google Map
     private GoogleMap googleMap;
-
-    private Location currentLocation;
     private double lat;
     private double lng;
-    private boolean coordinates;
-    private LocationClient mLocationClient;
     private gps location;
+    private JSONArray carl;
+    
+    static final String KEY_LAT = "lat";
+    static final String KEY_LNG = "lng";
+    static final String KEY_PK = "pk";
+    static final String KEY_ID = "id";
+    static final String KEY_TOILET = "toilet";
+    ArrayList<HashMap<String, String>> toiletList;
+    ListView list;
+    LazyAdapter adapter;
+    QuerySingleton qs;
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location);
-        //coordinates = false;
+        
+        qs = QuerySingleton.getInstance();
+        QuerySingleton.setContext(this);
+        
         location = new gps(this);
+        server_request();
         
         try {
             // Loading map
@@ -59,8 +75,7 @@ GooglePlayServicesClient.OnConnectionFailedListener
         }
  
     }
-
- 
+    
     /**
      * function to load map. If map is not created it will create it for you
      * */
@@ -75,14 +90,17 @@ GooglePlayServicesClient.OnConnectionFailedListener
             	lat = location.getLatitude();
             	lng = location.getLongitude();
             
+            	//zoom to current location
             	CameraPosition cameraPosition = new CameraPosition.Builder().target(
 	                new LatLng(lat, lng)).zoom(12).build();
-	 
             	googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            	//show current location with blue dot and enable find me button in top right of map
+            	googleMap.setMyLocationEnabled(true); // false to disable
+            	googleMap.setOnInfoWindowClickListener(this);
             }else{
             	Log.v("HEY", "FUCKER");
             }
-            googleMap.setMyLocationEnabled(true); // false to disable
+            
 
             // check if map is created successfully or not
             if (googleMap == null) {
@@ -90,36 +108,78 @@ GooglePlayServicesClient.OnConnectionFailedListener
                         "Sorry! unable to create maps", Toast.LENGTH_SHORT)
                         .show();
             }
-        }
-        /*
-*/
-        
+        }        
     }
 	
-    private final class MyLocationListener implements LocationListener {
-    	
-        @Override
-        public void onLocationChanged(Location locFromGps) {
-            // called when the listener is notified with a location update from the GPS
-        	currentLocation = locFromGps;
-        }
+	public void toiletFinder(String result){
+		
+		JSONObject jObject = null;
+		JSONArray jArray = null;
+		
+		ArrayList<HashMap<String, String>> toiletList = new ArrayList<HashMap<String, String>>();
+
+
+		try {
+			jArray = new JSONArray(result);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
+					
+					try{
+						JSONObject obj = jArray.getJSONObject(i);
+						JSONObject fields = obj.getJSONObject("fields");
+						//Parse out json data
+						String toilet = fields.getString("name");
+						double lat = Double.valueOf(fields.getString("lat"));
+						double lng = Double.valueOf(fields.getString("lng"));
+						String pk = obj.getString("pk");
+						
+						MarkerOptions marker = new MarkerOptions().position(new LatLng(lat, lng)).title(toilet).snippet(pk);
+						googleMap.addMarker(marker);						
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+	}
 	
-        @Override
-        public void onProviderDisabled(String provider) {
-	    // called when the GPS provider is turned off (user turning off the GPS on the phone)
-        }
+	public void server_request() {
+		Map<String,String> variables = new HashMap<String, String>();
+		JSONObject obj=new JSONObject();
 	
-        @Override
-        public void onProviderEnabled(String provider) {
-	    // called when the GPS provider is turned on (user turning on the GPS on the phone)
-        }
-	
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-	    // called when the status of the GPS provider changes
-        }
-    }
-	 
+		try {
+			Log.v(TAG, "Logging in from saved data");
+			FileInputStream fs = this.openFileInput("logindata");
+			StringBuilder builder = new StringBuilder();
+			int ch;
+			while((ch = fs.read()) != -1){
+			    builder.append((char)ch);
+			}
+			qs.setSessionID(builder.toString());
+		}
+		catch (FileNotFoundException e) {
+			Log.v(TAG, "Loggin in user as admin");
+			variables.put("username", "toilet");
+			variables.put("password", "jcrowepoops667");
+			qs.sendPost("api/user/login/", variables, this);
+		}
+		catch (IOException e) {
+			//it shouldn't do this unless it fails to read the file after the file exists
+			e.printStackTrace();
+		}
+
+        //variables.clear();
+        variables.put("start","0");
+        variables.put("current_lat", String.valueOf(location.getLatitude()));
+        variables.put("current_lng", String.valueOf(location.getLongitude()));
+		variables.put("end","100");
+		variables.put("filters", obj.toString());
+        qs.sendPost("api/Toilet/get/", variables, this);
+	}
 
     @Override
     protected void onResume() {
@@ -132,21 +192,32 @@ GooglePlayServicesClient.OnConnectionFailedListener
     	super.onPause();
     }
 
+
 	@Override
-	public void onConnectionFailed(ConnectionResult result) {
+	public void onDownloadFinished(String result) {
 		// TODO Auto-generated method stub
 		
 	}
 
+
 	@Override
-	public void onConnected(Bundle connectionHint) {
+	public void onPostFinished(String result) {
 		// TODO Auto-generated method stub
+		
+		while(googleMap == null){
+			Thread.yield();
+		}
+		
+		toiletFinder(result);
 		
 	}
 
 	@Override
-	public void onDisconnected() {
+	public void onInfoWindowClick(Marker marker) {
 		// TODO Auto-generated method stub
-		
+		Intent intent = new Intent(CrapperMapperLocation.this, CrapperMapperSingleToiletView.class);
+		intent.putExtra("id", marker.getSnippet());
+		startActivity(intent);
 	}
+
 }
