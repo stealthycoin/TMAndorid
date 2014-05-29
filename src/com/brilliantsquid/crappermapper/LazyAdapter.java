@@ -18,6 +18,7 @@ public class LazyAdapter extends BaseAdapter {
     
     private Activity activity;
     private ArrayList<HashMap<String, String>> data;
+    private int pk;
     private static LayoutInflater inflater=null;
     
     public LazyAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
@@ -35,7 +36,7 @@ public class LazyAdapter extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-        return position;
+        return Integer.valueOf(data.get(position).get("id"));
     }
     
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -44,8 +45,8 @@ public class LazyAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.toiletlist, null);
 
         TextView title = (TextView)vi.findViewById(R.id.toilet); // title
-        TextView artist = (TextView)vi.findViewById(R.id.stars); // artist name
-        TextView duration = (TextView)vi.findViewById(R.id.reviews); // duration
+        TextView stars = (TextView)vi.findViewById(R.id.stars); // artist name
+        TextView reviews = (TextView)vi.findViewById(R.id.reviews); // duration
         ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image
         
         HashMap<String, String> toilet = new HashMap<String, String>();
@@ -53,8 +54,8 @@ public class LazyAdapter extends BaseAdapter {
         
         // Setting all values in listview
         title.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
-        artist.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
-        duration.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+        stars.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
+        reviews.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
         //imageLoader.DisplayImage(song.get(CustomizedListView.KEY_THUMB_URL), thumb_image);
         return vi;
     }

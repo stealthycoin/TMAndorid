@@ -24,6 +24,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_TOILET = "toilet";
     static final String KEY_STARS = "stars";
     static final String KEY_REVIEWS = "reviews";
+    static final String KEY_PK = "pk";
  
     ArrayList<HashMap<String, String>> toiletList;
     ListView list;
@@ -115,7 +116,11 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						Log.v(TAG, "GIVE ME PK: " + position);
+						
+						Intent intent = getIntent();
+						intent.putExtra("id", id);
+						
+						Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
 					}
 				});		
 	}
