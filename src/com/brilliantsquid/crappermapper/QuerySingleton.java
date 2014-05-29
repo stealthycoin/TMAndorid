@@ -69,6 +69,10 @@ public class QuerySingleton implements GetCallbackInterface {
 		context = ctx;
 	}
 	
+	public void setSessionID(String id) {
+		sessionID = id;
+	}
+	
 	public boolean loggedIn() {
 		return sessionID != null;
 	}

@@ -21,7 +21,7 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 	private final String TAG = "USER";
 	
 	private EditText username, password;
-	private Button login;
+	private Button login, logout;
 	
 	QuerySingleton qs;
 	
@@ -37,6 +37,7 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
     	username = (EditText)findViewById(R.id.username);
 		password = (EditText)findViewById(R.id.pass);
 		login = (Button)findViewById(R.id.login);
+		logout = (Button)findViewById(R.id.logout);
 		
 		login.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -45,6 +46,17 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 				vars.put("username", username.getText().toString());
 				vars.put("password", password.getText().toString());
 				qs.sendPost("api/user/login/", vars, CrapperMapperUser.this);
+			}
+		});
+		
+		logout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//log out the user
+				QuerySingleton.getInstance().setSessionID(null);
+				CrapperMapperUser.this.deleteFile("logindata");
+				Toast.makeText(CrapperMapperUser.this, "You have been logged out.", Toast.LENGTH_LONG).show();
 			}
 		});
     }
