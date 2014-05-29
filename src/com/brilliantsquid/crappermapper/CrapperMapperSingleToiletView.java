@@ -1,6 +1,7 @@
 package com.brilliantsquid.crappermapper;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	
 	private TextView name;
 	private TextView rating;
+	private String lat, lng;
 	
 	private final String TAG = "VIEW";
 
@@ -56,6 +59,13 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		qs.sendPost("api/Toilet/get/", vars, this);
 	}
 
+	public void getDirections(View v) {
+		//gives user choice of maps or a browser
+		String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%s,%s",lat,lng); 
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+		this.startActivity(intent);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -109,6 +119,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 				JSONObject fields = o.getJSONObject("fields");
 				name.setText("Name: " + fields.getString("name"));
 				rating.setText("Rating: " + fields.getString("rating"));
+				lat = fields.getString("lat");
+				lng = fields.getString("lng");
 			}
 		}
 		catch (JSONException e) {
