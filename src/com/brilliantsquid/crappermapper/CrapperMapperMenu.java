@@ -53,8 +53,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	@Override
 	public void onPostFinished(String result) {
 		//Log.v(TAG, "Finished getting toilets:\n" + result);
-		
-        summon_list(result);
+		if (result != null) {
+			summon_list(result);
+		}
 		
 	}
 	
@@ -97,7 +98,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						map.put(KEY_TOILET, toilet);
 						map.put(KEY_STARS, String.valueOf(rating));
 						map.put(KEY_REVIEWS, String.valueOf(reviews));
-						Log.v(TAG,"REALLY BITCH?: " + map);
+						//Log.v(TAG,"REALLY BITCH?: " + map);
 						toiletList.add(map);
 						
 						Log.v(TAG, "START!!  pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
@@ -124,7 +125,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						intent.putExtra("id", String.valueOf(id));
 						startActivity(intent);
 						
-						Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
+						//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
 					}
 				});		
 	}
@@ -132,7 +133,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	public void server_request() {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
-		//if we aren't logged in try to make the user log in
 		
 		//get a few toilets, should send current location
         variables.put("start","0");
