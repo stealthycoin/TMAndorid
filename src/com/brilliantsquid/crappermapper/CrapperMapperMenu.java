@@ -7,8 +7,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import android.content.Intent;
 import android.os.Bundle;
