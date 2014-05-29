@@ -13,7 +13,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
- 
+
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -34,6 +34,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
             android:label="Crapper Mapper" >
@@ -90,6 +91,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brilliantsquid.crappermapper.BaseActivity" />
+        </activity>
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperSignup"
+            android:label="@string/title_activity_crapper_mapper_signup" >
         </activity>
     </application>
 

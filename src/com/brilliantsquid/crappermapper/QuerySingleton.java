@@ -3,6 +3,7 @@ package com.brilliantsquid.crappermapper;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +64,7 @@ public class QuerySingleton implements GetCallbackInterface {
 		urlDirectory.put("api/Toilet/get/", "");
 		urlDirectory.put("api/user/login/", "signin/");
 		urlDirectory.put("api/toilet/create/", "addrestroom/");
+		urlDirectory.put("api/user/create/", "signup/");
 	}
 	
 	public static void setContext(Context ctx) {
@@ -75,9 +77,6 @@ public class QuerySingleton implements GetCallbackInterface {
 	
 	public boolean loggedIn() {
 		return sessionID != null;
-	}
-	public static boolean hasBeenInit() {
-		return context != null;
 	}
 	
 	public static synchronized QuerySingleton getInstance() {
@@ -166,6 +165,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
+			
 			return null;
 		}
 		
@@ -230,8 +230,6 @@ public class QuerySingleton implements GetCallbackInterface {
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
 				
-				//Log.v("qs", connection.getHeaderFields().toString());
-				
 				InputStream in = new BufferedInputStream(connection.getInputStream());
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
@@ -264,14 +262,20 @@ public class QuerySingleton implements GetCallbackInterface {
 				
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
+			} 
+			catch (FileNotFoundException e) {
+				Toast.makeText((Context)callback, "Network connectivitiy issue.", Toast.LENGTH_LONG).show();
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 			return null;
 		}
 		
 		protected void onPostExecute(String result) {
-			callback.onPostFinished(result);
+			if (callback != null) {
+				callback.onPostFinished(result);
+			}
 		}
 	}
 }
