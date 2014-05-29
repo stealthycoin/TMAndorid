@@ -51,7 +51,11 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 
 	@Override
 	public void onPostFinished(String result) {
-		if (result.equals("\"Success\"")) {
+		if (result == null) {
+			Toast.makeText(this, "Something went wrong. Try agian.", Toast.LENGTH_LONG).show();
+			
+		}
+		else if (result.equals("\"Success\"")) {
 			Toast.makeText(this, "Welcome " + username.getText().toString(), Toast.LENGTH_LONG).show();
 			finish();
 		}
