@@ -9,6 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.AdapterView;
@@ -24,11 +27,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_REVIEWS = "reviews";
     static final String KEY_PK = "pk";
  
-    ArrayList<HashMap<String, String>> toiletList;
-    ListView list;
-    LazyAdapter adapter;
+    private ArrayList<HashMap<String, String>> toiletList;
+    private ListView list;
+    private LazyAdapter adapter;
 	private final String TAG = "MENU";
-    QuerySingleton qs;
+    private QuerySingleton qs;
+    private boolean firstTick;
+    
+    //location stuff
+    private LocationManager lm;
+    private LocationListener locationListener;
+    
     
     /** Called when the activity is first created. 
      * @throws JSONException */
@@ -38,15 +47,48 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        firstTick = true;
+        
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
         
+        locationListener = new MyLocationListener();
+    	lm = (LocationManager) getSystemService(CrapperMapperAdd.LOCATION_SERVICE);
+
+    	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 10, locationListener);
+        
         //try to log the user in
         CrapperMapperUser.login(this);
-        
-        server_request();
     }
 
+    private final class MyLocationListener implements LocationListener {
+    	
+        @Override
+        public void onLocationChanged(Location locFromGps) {
+            // called when the listener is notified with a location update from the GPS
+        	if (firstTick) {
+        		CrapperMapperMenu.this.server_request(locFromGps);
+        		firstTick = false;
+        		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3500, 10, locationListener);
+        	}
+        }
+	
+        @Override
+        public void onProviderDisabled(String provider) {
+	    // called when the GPS provider is turned off (user turning off the GPS on the phone)
+        }
+	
+        @Override
+        public void onProviderEnabled(String provider) {
+	    // called when the GPS provider is turned on (user turning on the GPS on the phone)
+        }
+	
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+	    // called when the status of the GPS provider changes
+        }
+    }
+    
 	@Override
 	public void onPostFinished(String result) {
 		//Log.v(TAG, "Finished getting toilets:\n" + result);
@@ -127,12 +169,14 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 				});		
 	}
 	
-	public void server_request() {
+	public void server_request(Location loc) {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
 		
 		//get a few toilets, should send current location
-        variables.put("start","0");
+		variables.put("start","0");
+        variables.put("current_lat", String.valueOf(loc.getLatitude()));
+        variables.put("current_lng", String.valueOf(loc.getLongitude()));
 		variables.put("end","10");
 		variables.put("filters", obj.toString());
         qs.sendPost("api/Toilet/get/", variables, this);
