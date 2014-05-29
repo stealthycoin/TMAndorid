@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/list" />
+        android:src="@drawable/ic_action_next_item" />
 
     <TextView
         android:id="@+id/reviews"
