@@ -3,20 +3,20 @@
     package="com.brilliantsquid.crappermapper"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-sdk
-    android:minSdkVersion="11"
-    android:targetSdkVersion="19" />
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
- 
+
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
- 
+
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -25,12 +25,15 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Toilet" 
-        android:uiOptions="splitActionBarWhenNarrow">
-        <meta-data android:name="android.support.UI_OPTIONS"
-           android:value="splitActionBarWhenNarrow" />
-        <meta-data android:name="com.google.android.gms.version"
+        android:theme="@style/Theme.Toilet"
+        android:uiOptions="splitActionBarWhenNarrow" >
+        <meta-data
+            android:name="android.support.UI_OPTIONS"
+            android:value="splitActionBarWhenNarrow" />
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
             android:label="Crapper Mapper" >
@@ -56,9 +59,11 @@
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperLocation"
             android:label="Around me" />
-	    <meta-data
-     		android:name="com.google.android.maps.v2.API_KEY"
-     		android:value="AIzaSyB2aVzckvHdEcF6oGeGWKYYOou9kXTR83A" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyB2aVzckvHdEcF6oGeGWKYYOou9kXTR83A" />
+
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperUser"
             android:label="User data" />
@@ -76,9 +81,16 @@
         </activity>
         <activity
             android:name="com.brilliantsquid.crappermapper.BaseActivity"
-            android:label="@string/title_activity_base">
+            android:label="@string/title_activity_base" >
         </activity>
-        
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperSingleToiletView"
+            android:label="@string/title_activity_crapper_mapper_single_toilet_view"
+            android:parentActivityName="com.brilliantsquid.crappermapper.BaseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brilliantsquid.crappermapper.BaseActivity" />
+        </activity>
     </application>
 
 </manifest>

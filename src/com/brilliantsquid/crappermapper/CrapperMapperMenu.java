@@ -24,9 +24,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        Intent ni = new Intent(this, CrapperMapperUser.class);
-        //startActivity(ni);
-        server_request();
+        Intent ni = new Intent(this, CrapperMapperSingleToiletView.class);
+        startActivity(ni);
+        //server_request();
     }
 
 	@Override
