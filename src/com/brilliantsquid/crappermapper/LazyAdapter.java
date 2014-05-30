@@ -55,6 +55,8 @@ public class LazyAdapter extends BaseAdapter {
         // Setting all values in listview
         title.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
         stars.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
+        
+        //flag.setImageDrawable(getResources().getDrawable(getResources().getIdentifier("drawable/" + country_variable, "drawable", getPackageName()));
         //reviews.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
         //imageLoader.DisplayImage(song.get(CustomizedListView.KEY_THUMB_URL), thumb_image);
         return vi;

@@ -26,35 +26,79 @@
 
     <!-- Toilet Name -->
 
-    <TextView
-        android:id="@+id/toilet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:text="Toilet Name"
-        android:textColor="#040404"
-        android:textSize="15dip"
-        android:textStyle="bold"
-        android:typeface="sans" />
 
     <!-- Stars -->
 
-    <TextView
-        android:id="@+id/stars"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toilet"
-        android:layout_marginTop="2dip"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:text="STARS"
-        android:textColor="#343434"
-        android:textSize="10dip" />
 
     <!-- Rightend Duration -->
 
 
     <!-- Rightend Arrow -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/toilet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toilet Name"
+            android:textColor="#040404"
+            android:textSize="15dip"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/star1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_rating_empty" />
+
+            <ImageView
+                android:id="@+id/star2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_rating_empty" />
+
+            <ImageView
+                android:id="@+id/star3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_rating_empty" />
+
+            <ImageView
+                android:id="@+id/star4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_rating_empty" />
+
+            <ImageView
+                android:id="@+id/star5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_rating_empty" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/reviews"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dip"
+            android:gravity="left"
+            android:text="Reviews: #"
+            android:textColor="#10bcc9"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView1"
@@ -63,19 +107,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_action_next_item" />
-
-    <TextView
-        android:id="@+id/reviews"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/stars"
-        android:layout_marginTop="2dip"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:gravity="left"
-        android:text="Reviews: #"
-        android:textColor="#10bcc9"
-        android:textSize="10dip"
-        android:textStyle="bold" />
-    
 
 </RelativeLayout>
