@@ -32,6 +32,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_PK = "pk";
     static final String KEY_MALE = "male";
     static final String KEY_FEMALE = "female";
+    static final String KEY_LAT = "lat";
+    static final String KEY_LNG = "lng";
     static final String KEY_DISTANCE = "distance";
  
     private ArrayList<HashMap<String, String>> toiletList;
@@ -160,6 +162,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						map.put(KEY_MALE, male);
 						map.put(KEY_FEMALE, female);
 						map.put(KEY_DISTANCE, String.valueOf(distance));
+						map.put(KEY_LAT, String.valueOf(lat));
+						map.put(KEY_LNG, String.valueOf(lng));
 
 						toiletList.add(map);
 						
