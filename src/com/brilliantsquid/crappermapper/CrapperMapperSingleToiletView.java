@@ -55,8 +55,25 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		catch (JSONException e) {
 			e.printStackTrace();
 		}
-	
 		qs.sendPost("api/Toilet/get/", vars, this);
+		
+		//start query for reviews
+		Map<String,String> vars2 = new HashMap<String,String>();
+		try {
+			JSONObject obj = new JSONObject();
+			obj.put("toilet", pk);
+			vars2.put("filters", obj.toString());
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
+			@Override
+			public void onPostFinished(String result) {
+				Log.v(TAG, "Hey man we got a result: " + result);
+			}
+		});
 	}
 
 	public void getDirections(View v) {
@@ -87,24 +104,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_crapper_mapper_single_toilet_view,
-					container, false);
-			return rootView;
-		}
-	}
-
 	@Override
 	public void onDownloadFinished(String result) {
 		Log.v(TAG, result);
@@ -124,10 +123,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			}
 		}
 		catch (JSONException e) {
-			
 		}
 		Log.v(TAG, result);
-		
 	}
 
 }

@@ -99,21 +99,40 @@ public class QuerySingleton implements GetCallbackInterface {
 	}
 
 	public void sendGet(String s_url, GetCallbackInterface callback) {
-		new getTask(callback).execute(s_url);
+		new getTask(callback, null).execute(s_url);
 	}
 	
+	public void sendGet(String s_url, GetCallbackInterface callback, JavaIsATerribleLanguageWrapper jiatlw) {
+		new getTask(callback, jiatlw).execute(s_url);
+	}
+	
+	private class JavaIsATerribleLanguageWrapper {
+		@SuppressWarnings("unused")
+		public String result;
+		@SuppressWarnings("unused")
+		public Map<String,String> variables;
+		@SuppressWarnings("unused")
+		public PostCallbackInterface callback;
+		@SuppressWarnings("unused")
+		public String next_url;
+	}
 
 	public void sendPost(String s_url, Map<String,String> variables, PostCallbackInterface callback) {
 		Log.v(TAG,"Firing post");
-		url = s_url;
-		this.variables = variables;
-		this.callback = callback;
+		//encapsulate all these args into a JavaIsATerribleLanguageWrapper
+		//and pass them along for the ride
+		//that way we can get them in the callback and execute the post
+		JavaIsATerribleLanguageWrapper jiatlw = new JavaIsATerribleLanguageWrapper();
+		jiatlw.next_url = s_url;
+		jiatlw.variables = variables;
+		jiatlw.callback = callback;
+		
 		String pre_get = urlDirectory.get(s_url);
 		if (pre_get == null) {
 			pre_get = "";
 		}
 		//call get first to load a csrf token
-		sendGet(pre_get, this);
+		sendGet(pre_get, this, jiatlw);
 	}
 	
 	/**
@@ -121,10 +140,8 @@ public class QuerySingleton implements GetCallbackInterface {
 	 */
 	@Override
 	public void onDownloadFinished(String result) {
-		new postTask(variables, callback).execute(url);
+		//new postTask(variables, callback).execute(url); 	
 	}
-	
-	
 	
 	/**
 	 *  AsyncTask for sending a get request.
@@ -133,8 +150,11 @@ public class QuerySingleton implements GetCallbackInterface {
 	private class getTask extends AsyncTask<String,Void,String> {
 
 		final GetCallbackInterface callback;
-		getTask(GetCallbackInterface _callback) {
+		final JavaIsATerribleLanguageWrapper jiatlw;
+		
+		getTask(GetCallbackInterface _callback, JavaIsATerribleLanguageWrapper _jiatlw) {
 			callback = _callback;
+			jiatlw = _jiatlw;
 		}
 		
 		@Override
@@ -170,7 +190,13 @@ public class QuerySingleton implements GetCallbackInterface {
 		}
 		
 		protected void onPostExecute(String result) {
-			callback.onDownloadFinished(result);
+			if (jiatlw == null) {
+				callback.onDownloadFinished(result);
+			}
+			else {
+				//this was a pre-get to a post call. Now we can make the post call
+				new postTask(jiatlw.variables, jiatlw.callback).execute(jiatlw.next_url);
+			}
 		}
 	 }
 	
