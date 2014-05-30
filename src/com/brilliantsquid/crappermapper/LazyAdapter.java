@@ -49,11 +49,13 @@ public class LazyAdapter extends BaseAdapter {
         
         HashMap<String, String> toilet = new HashMap<String, String>();
         toilet = data.get(position);
+        //Double value of the reviews
+        double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
         
         // Setting all values in listview
         title.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
         stars.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
-        reviews.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+        //reviews.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
         //imageLoader.DisplayImage(song.get(CustomizedListView.KEY_THUMB_URL), thumb_image);
         return vi;
     }
