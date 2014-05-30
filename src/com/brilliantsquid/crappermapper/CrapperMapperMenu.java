@@ -166,6 +166,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 					}
 				}
 				list=(ListView)findViewById(R.id.list);
+				//list.setOnScrollListener(); //tohard
 	
 				// Getting adapter by passing xml data ArrayList
 		        adapter=new LazyAdapter(this, toiletList);        
