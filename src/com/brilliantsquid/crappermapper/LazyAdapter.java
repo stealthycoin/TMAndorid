@@ -58,9 +58,10 @@ public class LazyAdapter extends BaseAdapter {
         
         HashMap<String, String> toilet = new HashMap<String, String>();
         toilet = data.get(position);
+        
         //Double value of the reviews
         double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
-        
+        //Display the correct star rating value
         for(int i = 0; i < 5; ++i){
         	if(rev <= 0){
         		break;
@@ -72,6 +73,8 @@ public class LazyAdapter extends BaseAdapter {
         		--rev;
         	}
         }
+        
+        thumb_image.setImageResource(R.drawable.toilet_men);
 
         
         // Setting all values in listview
