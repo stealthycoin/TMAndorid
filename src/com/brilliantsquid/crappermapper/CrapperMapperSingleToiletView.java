@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private TextView name;
 	private RatingBar rating;
 	private String lat, lng;
+	private ImageView gender;
 	
 	private HashMap<String, String> toilet; 
 	private final String TAG = "VIEW";
@@ -46,11 +48,10 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		name = (TextView)findViewById(R.id.nameField);
 		rating = (RatingBar)findViewById(R.id.ratingBar1);
+		gender = (ImageView)findViewById(R.id.gender);
 		
 		Intent intent = getIntent();
-		String pk = intent.getStringExtra("id");
 		toilet = (HashMap<String,String>)intent.getSerializableExtra("data");
-			
 		
 		//start query for reviews
 		Map<String,String> vars2 = new HashMap<String,String>();
@@ -63,12 +64,29 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			e.printStackTrace();
 		}
 		
+		//start loading the reviews asap
 		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
 			@Override
 			public void onPostFinished(String result) {
 				Log.v(TAG, "Hey man we got a result: " + result);
 			}
 		});
+		
+		Log.v(TAG, toilet.get(CrapperMapperMenu.KEY_MALE));
+		Log.v(TAG, toilet.get(CrapperMapperMenu.KEY_FEMALE));
+		
+		//male symbol
+		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("true") &&
+			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("false")) {
+			gender.setImageResource(R.drawable.toilet_men);
+			
+		}
+		//female symbol
+		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("false") &&
+			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("true")) {
+			gender.setImageResource(R.drawable.toilet_women);
+		}
+		
 	}
 
 	public void getDirections(View v) {
