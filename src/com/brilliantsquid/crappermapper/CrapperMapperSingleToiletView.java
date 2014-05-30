@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
@@ -25,7 +26,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private QuerySingleton qs;
 	
 	private TextView name;
-	private TextView rating;
+	private RatingBar rating;
 	private String lat, lng;
 	
 	private final String TAG = "VIEW";
@@ -38,7 +39,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		qs = QuerySingleton.getInstance();
 		
 		name = (TextView)findViewById(R.id.nameField);
-		rating = (TextView)findViewById(R.id.ratingField);
+		rating = (RatingBar)findViewById(R.id.ratingBar1);
 		
 		Intent intent = getIntent();
 		String pk = intent.getStringExtra("id");
@@ -116,8 +117,10 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			for (int i = 0 ; i < array.length(); i++) {
 				JSONObject o = array.getJSONObject(i);
 				JSONObject fields = o.getJSONObject("fields");
-				name.setText("Name: " + fields.getString("name"));
-				rating.setText("Rating: " + fields.getString("rating"));
+				name.setText("Name: " + fields.getString("name"));	
+				rating.setRating((int)Float.parseFloat(fields.getString("rating")));
+				rating.setEnabled(false);
+				//rating.setText("Rating: " + fields.getString("rating"));
 				lat = fields.getString("lat");
 				lng = fields.getString("lng");
 			}
