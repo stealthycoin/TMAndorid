@@ -53,11 +53,16 @@ public class LazyAdapter extends BaseAdapter {
         TextView reviews = (TextView)vi.findViewById(R.id.reviews); // duration
         ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image
         
+        
+        
         //LOL WTF IS HAPPENING
         al.add(stars1);al.add(stars2);al.add(stars3);al.add(stars4);al.add(stars5);
         
         HashMap<String, String> toilet = new HashMap<String, String>();
         toilet = data.get(position);
+        
+        boolean male =  Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_MALE));
+        boolean female = Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_FEMALE));
         
         //Double value of the reviews
         double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
@@ -74,7 +79,13 @@ public class LazyAdapter extends BaseAdapter {
         	}
         }
         
-        thumb_image.setImageResource(R.drawable.toilet_men);
+        if(male && female){
+        	thumb_image.setImageResource(R.drawable.toilet_women);
+        }else if(male){
+        	thumb_image.setImageResource(R.drawable.toilet_men);
+        }else if(female){
+        	thumb_image.setImageResource(R.drawable.toilet_both);
+        }
 
         
         // Setting all values in listview
