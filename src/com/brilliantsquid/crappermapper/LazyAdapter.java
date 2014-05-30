@@ -44,6 +44,7 @@ public class LazyAdapter extends BaseAdapter {
         
         ArrayList<ImageView> al = new ArrayList<ImageView>();
         TextView title = (TextView)vi.findViewById(R.id.toilet); // title
+        TextView distance = (TextView)vi.findViewById(R.id.distance);
         //TextView stars = (TextView)vi.findViewById(R.id.stars); // artist name
         ImageView stars1 = (ImageView)vi.findViewById(R.id.star1);
         ImageView stars2 = (ImageView)vi.findViewById(R.id.star2);
@@ -61,6 +62,8 @@ public class LazyAdapter extends BaseAdapter {
         HashMap<String, String> toilet = new HashMap<String, String>();
         toilet = data.get(position);
         
+        String dist = toilet.get(CrapperMapperMenu.KEY_DISTANCE);
+
         boolean male =  Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_MALE));
         boolean female = Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_FEMALE));
         
@@ -90,11 +93,10 @@ public class LazyAdapter extends BaseAdapter {
         
         // Setting all values in listview
         title.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
-        //stars.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
         
-        //flag.setImageDrawable(getResources().getDrawable(getResources().getIdentifier("drawable/" + country_variable, "drawable", getPackageName()));
-        //reviews.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
-        //imageLoader.DisplayImage(song.get(CustomizedListView.KEY_THUMB_URL), thumb_image);
+        reviews.setText("Reviews: " + toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+        distance.setText(String.format("%.1f mi", Double.valueOf(dist)));
+
         return vi;
     }
     
