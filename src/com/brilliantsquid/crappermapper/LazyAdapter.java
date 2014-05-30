@@ -82,11 +82,13 @@ public class LazyAdapter extends BaseAdapter {
         	}
         }
         
-        if(male && female){
-        	thumb_image.setImageResource(R.drawable.toilet_women);
-        }else if(male){
+        if (male && !female){
         	thumb_image.setImageResource(R.drawable.toilet_men);
-        }else if(female){
+        }
+        else if (female && !male){
+        	thumb_image.setImageResource(R.drawable.toilet_women);
+        }
+        else {
         	thumb_image.setImageResource(R.drawable.toilet_both);
         }
 
