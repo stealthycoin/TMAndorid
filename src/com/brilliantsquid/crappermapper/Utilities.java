@@ -16,7 +16,7 @@ public class Utilities {
 	    float t3 = (float) (Math.sin(a1)*Math.sin(b1));
 	    double tt = Math.acos(t1 + t2 + t3);
 	   
-	    return 6366000*tt;
+	    return 6366000*tt*0.000621371;
 	}
 
 }
