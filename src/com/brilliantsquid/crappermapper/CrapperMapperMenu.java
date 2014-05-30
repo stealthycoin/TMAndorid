@@ -26,6 +26,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_STARS = "stars";
     static final String KEY_REVIEWS = "reviews";
     static final String KEY_PK = "pk";
+    static final String KEY_MALE = "male";
+    static final String KEY_FEMALE = "female";
  
     private ArrayList<HashMap<String, String>> toiletList;
     private ListView list;
@@ -133,15 +135,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						String toilet = fields.getString("name");
 						double rating = Double.valueOf(fields.getString("rating"));
 						int pk = obj.getInt("pk");
-						//String male = obj.getString("male");
-						//String female = obj.getString("female");
+						String male = fields.getString("male");
+						String female = fields.getString("female");
 						
 						//Put the objects into the listview's hashmap
 						map.put(KEY_ID, String.valueOf(pk));
 						map.put(KEY_TOILET, toilet);
 						map.put(KEY_STARS, String.valueOf(rating));
 						map.put(KEY_REVIEWS, String.valueOf(reviews));
-						//Log.v(TAG,"REALLY BITCH?: " + map);
+						map.put(KEY_MALE, male);
+						map.put(KEY_FEMALE, female);
+
 						toiletList.add(map);
 						
 						Log.v(TAG, "START!!  pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
