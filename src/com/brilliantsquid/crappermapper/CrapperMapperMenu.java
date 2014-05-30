@@ -138,10 +138,10 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						int pk = obj.getInt("pk");
 						String male = fields.getString("male");
 						String female = fields.getString("female");
-						float lat_i = Float.parseFloat(fields.getString("lat"));
-						float lng_i = Float.parseFloat(fields.getString("lng"));
-						float lat = (float) location.getLatitude();
-						float lng =  (float) location.getLongitude();
+						double lat_i = Double.parseDouble(fields.getString("lat"));
+						double lng_i = Double.parseDouble(fields.getString("lng"));
+						double lat =  location.getLatitude();
+						double lng =  location.getLongitude();
 						
 						double distance = Utilities.gps2m(lat_i, lng_i, lat, lng);
 						
