@@ -35,6 +35,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	private final String TAG = "MENU";
     private QuerySingleton qs;
     private boolean firstTick;
+    private Location location;
     
     //location stuff
     private LocationManager lm;
@@ -137,6 +138,12 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						int pk = obj.getInt("pk");
 						String male = fields.getString("male");
 						String female = fields.getString("female");
+						float lat_i = Float.parseFloat(fields.getString("lat"));
+						float lng_i = Float.parseFloat(fields.getString("lng"));
+						float lat = (float) location.getLatitude();
+						float lng =  (float) location.getLongitude();
+						
+						double distance = Utilities.gps2m(lat_i, lng_i, lat, lng);
 						
 						//Put the objects into the listview's hashmap
 						map.put(KEY_ID, String.valueOf(pk));
@@ -180,6 +187,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	public void server_request(Location loc) {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
+		
+		location = loc;
 		
 		//get a few toilets, should send current location
 		variables.put("start","0");
