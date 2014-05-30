@@ -3,7 +3,7 @@ package com.brilliantsquid.crappermapper;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.support.v4.app.Fragment;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,22 +84,7 @@ public class CrapperMapperSignup extends BaseActivity implements PostCallbackInt
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
 
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.signup, container, false);
-			return rootView;
-		}
-	}
 
 	@Override
 	public void onPostFinished(String result) {
