@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
@@ -25,7 +26,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private QuerySingleton qs;
 	
 	private TextView name;
-	private TextView rating;
+	private RatingBar rating;
 	private String lat, lng;
 	
 	private final String TAG = "VIEW";
@@ -38,7 +39,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		qs = QuerySingleton.getInstance();
 		
 		name = (TextView)findViewById(R.id.nameField);
-		rating = (TextView)findViewById(R.id.ratingField);
+		rating = (RatingBar)findViewById(R.id.ratingBar1);
 		
 		Intent intent = getIntent();
 		String pk = intent.getStringExtra("id");
@@ -55,8 +56,25 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		catch (JSONException e) {
 			e.printStackTrace();
 		}
-	
 		qs.sendPost("api/Toilet/get/", vars, this);
+		
+		//start query for reviews
+		Map<String,String> vars2 = new HashMap<String,String>();
+		try {
+			JSONObject obj = new JSONObject();
+			obj.put("toilet", pk);
+			vars2.put("filters", obj.toString());
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
+			@Override
+			public void onPostFinished(String result) {
+				Log.v(TAG, "Hey man we got a result: " + result);
+			}
+		});
 	}
 
 	public void getDirections(View v) {
@@ -87,24 +105,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_crapper_mapper_single_toilet_view,
-					container, false);
-			return rootView;
-		}
-	}
-
 	@Override
 	public void onDownloadFinished(String result) {
 		Log.v(TAG, result);
@@ -117,17 +117,17 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			for (int i = 0 ; i < array.length(); i++) {
 				JSONObject o = array.getJSONObject(i);
 				JSONObject fields = o.getJSONObject("fields");
-				name.setText("Name: " + fields.getString("name"));
-				rating.setText("Rating: " + fields.getString("rating"));
+				name.setText("Name: " + fields.getString("name"));	
+				rating.setRating((int)Float.parseFloat(fields.getString("rating")));
+				rating.setEnabled(false);
+				//rating.setText("Rating: " + fields.getString("rating"));
 				lat = fields.getString("lat");
 				lng = fields.getString("lng");
 			}
 		}
 		catch (JSONException e) {
-			
 		}
 		Log.v(TAG, result);
-		
 	}
 
 }

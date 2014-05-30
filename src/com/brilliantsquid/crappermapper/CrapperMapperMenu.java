@@ -52,9 +52,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
         
+        //register to get GPS data
         locationListener = new MyLocationListener();
     	lm = (LocationManager) getSystemService(CrapperMapperAdd.LOCATION_SERVICE);
-
     	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 10, locationListener);
         
         //try to log the user in
@@ -69,7 +69,11 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         	if (firstTick) {
         		CrapperMapperMenu.this.server_request(locFromGps);
         		firstTick = false;
+        		//after first tick of gps data we don't really want it so frequently
         		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3500, 10, locationListener);
+        	}
+        	else {
+        		//need to make it so that it updates the list based on gps as you move around. not crucial.
         	}
         }
 	
