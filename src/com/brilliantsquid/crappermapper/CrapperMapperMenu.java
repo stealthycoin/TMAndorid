@@ -1,5 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +32,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_PK = "pk";
     static final String KEY_MALE = "male";
     static final String KEY_FEMALE = "female";
+    static final String KEY_LAT = "lat";
+    static final String KEY_LNG = "lng";
     static final String KEY_DISTANCE = "distance";
  
     private ArrayList<HashMap<String, String>> toiletList;
@@ -156,6 +162,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						map.put(KEY_MALE, male);
 						map.put(KEY_FEMALE, female);
 						map.put(KEY_DISTANCE, String.valueOf(distance));
+						map.put(KEY_LAT, String.valueOf(lat));
+						map.put(KEY_LNG, String.valueOf(lng));
 
 						toiletList.add(map);
 						
@@ -181,8 +189,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						
 						Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
 						intent.putExtra("id", String.valueOf(id));
-						intent.putExtra("data", toiletList.get(position));
+						intent.putExtra("data", (Serializable)toiletList.get(position));
 						startActivity(intent);
+						
 						
 						//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
 					}

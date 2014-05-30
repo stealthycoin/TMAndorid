@@ -1,5 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -18,8 +22,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
 
@@ -28,7 +34,9 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private TextView name;
 	private RatingBar rating;
 	private String lat, lng;
+	private ImageView gender;
 	
+	private HashMap<String, String> toilet; 
 	private final String TAG = "VIEW";
 
 	@Override
@@ -40,41 +48,50 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		name = (TextView)findViewById(R.id.nameField);
 		rating = (RatingBar)findViewById(R.id.ratingBar1);
+		gender = (ImageView)findViewById(R.id.gender);
 		
 		Intent intent = getIntent();
-		String pk = intent.getStringExtra("id");
-		//pk = "4602";
-		Log.v(TAG,"ID is: " + pk);
-		Map<String,String> vars = new HashMap<String,String>();
-		vars.put("start","0");
-		vars.put("end", "10");
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("pk", pk);
-			vars.put("filters", obj.toString());
-		}
-		catch (JSONException e) {
-			e.printStackTrace();
-		}
-		qs.sendPost("api/Toilet/get/", vars, this);
+		toilet = (HashMap<String,String>)intent.getSerializableExtra("data");
 		
 		//start query for reviews
 		Map<String,String> vars2 = new HashMap<String,String>();
 		try {
 			JSONObject obj = new JSONObject();
-			obj.put("toilet", pk);
+			obj.put("toilet", toilet.get(CrapperMapperMenu.KEY_ID));
 			vars2.put("filters", obj.toString());
 		}
 		catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
+		//start loading the reviews asap
 		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
 			@Override
 			public void onPostFinished(String result) {
 				Log.v(TAG, "Hey man we got a result: " + result);
 			}
 		});
+		
+		//male symbol
+		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("true") &&
+			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("false")) {
+			gender.setImageResource(R.drawable.toilet_men);
+			
+		}
+		//female symbol
+		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("false") &&
+			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("true")) {
+			gender.setImageResource(R.drawable.toilet_women);
+		}
+		//else it gets left as the combo.
+		
+		rating.setRating(Float.parseFloat(toilet.get(CrapperMapperMenu.KEY_STARS)));
+		rating.setEnabled(false);
+		
+		name.setText("Name: " + toilet.get(CrapperMapperMenu.KEY_TOILET));
+		
+		lat = toilet.get(toilet.get(CrapperMapperMenu.KEY_LAT));
+		lng = toilet.get(toilet.get(CrapperMapperMenu.KEY_LNG));
 	}
 
 	public void getDirections(View v) {
