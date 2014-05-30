@@ -28,6 +28,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_PK = "pk";
     static final String KEY_MALE = "male";
     static final String KEY_FEMALE = "female";
+    static final String KEY_DISTANCE = "distance";
  
     private ArrayList<HashMap<String, String>> toiletList;
     private ListView list;
@@ -131,6 +132,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 					try{
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
+						
 						//Parse out json data
 						int reviews = fields.getInt("numberOfReviews");
 						String toilet = fields.getString("name");
@@ -138,6 +140,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						int pk = obj.getInt("pk");
 						String male = fields.getString("male");
 						String female = fields.getString("female");
+						
+						//Get location and calculate distance
 						double lat_i = Double.parseDouble(fields.getString("lat"));
 						double lng_i = Double.parseDouble(fields.getString("lng"));
 						double lat =  location.getLatitude();
@@ -152,6 +156,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						map.put(KEY_REVIEWS, String.valueOf(reviews));
 						map.put(KEY_MALE, male);
 						map.put(KEY_FEMALE, female);
+						map.put(KEY_DISTANCE, String.valueOf(distance));
 
 						toiletList.add(map);
 						

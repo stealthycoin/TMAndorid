@@ -60,7 +60,7 @@ public class LazyAdapter extends BaseAdapter {
         
         HashMap<String, String> toilet = new HashMap<String, String>();
         toilet = data.get(position);
-        
+
         boolean male =  Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_MALE));
         boolean female = Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_FEMALE));
         
@@ -91,6 +91,8 @@ public class LazyAdapter extends BaseAdapter {
         // Setting all values in listview
         title.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
         //stars.setText(toilet.get(CrapperMapperMenu.KEY_STARS));
+        
+        reviews.setText(toilet.get(CrapperMapperMenu.KEY_DISTANCE));
         
         //flag.setImageDrawable(getResources().getDrawable(getResources().getIdentifier("drawable/" + country_variable, "drawable", getPackageName()));
         //reviews.setText(toilet.get(CrapperMapperMenu.KEY_REVIEWS));

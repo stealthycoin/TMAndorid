@@ -3,7 +3,7 @@ package com.brilliantsquid.crappermapper;
 public class Utilities {
 
 	public Utilities() {}
-	public static double gps2m(float lat_a, float lng_a, float lat_b, float lng_b) {
+	public static double gps2m(double lat_a, double lng_a, double lat_b, double lng_b) {
 	    double pk = 180/Math.PI;
 
 	    double a1 = lat_a / pk;
