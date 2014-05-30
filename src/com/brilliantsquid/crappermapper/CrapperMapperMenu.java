@@ -37,7 +37,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private QuerySingleton qs;
     private boolean firstTick;
     private Location location;
-    
     //location stuff
     private LocationManager lm;
     private LocationListener locationListener;
@@ -116,7 +115,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		JSONObject jObject = null;
 		JSONArray jArray = null;
 		
-		ArrayList<HashMap<String, String>> toiletList = new ArrayList<HashMap<String, String>>();
+		toiletList = new ArrayList<HashMap<String, String>>();
 
 
 		try {
@@ -182,6 +181,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						
 						Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
 						intent.putExtra("id", String.valueOf(id));
+						intent.putExtra("data", toiletList.get(position));
 						startActivity(intent);
 						
 						//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
