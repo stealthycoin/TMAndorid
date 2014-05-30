@@ -4,7 +4,7 @@ public class Utilities {
 
 	public Utilities() {}
 	public static double gps2m(float lat_a, float lng_a, float lat_b, float lng_b) {
-	    float pk = (float) (180/3.14169);
+	    float pk = (float) (180/Math.PI);
 
 	    float a1 = lat_a / pk;
 	    float a2 = lng_a / pk;
