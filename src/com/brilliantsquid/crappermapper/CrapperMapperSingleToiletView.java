@@ -1,5 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
 
@@ -29,6 +34,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private RatingBar rating;
 	private String lat, lng;
 	
+	private HashMap<String, String> toilet; 
 	private final String TAG = "VIEW";
 
 	@Override
@@ -43,26 +49,14 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		Intent intent = getIntent();
 		String pk = intent.getStringExtra("id");
-		//pk = "4602";
-		Log.v(TAG,"ID is: " + pk);
-		Map<String,String> vars = new HashMap<String,String>();
-		vars.put("start","0");
-		vars.put("end", "10");
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("pk", pk);
-			vars.put("filters", obj.toString());
-		}
-		catch (JSONException e) {
-			e.printStackTrace();
-		}
-		qs.sendPost("api/Toilet/get/", vars, this);
+		toilet = (HashMap<String,String>)intent.getSerializableExtra("data");
+			
 		
 		//start query for reviews
 		Map<String,String> vars2 = new HashMap<String,String>();
 		try {
 			JSONObject obj = new JSONObject();
-			obj.put("toilet", pk);
+			obj.put("toilet", toilet.get(CrapperMapperMenu.KEY_ID));
 			vars2.put("filters", obj.toString());
 		}
 		catch (JSONException e) {

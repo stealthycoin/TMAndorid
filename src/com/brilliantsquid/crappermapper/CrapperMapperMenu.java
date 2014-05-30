@@ -1,5 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -181,8 +185,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 						
 						Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
 						intent.putExtra("id", String.valueOf(id));
-						intent.putExtra("data", toiletList.get(position));
+						intent.putExtra("data", (Serializable)toiletList.get(position));
 						startActivity(intent);
+						
 						
 						//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
 					}
