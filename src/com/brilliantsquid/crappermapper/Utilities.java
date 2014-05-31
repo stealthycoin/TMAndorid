@@ -1,6 +1,13 @@
 package com.brilliantsquid.crappermapper;
 
+import java.util.ArrayList;
+
+import android.util.Log;
+import android.widget.ImageView;
+
 public class Utilities {
+	
+	private final static String TAG = "UTIL";
 
 	public Utilities() {}
 	public static double gps2m(double lat_a, double lng_a, double lat_b, double lng_b) {
@@ -17,6 +24,24 @@ public class Utilities {
 	    double tt = Math.acos(t1 + t2 + t3);
 	   
 	    return 6366000*tt*0.000621371;
+	}
+	
+	public static void display_stars(ArrayList<ImageView> al, double rev){
+		
+		Log.v(TAG, "rating: " + rev);
+        //Display the correct star rating value
+        for(int i = 0; i < 5; ++i){
+        	Log.v(TAG, "inloop: " + rev);
+        	if(rev <= 0){
+        		al.get(i).setImageResource(R.drawable.star_rating_empty);
+        	}else if(rev > 0 && rev < 1){
+        		al.get(i).setImageResource(R.drawable.star_rating_half);
+        		--rev;
+        	}else{
+        		al.get(i).setImageResource(R.drawable.star_rating_full);
+        		--rev;
+        	}
+        }
 	}
 
 }

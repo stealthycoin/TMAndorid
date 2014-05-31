@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,32 +56,24 @@ public class LazyAdapter extends BaseAdapter {
         ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image
         
         
-        
         //LOL WTF IS HAPPENING
         al.add(stars1);al.add(stars2);al.add(stars3);al.add(stars4);al.add(stars5);
         
         HashMap<String, String> toilet = new HashMap<String, String>();
         toilet = data.get(position);
         
+      //Double value of the reviews
+        double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_STARS));
+        
         String dist = toilet.get(CrapperMapperMenu.KEY_DISTANCE);
+        
+        Log.v("UTIL", "Name:" + toilet.get(CrapperMapperMenu.KEY_TOILET));
+        Utilities.display_stars(al, rev);
 
         boolean male =  Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_MALE));
         boolean female = Boolean.valueOf(toilet.get(CrapperMapperMenu.KEY_FEMALE));
         
-        //Double value of the reviews
-        double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_REVIEWS));
-        //Display the correct star rating value
-        for(int i = 0; i < 5; ++i){
-        	if(rev <= 0){
-        		break;
-        	}else if(rev > 0 && rev < 1){
-        		al.get(i).setImageResource(R.drawable.star_rating_half);
-        		--rev;
-        	}else{
-        		al.get(i).setImageResource(R.drawable.star_rating_full);
-        		--rev;
-        	}
-        }
+        
         
         if (male && !female){
         	thumb_image.setImageResource(R.drawable.toilet_men);
