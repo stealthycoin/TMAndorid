@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
@@ -41,7 +42,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_DISTANCE = "distance";
  
     private ArrayList<HashMap<String, String>> toiletList;
-    private PullToRefreshListView list;
+    private ListView list;
     private LazyAdapter adapter;
     private QuerySingleton qs;
     private boolean firstTick;
@@ -69,17 +70,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         
         //setup list stuff. HAHA just no problem.
 		toiletList = new ArrayList<HashMap<String, String>>();
-		list=(PullToRefreshListView)findViewById(R.id.list);
+		list=(ListView)findViewById(R.id.list);
 		
 		//listener for the refreshing YEAH!
-		list.setOnRefreshListener(new OnRefreshListener() {
+		/*list.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
             	Toast.makeText(getApplicationContext(), "Refreshing List Beezy!", Toast.LENGTH_LONG).show();
             	callbackFromRefresh = true;
             	server_request(location, 0, loadedCount);
             }
-        });
+        });*/
 		
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, toiletList);        
@@ -134,6 +135,15 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         //try to log the user in
         CrapperMapperUser.login(this);
     }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	if (!firstTick) {
+    		callbackFromRefresh = true;
+    		server_request(location, 0, loadedCount);
+    	}
+    }
 
     private final class MyLocationListener implements LocationListener {
     	
@@ -148,7 +158,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3500, 10, locationListener);
         	}
         	else {
-        		//need to make it so that it updates the list based on gps as you move around. not crucial.
+        		//Update the location periodically as we move around
+        		location = locFromGps;
         	}
         }
 	
@@ -179,7 +190,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		else {
 			summon_list(result);
 		}
-		list.onRefreshComplete();
+		//list.onRefreshComplete();
 		adapter.notifyDataSetChanged();
 		canLoadMore = true;
 	}
