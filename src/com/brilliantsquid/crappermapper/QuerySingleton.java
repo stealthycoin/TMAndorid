@@ -49,9 +49,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	private final String TAG = "qs";
 	
 	//data to make the next post, when its pre-req get finishes up
-	private Map<String,String> variables;
-	private String url;
-	private PostCallbackInterface callback;
+
 	private Map<String,String> urlDirectory;
 	
 	public QuerySingleton() {
@@ -162,6 +160,7 @@ public class QuerySingleton implements GetCallbackInterface {
 			try {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				connection = (HttpURLConnection) url.openConnection();
+				connection.setConnectTimeout(1000);
 				if (sessionID != null) {
 					connection.setRequestProperty("Cookies", "sessionid=" + sessionID);
 				}
@@ -215,6 +214,7 @@ public class QuerySingleton implements GetCallbackInterface {
 			try {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				connection = (HttpURLConnection) url.openConnection();
+				connection.setConnectTimeout(1000);
 				connection.setRequestMethod("POST");
 				connection.setDoInput(true);
 				connection.setDoOutput(true);
