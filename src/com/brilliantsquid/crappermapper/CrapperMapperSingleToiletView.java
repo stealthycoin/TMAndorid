@@ -1,5 +1,6 @@
 package com.brilliantsquid.crappermapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -23,9 +24,19 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private QuerySingleton qs;
 	
 	private TextView name;
+	
+	private TextView distance;
+	
+	private TextView reviews;
+	
 	//private RatingBar rating;
 	private String lat, lng;
 	private ImageView gender;
+	private ImageView stars1;
+	private ImageView stars2;
+	private ImageView stars3;
+	private ImageView stars4;
+	private ImageView stars5;
 	
 	private HashMap<String, String> toilet; 
 	private final String TAG = "VIEW";
@@ -38,11 +49,34 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		qs = QuerySingleton.getInstance();
 		
 		name = (TextView)findViewById(R.id.toilet_page);
-		//rating = (RatingBar)findViewById(R.id.ratingBar1);
 		gender = (ImageView)findViewById(R.id.gender_page);
+		
+        distance = (TextView)findViewById(R.id.distance_page); //distance
+        
+        reviews = (TextView)findViewById(R.id.reviews_page); // reviews
+		
+		ArrayList<ImageView> al = new ArrayList<ImageView>();
+        stars1 = (ImageView)findViewById(R.id.star1_page); //stars
+        stars2 = (ImageView)findViewById(R.id.star2_page);
+        stars3 = (ImageView)findViewById(R.id.star3_page);
+        stars4 = (ImageView)findViewById(R.id.star4_page);
+        stars5 = (ImageView)findViewById(R.id.star5_page);
+        
+        al.add(stars1);al.add(stars2);al.add(stars3);al.add(stars4);al.add(stars5);
 		
 		Intent intent = getIntent();
 		toilet = (HashMap<String,String>)intent.getSerializableExtra("data");
+		
+		double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_STARS));
+        
+        String dist = toilet.get(CrapperMapperMenu.KEY_DISTANCE);
+        
+        name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
+        
+        reviews.setText("Reviews: " + toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+        distance.setText(String.format("%.1f mi", Double.valueOf(dist)));
+        
+        Utilities.display_stars(al, rev);
 		
 		Log.v("TAG","Toilet: " + toilet.toString());
 		
