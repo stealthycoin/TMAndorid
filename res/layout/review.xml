@@ -9,47 +9,45 @@
     <!-- ListRow Left sied Thumbnail image -->
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:background="null"
+                android:src="@drawable/ic_action_good" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="#"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_action_bad" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dip"
-            android:background="@drawable/image_bg"
-            android:padding="3dip" >
-
-            <ImageView
-                android:id="@+id/list_image"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
-                android:src="@drawable/user" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/toilet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Toilet Name"
-                android:textColor="#040404"
-                android:textSize="15dip"
-                android:textStyle="bold"
-                android:typeface="sans" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
                 <ImageView
@@ -83,31 +81,23 @@
                     android:src="@drawable/star_rating_empty" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/review_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textColor="#040404"
+                android:textSize="15dip"
+                android:textStyle="bold"
+                android:typeface="sans" />
 
-                <TextView
-                    android:id="@+id/reviews"
-                    android:layout_width="68dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dip"
-                    android:gravity="left"
-                    android:text="Reviews: #"
-                    android:textColor="#10bcc9"
-                    android:textSize="10dip"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="9sp" />
 
-                <TextView
-                    android:id="@+id/distance"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dip"
-                    android:text="distance"
-                    android:textColor="#000000"
-                    android:textSize="10dip"
-                    android:textStyle="bold" />
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
