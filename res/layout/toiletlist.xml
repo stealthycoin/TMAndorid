@@ -24,16 +24,6 @@
             android:src="@drawable/user" />
     </LinearLayout>
 
-    <!-- Toilet Name -->
-
-
-    <!-- Stars -->
-
-
-    <!-- Rightend Duration -->
-
-
-    <!-- Rightend Arrow -->
 
     <LinearLayout
         android:layout_width="wrap_content"

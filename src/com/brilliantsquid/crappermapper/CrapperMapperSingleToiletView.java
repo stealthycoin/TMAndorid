@@ -46,12 +46,14 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 
 		qs = QuerySingleton.getInstance();
 		
-		name = (TextView)findViewById(R.id.nameField);
-		rating = (RatingBar)findViewById(R.id.ratingBar1);
-		gender = (ImageView)findViewById(R.id.gender);
+		name = (TextView)findViewById(R.id.toilet_page);
+		//rating = (RatingBar)findViewById(R.id.ratingBar1);
+		gender = (ImageView)findViewById(R.id.gender_page);
 		
 		Intent intent = getIntent();
 		toilet = (HashMap<String,String>)intent.getSerializableExtra("data");
+		
+		Log.v("TAG","Toilet: " + toilet.toString());
 		
 		//start query for reviews
 		Map<String,String> vars2 = new HashMap<String,String>();
