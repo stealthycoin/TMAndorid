@@ -1,5 +1,6 @@
 package com.brilliantsquid.crappermapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -16,8 +17,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
 
@@ -39,12 +43,19 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private ImageView stars5;
 	
 	private HashMap<String, String> toilet; 
+	private LazyReviewAdapter adapter;
+	
+	private ArrayList<HashMap<String, String>> reviewlist;
+	private ListView list;
+	
 	private final String TAG = "VIEW";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_crapper_mapper_single_toilet_view);
+		
+		list = (ListView)findViewById(R.id.list_reviews);
 
 		qs = QuerySingleton.getInstance();
 		
@@ -171,6 +182,57 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		catch (JSONException e) {
 		}
 		Log.v(TAG, result);
+		summon_list(result);
+	}
+	
+	public void summon_list(String result){
+		
+		JSONObject jObject = null;
+		JSONArray jArray = null;
+		
+		reviewlist = new ArrayList<HashMap<String, String>>();
+
+
+		try {
+			jArray = new JSONArray(result);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
+					
+					HashMap<String, String> map = new HashMap<String, String>();
+					try{
+						JSONObject obj = jArray.getJSONObject(i);
+						JSONObject fields = obj.getJSONObject("fields");
+						
+						//Parse out json data
+						String rank = fields.getString("rank");
+						String content = fields.getString("content");
+						String date = fields.getString("date");
+						String updown = obj.getString("up_down_rank");
+
+						
+						//Put the objects into the listview's hashmap
+						map.put("rank", rank);
+						map.put("content", content);
+						map.put("date", date);
+						map.put("up_down_rank", updown);
+
+						reviewlist.add(map);
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				list=(ListView)findViewById(R.id.list);
+	
+				// Getting adapter by passing xml data ArrayList
+		        adapter=new LazyReviewAdapter(this, reviewlist);        
+		        list.setAdapter(adapter);
+		        		
 	}
 
 }

@@ -41,7 +41,7 @@ public class LazyReviewAdapter extends BaseAdapter {
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        View vi=convertView;
 	        if(convertView==null)
-	            vi = inflater.inflate(R.layout.toiletlist, null);
+	            vi = inflater.inflate(R.layout.review, null);
 	        
 	        ArrayList<ImageView> al = new ArrayList<ImageView>();
 	        ImageView stars1 = (ImageView)vi.findViewById(R.id.star1_rev); //stars
@@ -49,6 +49,7 @@ public class LazyReviewAdapter extends BaseAdapter {
 	        ImageView stars3 = (ImageView)vi.findViewById(R.id.star3_rev);
 	        ImageView stars4 = (ImageView)vi.findViewById(R.id.star4_rev);
 	        ImageView stars5 = (ImageView)vi.findViewById(R.id.star5_rev);
+	        TextView date = (TextView)vi.findViewById(R.id.review_date);
 	        TextView reviews = (TextView)vi.findViewById(R.id.review_reviews); // reviews
 	        TextView review_text = (TextView)vi.findViewById(R.id.review_text);
 	        
@@ -60,13 +61,15 @@ public class LazyReviewAdapter extends BaseAdapter {
 	        review = data.get(position);
 	        
 	        //Double value of the reviews
-	        double rev = Double.valueOf(review.get(CrapperMapperMenu.KEY_STARS));
+	        double rev = Double.valueOf(review.get("rank"));
+	        date.setText(review.get("date"));
+	        reviews.setText(review.get("up_down_rank"));
+	        review_text.setText(review.get("content"));
 	        
 	        //Get review
 	        //String review_text = review.get(CrapperMapperMenu.KEY_TEXT);
 	        Utilities.display_stars(al, rev);
-	        
-	        reviews.setText("Reviews: " + review.get(CrapperMapperMenu.KEY_REVIEWS));
+
 
 	        return vi;
 	    }
