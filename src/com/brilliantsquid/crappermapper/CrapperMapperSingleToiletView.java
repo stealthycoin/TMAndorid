@@ -32,7 +32,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private QuerySingleton qs;
 	
 	private TextView name;
-	private RatingBar rating;
+	//private RatingBar rating;
 	private String lat, lng;
 	private ImageView gender;
 	
@@ -87,8 +87,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		}
 		//else it gets left as the combo.
 		
-		rating.setRating(Float.parseFloat(toilet.get(CrapperMapperMenu.KEY_STARS)));
-		rating.setEnabled(false);
+		//rating.setRating(Float.parseFloat(toilet.get(CrapperMapperMenu.KEY_STARS)));
+		//rating.setEnabled(false);
 		
 		name.setText("Name: " + toilet.get(CrapperMapperMenu.KEY_TOILET));
 		
@@ -137,8 +137,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 				JSONObject o = array.getJSONObject(i);
 				JSONObject fields = o.getJSONObject("fields");
 				name.setText("Name: " + fields.getString("name"));	
-				rating.setRating((int)Float.parseFloat(fields.getString("rating")));
-				rating.setEnabled(false);
+				//rating.setRating((int)Float.parseFloat(fields.getString("rating")));
+				//rating.setEnabled(false);
 				//rating.setText("Rating: " + fields.getString("rating"));
 				lat = fields.getString("lat");
 				lng = fields.getString("lng");
