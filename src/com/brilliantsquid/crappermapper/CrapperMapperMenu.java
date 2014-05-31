@@ -1,8 +1,5 @@
 package com.brilliantsquid.crappermapper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,13 +15,21 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.view.View;
 
+import com.markupartist.android.widget.PullToRefreshListView;
+import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
+
 public class CrapperMapperMenu extends BaseActivity implements PostCallbackInterface, GetCallbackInterface
 {
+	private final String TAG = "MENU";
+	private final int STEP_SIZE = 10;
+	
     static final String KEY_ID = "id";
     static final String KEY_TOILET = "toilet";
     static final String KEY_STARS = "stars";
@@ -37,15 +42,18 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     static final String KEY_DISTANCE = "distance";
  
     private ArrayList<HashMap<String, String>> toiletList;
-    private ListView list;
+    private PullToRefreshListView list;
     private LazyAdapter adapter;
-	private final String TAG = "MENU";
     private QuerySingleton qs;
     private boolean firstTick;
+    private boolean canLoadMore;
+    private boolean callbackFromRefresh;
     private Location location;
     //location stuff
     private LocationManager lm;
     private LocationListener locationListener;
+    
+    private int loadedCount;
     
     
     /** Called when the activity is first created. 
@@ -55,8 +63,63 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
+        loadedCount = 10;
         firstTick = true;
+        callbackFromRefresh = true;
+        canLoadMore = false;
+        
+        //setup list stuff. HAHA just no problem.
+		toiletList = new ArrayList<HashMap<String, String>>();
+		list=(PullToRefreshListView)findViewById(R.id.list);
+		
+		//listener for the refreshing YEAH!
+		list.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+            	callbackFromRefresh = true;
+            	server_request(location, 0, loadedCount);
+            }
+        });
+		
+		// Getting adapter by passing xml data ArrayList
+        adapter=new LazyAdapter(this, toiletList);        
+        list.setAdapter(adapter);
+        
+     // Click event for single list row
+        list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
+				intent.putExtra("id", String.valueOf(id));
+				intent.putExtra("data", (Serializable)toiletList.get(position));
+				startActivity(intent);
+				
+				
+				//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
+			}
+		});	
+        
+        
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				if (canLoadMore && firstVisibleItem + visibleItemCount >= totalItemCount) {
+					//OH GOD WE CAN SEE THE END
+					//LOAD MORE
+					canLoadMore = false;
+					Toast.makeText(CrapperMapperMenu.this, "Loading more...", Toast.LENGTH_LONG).show();
+					server_request(location, loadedCount, loadedCount + STEP_SIZE);
+					loadedCount += STEP_SIZE;
+				}
+			}
+		});
         
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
@@ -76,7 +139,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         public void onLocationChanged(Location locFromGps) {
             // called when the listener is notified with a location update from the GPS
         	if (firstTick) {
-        		CrapperMapperMenu.this.server_request(locFromGps);
+        		location = locFromGps;
+        		CrapperMapperMenu.this.server_request(locFromGps, 0, 10);
         		firstTick = false;
         		//after first tick of gps data we don't really want it so frequently
         		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3500, 10, locationListener);
@@ -105,10 +169,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	@Override
 	public void onPostFinished(String result) {
 		//Log.v(TAG, "Finished getting toilets:\n" + result);
-		if (result != null) {
+		if (result != null && callbackFromRefresh) {
+			callbackFromRefresh = false;
+			toiletList.clear();
 			summon_list(result);
 		}
-		
+		else {
+			summon_list(result);
+		}
+		list.onRefreshComplete();
+		adapter.notifyDataSetChanged();
+		canLoadMore = true;
 	}
 	
 	
@@ -117,107 +188,72 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	 * @param result
 	 */
 	public void summon_list(String result){
-		
-		JSONObject jObject = null;
 		JSONArray jArray = null;
-		
-		toiletList = new ArrayList<HashMap<String, String>>();
-
-
 		try {
 			jArray = new JSONArray(result);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 			
-				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
-					
-					HashMap<String, String> map = new HashMap<String, String>();
-					try{
-						JSONObject obj = jArray.getJSONObject(i);
-						JSONObject fields = obj.getJSONObject("fields");
-						
-						//Parse out json data
-						int reviews = fields.getInt("numberOfReviews");
-						String toilet = fields.getString("name");
-						double rating = Double.valueOf(fields.getString("rating"));
-						int pk = obj.getInt("pk");
-						String male = fields.getString("male");
-						String female = fields.getString("female");
-						
-						//Get location and calculate distance
-						double lat_i = Double.parseDouble(fields.getString("lat"));
-						double lng_i = Double.parseDouble(fields.getString("lng"));
-						double lat =  location.getLatitude();
-						double lng =  location.getLongitude();
-						
-						double distance = Utilities.gps2m(lat_i, lng_i, lat, lng);
-						
-						//Put the objects into the listview's hashmap
-						map.put(KEY_ID, String.valueOf(pk));
-						map.put(KEY_TOILET, toilet);
-						map.put(KEY_STARS, String.valueOf(rating));
-						map.put(KEY_REVIEWS, String.valueOf(reviews));
-						map.put(KEY_MALE, male);
-						map.put(KEY_FEMALE, female);
-						map.put(KEY_DISTANCE, String.valueOf(distance));
-						map.put(KEY_LAT, String.valueOf(lat));
-						map.put(KEY_LNG, String.valueOf(lng));
+		for (int i = 0; jArray!= null && i < jArray.length(); ++i) {
+			HashMap<String, String> map = new HashMap<String, String>();
+			try{
+				JSONObject obj = jArray.getJSONObject(i);
+				JSONObject fields = obj.getJSONObject("fields");
+				
+				//Parse out json data
+				int reviews = fields.getInt("numberOfReviews");
+				String toilet = fields.getString("name");
+				double rating = Double.valueOf(fields.getString("rating"));
+				int pk = obj.getInt("pk");
+				String male = fields.getString("male");
+				String female = fields.getString("female");
+				
+				//Get location and calculate distance
+				double lat_i = Double.parseDouble(fields.getString("lat"));
+				double lng_i = Double.parseDouble(fields.getString("lng"));
+				double lat =  location.getLatitude();
+				double lng =  location.getLongitude();
+				
+				double distance = Utilities.gps2m(lat_i, lng_i, lat, lng);
+				
+				//Put the objects into the listview's hashmap
+				map.put(KEY_ID, String.valueOf(pk));
+				map.put(KEY_TOILET, toilet);
+				map.put(KEY_STARS, String.valueOf(rating));
+				map.put(KEY_REVIEWS, String.valueOf(reviews));
+				map.put(KEY_MALE, male);
+				map.put(KEY_FEMALE, female);
+				map.put(KEY_DISTANCE, String.valueOf(distance));
+				map.put(KEY_LAT, String.valueOf(lat));
+				map.put(KEY_LNG, String.valueOf(lng));
 
-						toiletList.add(map);
-						
-						Log.v(TAG, "START!!  pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				list=(ListView)findViewById(R.id.list);
-	
-				// Getting adapter by passing xml data ArrayList
-		        adapter=new LazyAdapter(this, toiletList);        
-		        list.setAdapter(adapter);
-		        
-	
-		        // Click event for single list row
-		        list.setOnItemClickListener(new OnItemClickListener() {
-	
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						
-						Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
-						intent.putExtra("id", String.valueOf(id));
-						intent.putExtra("data", (Serializable)toiletList.get(position));
-						startActivity(intent);
-						
-						
-						//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
-					}
-				});		
+				toiletList.add(map);
+				
+				Log.v(TAG, "START!!  pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	public void server_request(Location loc) {
+	public void server_request(Location loc, int start, int end) {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
 		
 		location = loc;
 		
 		//get a few toilets, should send current location
-		variables.put("start","0");
+		variables.put("start",String.valueOf(start));
         variables.put("current_lat", String.valueOf(loc.getLatitude()));
         variables.put("current_lng", String.valueOf(loc.getLongitude()));
-		variables.put("end","10");
+		variables.put("end",String.valueOf(end));
 		variables.put("filters", obj.toString());
         qs.sendPost("api/Toilet/get/", variables, this);
 	}
 
 	@Override
-	public void onDownloadFinished(String result) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onDownloadFinished(String result) {}
 
 
 }

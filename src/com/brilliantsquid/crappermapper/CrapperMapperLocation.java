@@ -21,12 +21,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class CrapperMapperLocation extends BaseActivity implements 
 PostCallbackInterface, 
 GetCallbackInterface, 
