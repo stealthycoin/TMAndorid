@@ -46,6 +46,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     //location stuff
     private LocationManager lm;
     private LocationListener locationListener;
+    private int currentPage;
+    private int previousTotal;
+    private boolean loading;
     
     
     /** Called when the activity is first created. 
@@ -55,7 +58,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
+        currentPage = 0;
+        previousTotal = 0;
+        loading = true;
         firstTick = true;
         
         qs = QuerySingleton.getInstance();
@@ -178,7 +183,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 				// Getting adapter by passing xml data ArrayList
 		        adapter=new LazyAdapter(this, toiletList);        
 		        list.setAdapter(adapter);
-		        
+
+		        list.setOnScrollListener(new EndLessScroll(this));
 	
 		        // Click event for single list row
 		        list.setOnItemClickListener(new OnItemClickListener() {

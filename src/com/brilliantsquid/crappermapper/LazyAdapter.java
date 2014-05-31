@@ -53,8 +53,7 @@ public class LazyAdapter extends BaseAdapter {
         ImageView stars5 = (ImageView)vi.findViewById(R.id.star5);
         TextView reviews = (TextView)vi.findViewById(R.id.reviews); // duration
         ImageView thumb_image=(ImageView)vi.findViewById(R.id.list_image); // thumb image
-        
-        
+     
         
         //LOL WTF IS HAPPENING
         al.add(stars1);al.add(stars2);al.add(stars3);al.add(stars4);al.add(stars5);
