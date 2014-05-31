@@ -19,7 +19,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.view.View;
 
 import com.markupartist.android.widget.PullToRefreshListView;
@@ -92,7 +91,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
+				//for testing the review submission TODO put this shit back
 				Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
+				
 				intent.putExtra("id", String.valueOf(id));
 				intent.putExtra("data", (Serializable)toiletList.get(position));
 				startActivity(intent);

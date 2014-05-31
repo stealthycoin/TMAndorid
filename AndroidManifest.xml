@@ -37,10 +37,10 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperMenu"
-            android:label="Crapper Mapper" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Crapper Mapper"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,47 +48,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperEmergency"
-            android:label="I Got Diarrhea!" />
+            android:configChanges="orientation|keyboardHidden"
+            android:label="I Got Diarrhea!"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperList"
+            android:configChanges="orientation|keyboardHidden"
             android:label="Restroom Search"
-            android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu" />
+            android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperAdd"
-            android:label="Add Restroom" />
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Add Restroom"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperRecent"
-            android:label="Recent visitations" />
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Recent visitations"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperLocation"
-            android:label="Around me" />
+            android:configChanges="orientation|keyboardHidden"
+            android:label="Around me"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB2aVzckvHdEcF6oGeGWKYYOou9kXTR83A" />
 
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperUser"
-            android:label="User data" />
+            android:configChanges="orientation|keyboardHidden"
+            android:label="User data"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.SearchResultsActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_search_results"
-            android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu" >
+            android:parentActivityName="com.brilliantsquid.crappermapper.CrapperMapperMenu"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -98,26 +98,30 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.BaseActivity"
-            android:label="@string/title_activity_base" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_base"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperSingleToiletView"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_crapper_mapper_single_toilet_view"
-            android:parentActivityName="com.brilliantsquid.crappermapper.BaseActivity" >
+            android:parentActivityName="com.brilliantsquid.crappermapper.BaseActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brilliantsquid.crappermapper.BaseActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
-   			android:configChanges="orientation|keyboardHidden"
             android:name="com.brilliantsquid.crappermapper.CrapperMapperSignup"
-            android:label="@string/title_activity_crapper_mapper_signup" >
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_crapper_mapper_signup"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.brilliantsquid.crappermapper.CrapperMapperSubmitReview"
+            android:label="@string/title_activity_crapper_mapper_submit_review" >
         </activity>
     </application>
 
