@@ -134,6 +134,15 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         //try to log the user in
         CrapperMapperUser.login(this);
     }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	if (!firstTick) {
+    		callbackFromRefresh = true;
+    		server_request(location, 0, loadedCount);
+    	}
+    }
 
     private final class MyLocationListener implements LocationListener {
     	
@@ -148,7 +157,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3500, 10, locationListener);
         	}
         	else {
-        		//need to make it so that it updates the list based on gps as you move around. not crucial.
+        		//Update the location periodically as we move around
+        		location = locFromGps;
         	}
         }
 	
