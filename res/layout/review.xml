@@ -14,13 +14,15 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="81dp"
+            android:fillViewport="true"
             android:orientation="vertical" >
 
             <ImageButton
                 android:id="@+id/imageButton1"
                 android:layout_width="35dp"
                 android:layout_height="30dp"
+                android:background="@android:color/transparent"
                 android:src="@drawable/ic_action_good" />
 
             <TextView
@@ -36,6 +38,7 @@
                 android:id="@+id/imageButton2"
                 android:layout_width="35dp"
                 android:layout_height="30dp"
+                android:background="@android:color/transparent"
                 android:src="@drawable/ic_action_bad" />
 
         </LinearLayout>
@@ -95,14 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="9sp" />
-            
-            <View
-             android:layout_width="fill_parent"
-             android:layout_height="2dp"
-             android:paddingTop="5dp"
-             android:paddingBottom="5dp"
-             android:background="#c0c0c0"/>
+                android:textSize="14sp" />
 
         </LinearLayout>
 

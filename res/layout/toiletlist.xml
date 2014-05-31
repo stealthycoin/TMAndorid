@@ -13,13 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip"
-        android:background="@drawable/image_bg">
+        android:layout_marginRight="5dip">
 
         <ImageView
             android:id="@+id/list_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
+            android:background="@android:color/transparent"
             android:src="@drawable/user" />
     </LinearLayout>
 
