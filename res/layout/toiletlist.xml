@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="5dip"
-        android:background="@drawable/image_bg"
-        android:padding="3dip" >
+        android:background="@drawable/image_bg">
 
         <ImageView
             android:id="@+id/list_image"
