@@ -1,8 +1,5 @@
 package com.brilliantsquid.crappermapper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -185,7 +182,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		        adapter=new LazyAdapter(this, toiletList);        
 		        list.setAdapter(adapter);
 
-		        list.setOnScrollListener(new EndLessScroll(this));
+
 	
 		        // Click event for single list row
 		        list.setOnItemClickListener(new OnItemClickListener() {
