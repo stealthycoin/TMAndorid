@@ -211,10 +211,10 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 				String female = fields.getString("female");
 				
 				//Get location and calculate distance
-				double lat_i = Double.parseDouble(fields.getString("lat"));
-				double lng_i = Double.parseDouble(fields.getString("lng"));
-				double lat =  location.getLatitude();
-				double lng =  location.getLongitude();
+				double lat = Double.parseDouble(fields.getString("lat"));
+				double lng = Double.parseDouble(fields.getString("lng"));
+				double lat_i =  location.getLatitude();
+				double lng_i =  location.getLongitude();
 				
 				double distance = Utilities.gps2m(lat_i, lng_i, lat, lng);
 				

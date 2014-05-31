@@ -132,8 +132,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
 		
-		lat = toilet.get(toilet.get(CrapperMapperMenu.KEY_LAT));
-		lng = toilet.get(toilet.get(CrapperMapperMenu.KEY_LNG));
+		lat = toilet.get(CrapperMapperMenu.KEY_LAT);
+		lng = toilet.get(CrapperMapperMenu.KEY_LNG);
 	}
 
 	public void getDirections(View v) {
