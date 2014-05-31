@@ -99,6 +99,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			}
 		});
 		
+		
 		//male symbol
 		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("true") &&
 			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("false")) {
@@ -109,13 +110,11 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("false") &&
 			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("true")) {
 			gender.setImageResource(R.drawable.toilet_women);
+		}else{
+			gender.setImageResource(R.drawable.toilet_both);
 		}
-		//else it gets left as the combo.
 		
-		//rating.setRating(Float.parseFloat(toilet.get(CrapperMapperMenu.KEY_STARS)));
-		//rating.setEnabled(false);
-		
-		name.setText("Name: " + toilet.get(CrapperMapperMenu.KEY_TOILET));
+		name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
 		
 		lat = toilet.get(toilet.get(CrapperMapperMenu.KEY_LAT));
 		lng = toilet.get(toilet.get(CrapperMapperMenu.KEY_LNG));
