@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -55,7 +56,10 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_crapper_mapper_single_toilet_view);
 		
+		reviewlist = new ArrayList<HashMap<String, String>>();
 		list = (ListView)findViewById(R.id.list_reviews);
+		adapter=new LazyReviewAdapter(this, reviewlist); 
+		list.setAdapter(adapter);
 
 		qs = QuerySingleton.getInstance();
 		
@@ -107,6 +111,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			@Override
 			public void onPostFinished(String result) {
 				Log.v(TAG, "Hey man we got a result: " + result);
+				summon_list(result);
 			}
 		});
 		
@@ -182,16 +187,15 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		catch (JSONException e) {
 		}
 		Log.v(TAG, result);
-		summon_list(result);
+		//summon_list(result);
 	}
 	
 	public void summon_list(String result){
 		
 		JSONObject jObject = null;
 		JSONArray jArray = null;
-		
-		reviewlist = new ArrayList<HashMap<String, String>>();
 
+		Log.v("TAG", "WE IN!");
 
 		try {
 			jArray = new JSONArray(result);
@@ -199,19 +203,20 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
+		Log.v("TAG", "Before for loop");
 				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
-					
+					Log.v("TAG", "WE in FOR LOOP" + i);
 					HashMap<String, String> map = new HashMap<String, String>();
 					try{
+						Log.v("TAG", "OF COURSE YOU ARLSKD");
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
-						
+						Log.v("TAG", "I am a turtle\"" );
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
 						String date = fields.getString("date");
-						String updown = obj.getString("up_down_rank");
+						String updown = fields.getString("up_down_rank");
 
 						
 						//Put the objects into the listview's hashmap
@@ -219,7 +224,9 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						map.put("content", content);
 						map.put("date", date);
 						map.put("up_down_rank", updown);
-
+						
+						Log.v("TAG", "MUPIE: " + map.toString());
+						
 						reviewlist.add(map);
 						
 					} catch (JSONException e) {
@@ -227,11 +234,13 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						e.printStackTrace();
 					}
 				}
-				list=(ListView)findViewById(R.id.list);
+				Log.v("TAG", "PWEEEEH: " + reviewlist.toString());
+				adapter.notifyDataSetChanged();
+				//list=(ListView)findViewById(R.id.list_reviews);
 	
 				// Getting adapter by passing xml data ArrayList
-		        adapter=new LazyReviewAdapter(this, reviewlist);        
-		        list.setAdapter(adapter);
+		               
+		        
 		        		
 	}
 

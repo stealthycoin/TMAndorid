@@ -66,6 +66,7 @@ public class LazyReviewAdapter extends BaseAdapter {
 	        reviews.setText(review.get("up_down_rank"));
 	        review_text.setText(review.get("content"));
 	        
+	        Log.v("review", "WTF!");
 	        //Get review
 	        //String review_text = review.get(CrapperMapperMenu.KEY_TEXT);
 	        Utilities.display_stars(al, rev);
