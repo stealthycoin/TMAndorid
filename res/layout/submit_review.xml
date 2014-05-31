@@ -61,7 +61,7 @@
             android:src="@drawable/star_rating_empty" />
     </LinearLayout>
 
-    <view
+    <View
         android:layout_width="fill_parent"
         android:layout_height="2dip"
         android:background="#C0C0C0" />
@@ -80,13 +80,11 @@
         android:typeface="sans" />
 
     <EditText
-        android:id="@+id/review"
+        android:id="@+id/reviewField"
         android:layout_width="match_parent"
         android:layout_height="150dip"
         android:ems="10"
         android:inputType="textMultiLine" >
-
-        <requestFocus />
     </EditText>
 
     <TextView

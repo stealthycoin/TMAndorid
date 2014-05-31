@@ -26,10 +26,10 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submit_review);
 		
-		rating  = (RatingBar)findViewById(R.id.ratingBar);
+		//rating  = (RatingBar)findViewById(R.id.ratingBar);
 		name    =  (TextView)findViewById(R.id.toiletName);
-		reviews =  (TextView)findViewById(R.id.numReviews);
-		review  =  (EditText)findViewById(R.id.review);
+		//reviews =  (TextView)findViewById(R.id.numReviews);
+		//review  =  (EditText)findViewById(R.id.review);
 		
 		toilet = getIntent().getStringExtra("toilet");
 		
