@@ -75,6 +75,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		list.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
+            	Toast.makeText(getApplicationContext(), "Refreshing List Beezy!", Toast.LENGTH_LONG).show();
             	callbackFromRefresh = true;
             	server_request(location, 0, loadedCount);
             }
