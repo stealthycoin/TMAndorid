@@ -46,9 +46,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private boolean canLoadMore;
     private boolean callbackFromRefresh;
     private Location location;
-    //location stuff
-    private LocationManager lm;
-    private LocationListener locationListener;
     
     private int loadedCount;
     
@@ -69,15 +66,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		toiletList = new ArrayList<HashMap<String, String>>();
 		list=(ListView)findViewById(R.id.list);
 		
-		//listener for the refreshing YEAH!
-		/*list.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-            	callbackFromRefresh = true;
-            	server_request(location, 0, loadedCount);
-            }
-        });*/
-		
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, toiletList);        
         list.setAdapter(adapter);
@@ -95,9 +83,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 				intent.putExtra("id", String.valueOf(id));
 				intent.putExtra("data", (Serializable)toiletList.get(position));
 				startActivity(intent);
-				
-				
-				//Log.v(TAG, "GIVE ME POS: " + position + " GIVE ME PK: " + id);
 			}
 		});	
         
@@ -123,10 +108,15 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
         
-        //register to get GPS data
-        locationListener = new MyLocationListener();
-    	lm = (LocationManager) getSystemService(CrapperMapperAdd.LOCATION_SERVICE);
-    	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 10, locationListener);
+        MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
+            @Override
+            public void gotLocation(Location newLocation){
+                location = newLocation;
+                server_request(location, 0, 10);
+            }
+        };
+        MyLocation myLocation = new MyLocation();
+        myLocation.getLocation(this, locationResult);
         
         //try to log the user in
         CrapperMapperUser.login(this);
@@ -141,43 +131,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     	}
     }
 
-    private final class MyLocationListener implements LocationListener {
-    	
-        @Override
-        public void onLocationChanged(Location locFromGps) {
-            // called when the listener is notified with a location update from the GPS
-        	if (firstTick) {
-        		location = locFromGps;
-        		CrapperMapperMenu.this.server_request(locFromGps, 0, 10);
-        		firstTick = false;
-        		//after first tick of gps data we don't really want it so frequently
-        		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3500, 10, locationListener);
-        	}
-        	else {
-        		//Update the location periodically as we move around
-        		location = locFromGps;
-        	}
-        }
-	
-        @Override
-        public void onProviderDisabled(String provider) {
-	    // called when the GPS provider is turned off (user turning off the GPS on the phone)
-        }
-	
-        @Override
-        public void onProviderEnabled(String provider) {
-	    // called when the GPS provider is turned on (user turning on the GPS on the phone)
-        }
-	
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-	    // called when the status of the GPS provider changes
-        }
-    }
     
 	@Override
 	public void onPostFinished(String result) {
-		//Log.v(TAG, "Finished getting toilets:\n" + result);
 		if (result != null && callbackFromRefresh) {
 			callbackFromRefresh = false;
 			toiletList.clear();
@@ -239,7 +195,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 
 				toiletList.add(map);
 				
-				Log.v(TAG, "START!!  pk:\n" + pk + "  reviews: " + reviews + "  toilet: " + toilet + " rating: " + rating);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -263,6 +218,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 
 	@Override
 	public void onDownloadFinished(String result) {}
+
+	@Override
+	public void onGetError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		Toast.makeText(this, "Network Connectivity Issue...", Toast.LENGTH_LONG).show();
+	}
 
 
 }

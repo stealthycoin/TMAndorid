@@ -3,7 +3,6 @@ package com.brilliantsquid.crappermapper;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -96,6 +95,12 @@ public class CrapperMapperSignup extends BaseActivity implements PostCallbackInt
 			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 			finish();
 		}
+		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -1,6 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -9,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +23,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
 
@@ -102,12 +109,19 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			e.printStackTrace();
 		}
 		
+		//apply javascript design pattern, GO TEAM AQUA FORCE
+		final Context that = this;
 		//start loading the reviews asap
 		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
 			@Override
 			public void onPostFinished(String result) {
 				Log.v(TAG, "Hey man we got a result: " + result);
 				summon_list(result);
+			}
+
+			@Override
+			public void onPostError(String error) {
+				Toast.makeText(that, "Failed to download reviews...", Toast.LENGTH_LONG).show();
 			}
 		});
 		
@@ -137,6 +151,20 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%s,%s",lat,lng); 
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 		this.startActivity(intent);
+	}
+	
+	public void addReview(View v){
+		if (!qs.loggedIn()) {
+			Toast.makeText(this, "You have to log in to leave a review.", Toast.LENGTH_LONG).show();
+		}
+		else {
+			Intent intent = new Intent(this, CrapperMapperSubmitReview.class);
+			intent.putExtra("toilet", toilet.get(CrapperMapperMenu.KEY_TOILET));
+			intent.putExtra("pk", toilet.get("id"));
+			intent.putExtra("num_reviews", toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+			intent.putExtra("rank", toilet.get(CrapperMapperMenu.KEY_STARS));
+			this.startActivity(intent);
+		}
 	}
 	
 	@Override
@@ -191,7 +219,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		JSONObject jObject = null;
 		JSONArray jArray = null;
 
-		Log.v("TAG", "WE IN!");
+
 
 		try {
 			jArray = new JSONArray(result);
@@ -199,29 +227,31 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.v("TAG", "Before for loop");
+
 				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
-					Log.v("TAG", "WE in FOR LOOP" + i);
+
 					HashMap<String, String> map = new HashMap<String, String>();
 					try{
-						Log.v("TAG", "OF COURSE YOU ARLSKD");
+
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
-						Log.v("TAG", "I am a turtle\"" );
+
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
-						String date = fields.getString("date");
+						String date_t = fields.getString("date");
 						String updown = fields.getString("up_down_rank");
-
 						
+						// This does things. Things m'lady wouldn't understand
+						// For real though, it just parses out the usless data at the first "T"
+						String date = date_t.substring(0, date_t.indexOf("T"));
 						//Put the objects into the listview's hashmap
 						map.put("rank", rank);
 						map.put("content", content);
 						map.put("date", date);
 						map.put("up_down_rank", updown);
 						
-						Log.v("TAG", "MUPIE: " + map.toString());
+
 						
 						reviewlist.add(map);
 						
@@ -230,7 +260,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						e.printStackTrace();
 					}
 				}
-				Log.v("TAG", "PWEEEEH: " + reviewlist.toString());
+
 				adapter.notifyDataSetChanged();
 				//list=(ListView)findViewById(R.id.list_reviews);
 	
@@ -238,6 +268,18 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		               
 		        
 		        		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGetError(String error) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

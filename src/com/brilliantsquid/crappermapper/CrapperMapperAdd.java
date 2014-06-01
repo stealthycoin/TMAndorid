@@ -31,74 +31,59 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add);
 
-	LocationListener locationListener = new MyLocationListener();
-	LocationManager lm = (LocationManager) getSystemService(CrapperMapperAdd.LOCATION_SERVICE);
-
-	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 35000, 10, locationListener);
-
-	name = (EditText)findViewById(R.id.username);
-	male = (CheckBox)findViewById(R.id.checkBox1);
-	female = (CheckBox)findViewById(R.id.checkBox2);
-	submit = (Button)findViewById(R.id.button1);
-
-	qs = QuerySingleton.getInstance();
+		name = (EditText)findViewById(R.id.username);
+		male = (CheckBox)findViewById(R.id.checkBox1);
+		female = (CheckBox)findViewById(R.id.checkBox2);
+		submit = (Button)findViewById(R.id.button1);
 	
-	submit.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View v) {
-			if (currentLocation != null) {
-				double lat = currentLocation.getLatitude();
-				double lng = currentLocation.getLongitude();
-				String n = name.getText().toString();
-				boolean m = male.isChecked();
-				boolean f = female.isChecked();
-				
-				//roll up request and send it away!
-				Map<String,String> args = new HashMap<String,String>();
-				args.put("name", n);
-				args.put("male",   m ? "True" : "False"); //server rejects these 
-				args.put("female", f ? "True" : "False"); //and copies user settings
-				args.put("lat",String.valueOf(lat));
-				args.put("lng",String.valueOf(lng));
-				if (qs.loggedIn()) {
-					qs.sendPost("api/toilet/create/", args, CrapperMapperAdd.this);
-				}
-				else {
-					Toast.makeText(CrapperMapperAdd.this, "You must be logged in.", Toast.LENGTH_LONG).show();
-					CrapperMapperUser.login(CrapperMapperAdd.this);
+		qs = QuerySingleton.getInstance();
+		
+		MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
+		    @Override
+		    public void gotLocation(Location location){
+		        currentLocation = location;
+		    }
+		};
+		MyLocation myLocation = new MyLocation();
+		myLocation.getLocation(this, locationResult, true);
+		
+		submit.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if (currentLocation != null) {
+					double lat = currentLocation.getLatitude();
+					double lng = currentLocation.getLongitude();
+					String n = name.getText().toString();
+					boolean m = male.isChecked();
+					boolean f = female.isChecked();
+					
+					//roll up request and send it away!
+					Map<String,String> args = new HashMap<String,String>();
+					args.put("name", n);
+					args.put("male",   m ? "True" : "False"); //server rejects these 
+					args.put("female", f ? "True" : "False"); //and copies user settings
+					args.put("lat",String.valueOf(lat));
+					args.put("lng",String.valueOf(lng));
+					if (qs.loggedIn()) {
+						qs.sendPost("api/toilet/create/", args, CrapperMapperAdd.this);
+					}
+					else {
+						Toast.makeText(CrapperMapperAdd.this, "You must be logged in.", Toast.LENGTH_LONG).show();
+						CrapperMapperUser.login(CrapperMapperAdd.this);
+					}
 				}
 			}
-		}
 	    });
-    }
-
-    private final class MyLocationListener implements LocationListener {
-	
-        @Override
-        public void onLocationChanged(Location locFromGps) {
-            // called when the listener is notified with a location update from the GPS
-        	currentLocation = locFromGps;
-        }
-	
-        @Override
-        public void onProviderDisabled(String provider) {
-	    // called when the GPS provider is turned off (user turning off the GPS on the phone)
-        }
-	
-        @Override
-        public void onProviderEnabled(String provider) {
-	    // called when the GPS provider is turned on (user turning on the GPS on the phone)
-        }
-	
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-	    // called when the status of the GPS provider changes
-        }
     }
 
 	@Override
 	public void onPostFinished(String result) {
 		if (result == null) result = "null";
 		Log.v(TAG, "Add query finished " + result);
+	}
+
+	@Override
+	public void onPostError(String error) {
+		
 	}
 
 }

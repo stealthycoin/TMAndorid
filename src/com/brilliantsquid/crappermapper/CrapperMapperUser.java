@@ -103,14 +103,12 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 		if (!QuerySingleton.getInstance().loggedIn()) {
 			Map<String,String> variables = new HashMap<String, String>();
 			try {
-				Log.v("LOGIN", "Logging in from saved data ");
 				FileInputStream fs = ctx.openFileInput("logindata");
 				StringBuilder builder = new StringBuilder();
 				int ch;
 				while((ch = fs.read()) != -1){
 				    builder.append((char)ch);
 				}
-				Log.v("LOGIN", "saved data: " + builder.toString());
 				String[] cookies = builder.toString().split("\n");
 				variables.put("username", cookies[0]);
 				variables.put("password", cookies[1]);
@@ -120,11 +118,16 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 					public void onPostFinished(String result) {
 						Log.v("LOGIN", result);
 					}
+
+					@Override
+					public void onPostError(String error) {
+						// TODO Auto-generated method stub
+						
+					}
 					
 				});
 			}
 			catch (FileNotFoundException e) {
-				Log.v("LOGIN", "Opening login activity, no credientials found");
 				Intent intent = new Intent(ctx, CrapperMapperUserOut.class);
 				ctx.startActivity(intent);
 			}
@@ -133,6 +136,10 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 			}
 		}
 	}
-    
 
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
 }
