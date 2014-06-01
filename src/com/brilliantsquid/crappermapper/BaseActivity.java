@@ -35,6 +35,7 @@ public class BaseActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Take appropriate action for each action item click
 		Intent intent = null;
+		QuerySingleton qs = QuerySingleton.getInstance();
         switch (item.getItemId()) {
         case R.id.action_search:
         	intent = new Intent(this,CrapperMapperMenu.class);
@@ -58,8 +59,15 @@ public class BaseActivity extends Activity {
 
         	return true;
         case R.id.action_account:
-        	intent = new Intent(this,CrapperMapperUser.class);
-		    startActivity(intent);
+        	if (qs.loggedIn()) {
+        		intent = new Intent(this,CrapperMapperUserIn.class);
+        		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+    		    startActivity(intent);
+        	} else {
+        		intent = new Intent(this,CrapperMapperUserOut.class);
+        		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+    		    startActivity(intent);
+        	}
         	return true;
         case R.id.action_settings:
         	
