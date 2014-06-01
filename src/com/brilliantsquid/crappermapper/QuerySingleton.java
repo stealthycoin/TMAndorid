@@ -110,11 +110,8 @@ public class QuerySingleton implements GetCallbackInterface {
 	private class JavaIsATerribleLanguageWrapper {
 		@SuppressWarnings("unused")
 		public String result;
-		@SuppressWarnings("unused")
 		public Map<String,String> variables;
-		@SuppressWarnings("unused")
 		public PostCallbackInterface callback;
-		@SuppressWarnings("unused")
 		public String next_url;
 	}
 
@@ -184,6 +181,9 @@ public class QuerySingleton implements GetCallbackInterface {
 	    		
 	    		return result;
 	    	}
+			catch (ConnectException e) {
+				return "ERROR: Network Connectivity Issue...";
+			}
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
@@ -197,7 +197,13 @@ public class QuerySingleton implements GetCallbackInterface {
 			}
 			else {
 				//this was a pre-get to a post call. Now we can make the post call
-				new postTask(jiatlw.variables, jiatlw.callback).execute(jiatlw.next_url);
+				if (result.startsWith("ERROR")) {
+					//if there was a network error, cancel the 
+					jiatlw.callback.onPostError(result.substring(result.indexOf(':')+1));
+				} 
+				else {
+					new postTask(jiatlw.variables, jiatlw.callback).execute(jiatlw.next_url);
+				}
 			}
 		}
 	 }
@@ -252,9 +258,6 @@ public class QuerySingleton implements GetCallbackInterface {
 						userpass = variables.get("username") + "\n" + variables.get("password");
 					}
 				}
-				Log.v("qs", queryset.toString());
-				Log.v("qs", connection.getRequestProperties().toString());
-				Log.v("qs", connection.toString());
 				OutputStream out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
@@ -307,7 +310,7 @@ public class QuerySingleton implements GetCallbackInterface {
 		protected void onPostExecute(String result) {
 			if (callback != null) {
 				if (result.startsWith("ERROR")) {
-					callback.onPostError(result.substring(result.indexOf(':')));
+					callback.onPostError(result.substring(result.indexOf(':')+1));
 				} 
 				else {
 					callback.onPostFinished(result);
@@ -318,7 +321,6 @@ public class QuerySingleton implements GetCallbackInterface {
 
 	@Override
 	public void onGetError(String error) {
-		
-		
+				
 	}
 }

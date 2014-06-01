@@ -231,8 +231,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 
 	@Override
 	public void onPostError(String error) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(this, "Network Connectivity Issue...", Toast.LENGTH_LONG).show();
 	}
 
 
