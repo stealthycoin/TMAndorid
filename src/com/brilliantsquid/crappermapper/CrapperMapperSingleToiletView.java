@@ -156,7 +156,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	public void addReview(View v){
 		Intent intent = new Intent(this, CrapperMapperSubmitReview.class);
 		intent.putExtra("toilet", toilet.get(CrapperMapperMenu.KEY_TOILET));
-		intent.putExtra("pk", toilet.get(CrapperMapperMenu.KEY_PK));
+		intent.putExtra("pk", toilet.get("id"));
 		intent.putExtra("num_reviews", toilet.get(CrapperMapperMenu.KEY_REVIEWS));
 		intent.putExtra("rank", toilet.get(CrapperMapperMenu.KEY_STARS));
 		this.startActivity(intent);
