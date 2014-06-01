@@ -94,6 +94,13 @@ public class CrapperMapperUserOut extends BaseActivity implements PostCallbackIn
 		qs.sendPost("api/user/create/", vars, CrapperMapperUserOut.this);
 		qs.sendPost("api/user/login/", variables, CrapperMapperUserOut.this);
 	}
+
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
     
 
 }
