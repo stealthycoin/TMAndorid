@@ -72,6 +72,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
         distance = (TextView)findViewById(R.id.distance_page); //distance
         
         reviews = (TextView)findViewById(R.id.reviews_page); // reviews
+        
 		
 		ArrayList<ImageView> al = new ArrayList<ImageView>();
         stars1 = (ImageView)findViewById(R.id.star1_page); //stars
@@ -97,6 +98,12 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
         Utilities.display_stars(al, rev);
 		
 		Log.v("TAG","Toilet: " + toilet.toString());
+		
+		if(0 < Integer.getInteger(toilet.get(CrapperMapperMenu.KEY_REVIEWS))){
+			Toast.makeText(this, "Loading Reviews...", Toast.LENGTH_LONG).show();
+		}else{
+			Toast.makeText(this, "No Reviews Exist...", Toast.LENGTH_LONG).show();
+		}
 		
 		//start query for reviews
 		Map<String,String> vars2 = new HashMap<String,String>();
