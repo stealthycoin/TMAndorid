@@ -1,5 +1,6 @@
 package com.brilliantsquid.crappermapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -33,11 +35,24 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 		reviews =  (TextView)findViewById(R.id.numReviews);
 		review  =  (EditText)findViewById(R.id.reviewField);
 		
+
+		//load the rating into the star "array"
+		ImageView star1,star2,star3,star4,star5;
+		star1 = (ImageView)findViewById(R.id.star1);
+		star2 = (ImageView)findViewById(R.id.star2);
+		star3 = (ImageView)findViewById(R.id.star3);
+		star4 = (ImageView)findViewById(R.id.star4);
+		star5 = (ImageView)findViewById(R.id.star5);
+		ArrayList<ImageView> al = new ArrayList<ImageView>();
+		al.add(star1);al.add(star2);al.add(star3);al.add(star4);al.add(star5);
+		
+		String rank = getIntent().getStringExtra("rank");
+		Utilities.display_stars(al, Double.valueOf(rank));
+		
 		pk = getIntent().getStringExtra("pk");
 		Log.v(TAG, "Loaded review page for: " + pk);
 		String toilet = getIntent().getStringExtra("toilet");
 		String num_reviews = getIntent().getStringExtra("num_reviews");
-		String rank = getIntent().getStringExtra("rank");
 		
 		name.setText(toilet);
 		reviews.setText(num_reviews + " Reviews");
