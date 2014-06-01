@@ -66,6 +66,7 @@ public class QuerySingleton implements GetCallbackInterface {
 		urlDirectory.put("api/user/login/", "signin/");
 		urlDirectory.put("api/toilet/create/", "addrestroom/");
 		urlDirectory.put("api/user/create/", "signup/");
+		urlDirectory.put("api/review/create/", "toilet/");
 	}
 	
 	public static void setContext(Context ctx) {
@@ -128,6 +129,9 @@ public class QuerySingleton implements GetCallbackInterface {
 		String pre_get = urlDirectory.get(s_url);
 		if (pre_get == null) {
 			pre_get = "";
+		}
+		if (pre_get.equals("toilet/")) {
+			pre_get += variables.get("toilet");
 		}
 		//call get first to load a csrf token
 		sendGet(pre_get, this, jiatlw);
@@ -197,7 +201,11 @@ public class QuerySingleton implements GetCallbackInterface {
 			}
 			else {
 				//this was a pre-get to a post call. Now we can make the post call
-				if (result.startsWith("ERROR")) {
+				if (result == null) {
+					jiatlw.callback.onPostError("Null result on pre-get");
+					
+				}
+				else if (result.startsWith("ERROR")) {
 					//if there was a network error, cancel the 
 					jiatlw.callback.onPostError(result.substring(result.indexOf(':')+1));
 				} 
@@ -229,14 +237,13 @@ public class QuerySingleton implements GetCallbackInterface {
 				connection.setDoOutput(true);
 				
 				if (sessionID != null) {
-					Log.v(TAG,sessionID.toString());
+					
 					connection.addRequestProperty("Cookies", "sessionid="+sessionID);
 				}
 				else {
 					Log.v(TAG,"Sessionid null");
 				}
 				if (csrf != null) {
-					cm.getCookieStore().add(new URI(targetSite), csrf);
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
 					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				}
@@ -281,24 +288,22 @@ public class QuerySingleton implements GetCallbackInterface {
 	    				FileOutputStream outputStream;
 	    				try {
 	    				  outputStream = context.openFileOutput("logindata", Context.MODE_PRIVATE);
-	    				  Log.v(TAG, "Saving: " + userpass);
 	    				  outputStream.write(userpass.getBytes());
 	    				  outputStream.close();
 	    				} catch (Exception e) {
-	    				  e.printStackTrace();
+	    					e.printStackTrace();
 	    				}
 	    			}
 	    		}
 	    		
 	    		return result;
 				
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			} 
+			}
 			catch (FileNotFoundException e) {
 				return "ERROR: Server error...";
 			}
 			catch (ConnectException e) {
+				e.printStackTrace();
 				return "ERROR: Network Connectivity Issue...";
 			}
 			catch (IOException e) {
