@@ -41,7 +41,8 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 		
 		name.setText(toilet);
 		reviews.setText(num_reviews + " Reviews");
-		rating.setRating(Float.parseFloat(rank));
+		rating.setRating(3);
+		rating.setStepSize(1);
 		
 		qs = QuerySingleton.getInstance();
 	}
@@ -56,7 +57,7 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 			Map<String,String> vars = new HashMap<String,String>();
 			vars.put("toilet", pk);
 			vars.put("content", review.getText().toString());
-			vars.put("rank", String.valueOf(rating.getRating()));
+			vars.put("rank", String.valueOf((int)rating.getRating()));
 			qs.sendPost("api/review/create/", vars, this);
 		}
 	}

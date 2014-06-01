@@ -78,7 +78,6 @@ public class QuerySingleton implements GetCallbackInterface {
 	}
 	
 	public boolean loggedIn() {
-		Log.v(TAG, String.valueOf(sessionID!= null));
 		return sessionID != null;
 	}
 	
@@ -239,14 +238,15 @@ public class QuerySingleton implements GetCallbackInterface {
 				connection.setDoOutput(true);
 				
 				if (sessionID != null) {
-					Log.v(TAG,sessionID.toString());
+					
 					connection.addRequestProperty("Cookies", "sessionid="+sessionID);
 				}
 				else {
 					Log.v(TAG,"Sessionid null");
 				}
 				if (csrf != null) {
-					cm.getCookieStore().add(new URI(targetSite), csrf);
+					//cm.getCookieStore().add(new URI(targetSite), csrf);
+					Log.v(TAG,csrf.getValue());
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
 					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				}
@@ -301,13 +301,12 @@ public class QuerySingleton implements GetCallbackInterface {
 	    		
 	    		return result;
 				
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			} 
+			}
 			catch (FileNotFoundException e) {
 				return "ERROR: Server error...";
 			}
 			catch (ConnectException e) {
+				e.printStackTrace();
 				return "ERROR: Network Connectivity Issue...";
 			}
 			catch (IOException e) {
