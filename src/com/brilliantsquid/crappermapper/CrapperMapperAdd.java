@@ -78,6 +78,7 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 	@Override
 	public void onPostFinished(String result) {
 		Toast.makeText(this, "Created " + name.getText().toString(), Toast.LENGTH_LONG).show();
+		finish();
 	}
 
 	@Override
