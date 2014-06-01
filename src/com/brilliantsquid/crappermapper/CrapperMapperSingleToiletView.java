@@ -234,10 +234,12 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
-						String date = fields.getString("date");
+						String date_t = fields.getString("date");
 						String updown = fields.getString("up_down_rank");
 						
-						
+						// This does things. Things m'lady wouldn't understand
+						// For real though, it just parses out the usless data at the first "T"
+						String date = date_t.substring(0, date_t.indexOf("T"));
 						//Put the objects into the listview's hashmap
 						map.put("rank", rank);
 						map.put("content", content);
