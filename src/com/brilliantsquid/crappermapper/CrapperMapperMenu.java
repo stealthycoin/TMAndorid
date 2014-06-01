@@ -115,6 +115,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
                 server_request(location, 0, 10);
             }
         };
+        Toast.makeText(this, "Getting Location...", Toast.LENGTH_SHORT).show();
         MyLocation myLocation = new MyLocation();
         myLocation.getLocation(this, locationResult);
         
@@ -214,6 +215,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		variables.put("end",String.valueOf(end));
 		variables.put("filters", obj.toString());
         qs.sendPost("api/Toilet/get/", variables, this);
+        Toast.makeText(this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
