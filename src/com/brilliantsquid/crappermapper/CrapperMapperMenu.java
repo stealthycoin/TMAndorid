@@ -22,9 +22,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
 
-import com.markupartist.android.widget.PullToRefreshListView;
-import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
-
 public class CrapperMapperMenu extends BaseActivity implements PostCallbackInterface, GetCallbackInterface
 {
 	private final String TAG = "MENU";
@@ -221,6 +218,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 
 	@Override
 	public void onDownloadFinished(String result) {}
+
+	@Override
+	public void onGetError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		Toast.makeText(this, "Network Connectivity Issue...", Toast.LENGTH_LONG).show();
+	}
 
 
 }
