@@ -317,7 +317,7 @@ public class QuerySingleton implements GetCallbackInterface {
 				if (result == null) {
 					callback.onPostError("Null result");
 				}
-				if (result.startsWith("ERROR")) {
+				else if (result.startsWith("ERROR")) {
 					callback.onPostError(result.substring(result.indexOf(':')+1));
 				} 
 				else {
