@@ -214,7 +214,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		JSONObject jObject = null;
 		JSONArray jArray = null;
 
-		Log.v("TAG", "WE IN!");
+
 
 		try {
 			jArray = new JSONArray(result);
@@ -222,29 +222,31 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.v("TAG", "Before for loop");
+
 				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
-					Log.v("TAG", "WE in FOR LOOP" + i);
+
 					HashMap<String, String> map = new HashMap<String, String>();
 					try{
-						Log.v("TAG", "OF COURSE YOU ARLSKD");
+
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
-						Log.v("TAG", "I am a turtle\"" );
+
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
-						String date = fields.getString("date");
+						String date_t = fields.getString("date");
 						String updown = fields.getString("up_down_rank");
 						
-						
+						// This does things. Things m'lady wouldn't understand
+						// For real though, it just parses out the usless data at the first "T"
+						String date = date_t.substring(0, date_t.indexOf("T"));
 						//Put the objects into the listview's hashmap
 						map.put("rank", rank);
 						map.put("content", content);
 						map.put("date", date);
 						map.put("up_down_rank", updown);
 						
-						Log.v("TAG", "MUPIE: " + map.toString());
+
 						
 						reviewlist.add(map);
 						
@@ -253,7 +255,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						e.printStackTrace();
 					}
 				}
-				Log.v("TAG", "PWEEEEH: " + reviewlist.toString());
+
 				adapter.notifyDataSetChanged();
 				//list=(ListView)findViewById(R.id.list_reviews);
 	
