@@ -13,14 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip"
-        android:background="@drawable/image_bg"
-        android:padding="3dip" >
+        android:layout_marginRight="5dip">
 
         <ImageView
             android:id="@+id/list_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
+            android:background="@android:color/transparent"
             android:src="@drawable/user" />
     </LinearLayout>
 
@@ -88,7 +87,7 @@
                 android:layout_marginTop="1dip"
                 android:gravity="left"
                 android:text="Reviews: #"
-                android:textColor="#10bcc9"
+                android:textColor="#000000"
                 android:textSize="10dip"
                 android:textStyle="bold" />
             
@@ -98,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dip"
                 android:text="distance"
-                android:textColor="#000000"
+                android:textColor="#10bcc9"
                 android:textSize="10dip"
                 android:textStyle="bold" />
 

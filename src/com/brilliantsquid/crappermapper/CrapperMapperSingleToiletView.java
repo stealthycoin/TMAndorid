@@ -1,7 +1,9 @@
 package com.brilliantsquid.crappermapper;
 
-import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -13,16 +15,15 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -152,6 +153,15 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		this.startActivity(intent);
 	}
 	
+	public void addReview(View v){
+		Intent intent = new Intent(this, CrapperMapperSubmitReview.class);
+		intent.putExtra("toilet", toilet.get(CrapperMapperMenu.KEY_TOILET));
+		intent.putExtra("pk", toilet.get(CrapperMapperMenu.KEY_PK));
+		intent.putExtra("num_reviews", toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+		intent.putExtra("rank", toilet.get(CrapperMapperMenu.KEY_STARS));
+		this.startActivity(intent);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -226,7 +236,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						String content = fields.getString("content");
 						String date = fields.getString("date");
 						String updown = fields.getString("up_down_rank");
-
+						
 						
 						//Put the objects into the listview's hashmap
 						map.put("rank", rank);
