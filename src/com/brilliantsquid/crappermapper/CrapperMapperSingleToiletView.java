@@ -99,11 +99,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		Log.v("TAG","Toilet: " + toilet.toString());
 		
-		if(0 < Integer.getInteger(toilet.get(CrapperMapperMenu.KEY_REVIEWS))){
-			Toast.makeText(this, "Loading Reviews...", Toast.LENGTH_LONG).show();
-		}else{
-			Toast.makeText(this, "No Reviews Exist...", Toast.LENGTH_LONG).show();
-		}
 		
 		//start query for reviews
 		Map<String,String> vars2 = new HashMap<String,String>();
@@ -131,6 +126,12 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 				Toast.makeText(that, "Failed to download reviews...", Toast.LENGTH_LONG).show();
 			}
 		});
+		
+		if(0 < Integer.parseInt(toilet.get(CrapperMapperMenu.KEY_REVIEWS))){
+			Toast.makeText(this, "Loading Reviews...", Toast.LENGTH_LONG).show();
+		}else{
+			Toast.makeText(this, "No Reviews Exist...", Toast.LENGTH_LONG).show();
+		}
 		
 		
 		//male symbol
