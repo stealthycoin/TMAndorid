@@ -27,11 +27,8 @@ public class Utilities {
 	}
 	
 	public static void display_stars(ArrayList<ImageView> al, double rev){
-		
-		Log.v(TAG, "rating: " + rev);
         //Display the correct star rating value
         for(int i = 0; i < 5; ++i){
-        	Log.v(TAG, "inloop: " + rev);
         	if(rev <= 0){
         		al.get(i).setImageResource(R.drawable.star_rating_empty);
         	}else if(rev > 0 && rev < 1){
