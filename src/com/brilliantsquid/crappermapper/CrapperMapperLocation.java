@@ -212,4 +212,16 @@ OnInfoWindowClickListener
 		startActivity(intent);
 	}
 
+	@Override
+	public void onGetError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -73,4 +73,10 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 	public void onPostFinished(String result) {
 		Log.v("REVIEW", result);
 	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
 }

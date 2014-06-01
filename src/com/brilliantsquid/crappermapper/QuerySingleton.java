@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.CookieHandler;
@@ -29,10 +30,12 @@ import android.widget.Toast;
 
 interface GetCallbackInterface {
     void onDownloadFinished(String result);
+    void onGetError(String error);
 }
 
 interface PostCallbackInterface {
 	void onPostFinished(String result);
+	void onPostError(String error);
 }
 
 public class QuerySingleton implements GetCallbackInterface {
@@ -290,7 +293,10 @@ public class QuerySingleton implements GetCallbackInterface {
 				e.printStackTrace();
 			} 
 			catch (FileNotFoundException e) {
-				Toast.makeText((Context)callback, "Network connectivitiy issue.", Toast.LENGTH_LONG).show();
+				return "ERROR: Server error...";
+			}
+			catch (ConnectException e) {
+				return "ERROR: Network Connectivity Issue...";
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -300,8 +306,19 @@ public class QuerySingleton implements GetCallbackInterface {
 		
 		protected void onPostExecute(String result) {
 			if (callback != null) {
-				callback.onPostFinished(result);
+				if (result.startsWith("ERROR")) {
+					callback.onPostError(result.substring(result.indexOf(':')));
+				} 
+				else {
+					callback.onPostFinished(result);
+				}
 			}
 		}
+	}
+
+	@Override
+	public void onGetError(String error) {
+		
+		
 	}
 }

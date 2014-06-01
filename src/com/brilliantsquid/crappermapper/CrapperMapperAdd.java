@@ -45,7 +45,7 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 		    }
 		};
 		MyLocation myLocation = new MyLocation();
-		myLocation.getLocation(this, locationResult);
+		myLocation.getLocation(this, locationResult, true);
 		
 		submit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -79,6 +79,11 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 	public void onPostFinished(String result) {
 		if (result == null) result = "null";
 		Log.v(TAG, "Add query finished " + result);
+	}
+
+	@Override
+	public void onPostError(String error) {
+		
 	}
 
 }

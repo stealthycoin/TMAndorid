@@ -223,5 +223,17 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 	@Override
 	public void onDownloadFinished(String result) {}
 
+	@Override
+	public void onGetError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
