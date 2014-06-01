@@ -10,12 +10,13 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:fillViewport="true" >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="81dp"
-            android:fillViewport="true"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="vertical" >
 
             <ImageButton
@@ -25,20 +26,14 @@
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_action_good" />
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/review_reviews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="#"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/review_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="#"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <ImageButton
                 android:id="@+id/imageButton2"
@@ -46,7 +41,6 @@
                 android:layout_height="30dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_action_bad" />
-
         </LinearLayout>
 
         <LinearLayout
