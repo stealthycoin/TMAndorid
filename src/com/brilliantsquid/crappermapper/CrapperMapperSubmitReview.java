@@ -14,38 +14,50 @@ import android.widget.TextView;
 
 public class CrapperMapperSubmitReview extends BaseActivity implements PostCallbackInterface {
 
+	private final String TAG = "REVIEW";
+	
 	private TextView name, reviews; 
 	private RatingBar rating;
 	private EditText review;
 	private QuerySingleton qs;
 	
-	private String toilet;
+	private String pk;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.submit_review);
 		
-		//rating  = (RatingBar)findViewById(R.id.ratingBar);
+		rating  = (RatingBar)findViewById(R.id.ratingBar);
 		name    =  (TextView)findViewById(R.id.toiletName);
-		//reviews =  (TextView)findViewById(R.id.numReviews);
-		//review  =  (EditText)findViewById(R.id.review);
+		reviews =  (TextView)findViewById(R.id.numReviews);
+		review  =  (EditText)findViewById(R.id.reviewField);
 		
-		toilet = getIntent().getStringExtra("toilet");
+		pk = getIntent().getStringExtra("pk");
+		Log.v(TAG, "Loaded review page for: " + pk);
+		String toilet = getIntent().getStringExtra("toilet");
+		String num_reviews = getIntent().getStringExtra("num_reviews");
+		String rank = getIntent().getStringExtra("rank");
+		
+		name.setText(toilet);
+		reviews.setText(num_reviews + " Reviews");
+		rating.setRating(Float.parseFloat(rank));
 		
 		qs = QuerySingleton.getInstance();
 	}
 
 	public void submitButton(View view) {
+		Log.v(TAG, "Hey");
 		if (!qs.loggedIn()) {
+			Log.v(TAG, "Not logged in");
 			CrapperMapperUser.login(this);
 		}
 		else {
 			Map<String,String> vars = new HashMap<String,String>();
-			vars.put("toilet",toilet);
+			vars.put("toilet", pk);
 			vars.put("content", review.getText().toString());
 			vars.put("rank", String.valueOf(rating.getRating()));
-			qs.sendPost("api/Review/create/", vars, this);
+			qs.sendPost("api/review/create/", vars, this);
 		}
 	}
 	
@@ -76,7 +88,6 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 
 	@Override
 	public void onPostError(String error) {
-		// TODO Auto-generated method stub
-		
+		Log.v(TAG, error);	
 	}
 }
