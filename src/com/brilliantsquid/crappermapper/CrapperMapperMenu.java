@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -47,6 +48,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private boolean callbackFromRefresh;
     private Location location;
     
+    private Handler toastHandler;
+    private Runnable toastRunnable;
+    
     private int loadedCount;
     
     
@@ -61,6 +65,11 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         firstTick = true;
         callbackFromRefresh = true;
         canLoadMore = false;
+        
+     // these are members in the Activity class
+        toastHandler = new Handler();
+        toastRunnable = new Runnable() {public void run() {Toast.makeText(CrapperMapperMenu.this,"Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();}};
+        //Toast.makeText(CrapperMapperMenu.this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
         
         //setup list stuff. HAHA just no problem.
 		toiletList = new ArrayList<HashMap<String, String>>();
@@ -112,7 +121,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
             @Override
             public void gotLocation(Location newLocation){
                 location = newLocation;
+                toastHandler.post(toastRunnable);
                 server_request(location, 0, 10);
+                //Toast.makeText(CrapperMapperMenu.this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
             }
         };
         Toast.makeText(this, "Getting Location...", Toast.LENGTH_SHORT).show();
@@ -128,7 +139,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     	super.onResume();
     	if (!firstTick) {
     		callbackFromRefresh = true;
+    		toastHandler.post(toastRunnable);
     		server_request(location, 0, loadedCount);
+    		//Toast.makeText(CrapperMapperMenu.this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
     	}
     }
 
@@ -215,7 +228,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		variables.put("end",String.valueOf(end));
 		variables.put("filters", obj.toString());
         qs.sendPost("api/Toilet/get/", variables, this);
-        Toast.makeText(this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
