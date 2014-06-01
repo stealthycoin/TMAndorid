@@ -134,7 +134,6 @@ public class QuerySingleton implements GetCallbackInterface {
 			pre_get += variables.get("toilet");
 		}
 		//call get first to load a csrf token
-		Log.v(TAG, pre_get);
 		sendGet(pre_get, this, jiatlw);
 	}
 	
@@ -245,8 +244,6 @@ public class QuerySingleton implements GetCallbackInterface {
 					Log.v(TAG,"Sessionid null");
 				}
 				if (csrf != null) {
-					//cm.getCookieStore().add(new URI(targetSite), csrf);
-					Log.v(TAG,csrf.getValue());
 					connection.addRequestProperty("X-CSRFToken", csrf.getValue());
 					connection.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 				}

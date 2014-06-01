@@ -48,9 +48,8 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 	}
 
 	public void submitButton(View view) {
-		Log.v(TAG, "Hey");
 		if (!qs.loggedIn()) {
-			Log.v(TAG, "Not logged in");
+			//we should make getting here basically impossible
 			CrapperMapperUser.login(this);
 		}
 		else {
