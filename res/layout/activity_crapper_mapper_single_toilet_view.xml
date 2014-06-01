@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:gravity="right"
-                        android:onClick="getDirections"
+                        android:onClick="addReview"
                         android:text="Add Review"
                         android:textColor="#838383"
                         android:textSize="15dp" />
