@@ -77,13 +77,13 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 
 	@Override
 	public void onPostFinished(String result) {
-		if (result == null) result = "null";
-		Log.v(TAG, "Add query finished " + result);
+		Toast.makeText(this, "Created " + name.getText().toString(), Toast.LENGTH_LONG).show();
+		finish();
 	}
 
 	@Override
 	public void onPostError(String error) {
-		
+		Toast.makeText(this, "Failed to create restroom", Toast.LENGTH_LONG).show();
 	}
 
 }
