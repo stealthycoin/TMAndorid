@@ -41,40 +41,6 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 			startActivity(intent);
         }
         
-//    	username = (EditText)findViewById(R.id.username);
-//		password = (EditText)findViewById(R.id.pass);
-//		btnLogin = (Button)findViewById(R.id.btnLogin);
-//		btnLogout = (Button)findViewById(R.id.btnLogout);
-//		btnSignup = (Button)findViewById(R.id.signupactivity);
-//		
-//		btnLogin.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Map<String,String> vars = new HashMap<String,String>();
-//				vars.put("username", username.getText().toString());
-//				vars.put("password", password.getText().toString());
-//				qs.sendPost("api/user/login/", vars, CrapperMapperUser.this);
-//			}
-//		});
-//		
-//		btnLogout.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				//log out the user
-//				QuerySingleton.getInstance().setSessionID(null);
-//				CrapperMapperUser.this.deleteFile("logindata");
-//				Toast.makeText(CrapperMapperUser.this, "You have been logged out.", Toast.LENGTH_LONG).show();
-//			}
-//		});
-//		
-//		btnSignup.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(CrapperMapperUser.this, CrapperMapperSignup.class);
-//				startActivity(intent);
-//			}
-//		});
     }
 
 	@Override
