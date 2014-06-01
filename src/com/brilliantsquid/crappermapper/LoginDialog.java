@@ -26,7 +26,7 @@ import java.util.Map;
 public class LoginDialog extends DialogFragment implements View.OnClickListener
 {
 	private EditText username, password;
-	private Button submit;
+	private Button submit, cancel;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +37,8 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener
 	      Log.v("DIALOGIN", "Creating Dialog View!!!");
 	      username = (EditText) v.findViewById(R.id.uname);
 	      password = (EditText) v.findViewById(R.id.pword);
+	      cancel = (Button) v.findViewById(R.id.dialog_cancel);
+	      cancel.setOnClickListener(this);
 	      submit = (Button) v.findViewById(R.id.dialogin);
 	      submit.setOnClickListener(this);
 	      qs = QuerySingleton.getInstance();
@@ -63,6 +65,8 @@ public class LoginDialog extends DialogFragment implements View.OnClickListener
 			vars.put("username", username.getText().toString());
 			vars.put("password", password.getText().toString());
 			messenger.onLoginDialogMessage(vars);
+			dismiss();
+		} else {
 			dismiss();
 		}
 	}

@@ -31,7 +31,7 @@ public class SignUpDialog extends DialogFragment implements View.OnClickListener
 {
 	private EditText username, password, password1;
 	private TextView error;
-	private Button submit;
+	private Button submit, cancel;
 	private CheckBox male, female;
 	private Context ctx;
 	private PostCallbackInterface callback;
@@ -69,7 +69,9 @@ public class SignUpDialog extends DialogFragment implements View.OnClickListener
 	      });
 	      
 	      submit = (Button) v.findViewById(R.id.diasignup);
+	      cancel = (Button) v.findViewById(R.id.diacancel);
 	      submit.setOnClickListener(this);
+	      cancel.setOnClickListener(this);
 
 	      setCancelable(false);
 	      return v;
@@ -99,6 +101,8 @@ public class SignUpDialog extends DialogFragment implements View.OnClickListener
 				messenger.onSignUpDialogMessage(variables);
 				dismiss();
 			}
+		} else {
+			dismiss();
 		}
 	}
 	
