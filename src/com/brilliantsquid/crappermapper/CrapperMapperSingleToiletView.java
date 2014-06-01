@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.Tag;
@@ -22,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
@@ -106,12 +108,19 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			e.printStackTrace();
 		}
 		
+		//apply javascript design pattern, GO TEAM AQUA FORCE
+		final Context that = this;
 		//start loading the reviews asap
 		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
 			@Override
 			public void onPostFinished(String result) {
 				Log.v(TAG, "Hey man we got a result: " + result);
 				summon_list(result);
+			}
+
+			@Override
+			public void onPostError(String error) {
+				Toast.makeText(that, "Failed to download reviews...", Toast.LENGTH_LONG).show();
 			}
 		});
 		
@@ -242,6 +251,18 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		               
 		        
 		        		
+	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGetError(String error) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

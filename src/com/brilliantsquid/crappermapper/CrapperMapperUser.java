@@ -110,6 +110,12 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 					public void onPostFinished(String result) {
 						Log.v("LOGIN", result);
 					}
+
+					@Override
+					public void onPostError(String error) {
+						// TODO Auto-generated method stub
+						
+					}
 					
 				});
 			}
@@ -121,5 +127,11 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void onPostError(String error) {
+		// TODO Auto-generated method stub
+		
 	}
 }
