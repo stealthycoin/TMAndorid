@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="68dp"
             android:paddingLeft="5dp" >
 
             <LinearLayout
@@ -115,36 +115,61 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="fill_parent"
                 android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" 
-                    android:gravity="right">
+                    android:layout_height="36dp"
+                    android:gravity="right" >
 
                     <Button
                         android:id="@+id/button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="30dp"
                         android:background="@android:color/transparent"
                         android:gravity="right"
                         android:onClick="getDirections"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="5dp"
                         android:text="Directions"
-                        android:textColor="#838383" />
+                        android:textColor="#838383"
+                        android:textSize="15dp" />
 
                     <ImageView
                         android:id="@+id/imageView1"
                         android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="right"
+                        android:src="@drawable/ic_action_next_item" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="34dp"
+                    android:gravity="right" >
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="right"
+                        android:onClick="getDirections"
+                        android:text="Add Review"
+                        android:textColor="#838383"
+                        android:textSize="15dp" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="right"
                         android:src="@drawable/ic_action_next_item" />
 
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
 
         
