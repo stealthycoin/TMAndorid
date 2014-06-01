@@ -121,15 +121,18 @@
         </activity>
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperSubmitReview"
-            android:label="@string/title_activity_crapper_mapper_submit_review" >
+            android:label="@string/title_activity_crapper_mapper_submit_review" 
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperUserOut"
-            android:label="@string/title_activity_crapper_mapper_user_out" >
+            android:label="@string/title_activity_crapper_mapper_user_out"
+            android:screenOrientation="portrait"  >
         </activity>
         <activity
             android:name="com.brilliantsquid.crappermapper.CrapperMapperUserIn"
-            android:label="@string/title_activity_crapper_mapper_user_out" >
+            android:label="@string/title_activity_crapper_mapper_user_out"
+            android:screenOrientation="portrait"  >
         </activity>
     </application>
 
