@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:fillViewport="true">
+  <RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:background="#CBF0F5">
+		
+		<!--  Header Starts-->
+
+		<LinearLayout
+		    android:id="@+id/login_header"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/login_gradient"
+		    android:paddingBottom="5dp"
+		    android:paddingTop="5dp" >
+
+			<TextView
+			    android:id="@+id/logged_in"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="10dip"
+			    android:gravity="center"
+			    android:text="Logged in as: "
+			    android:textColor="#ffffff"
+			    android:textColorLink="#ffffff"
+			    android:textSize="20sp"
+			    android:textStyle="bold" />
+			
+			<TextView
+			    android:id="@+id/lgin_name"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="10dip"
+			    android:gravity="center"
+			    android:text="User"
+			    android:textColor="#ffffff"
+			    android:textColorLink="#ffffff"
+			    android:textSize="20sp"
+			    android:textStyle="bold" />
+        
+		</LinearLayout>
+		<!--  Header Ends -->
+		
+		<!--  Maybe footer here? -->
+
+		<Button
+		    android:id="@+id/btnLogout"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/login_header"
+		    android:layout_centerHorizontal="true"
+		    android:layout_marginTop="92dp"
+		    android:background="@drawable/gradient_bg"
+		    android:text="Logout" />
+ 
+  </RelativeLayout>
+</ScrollView>

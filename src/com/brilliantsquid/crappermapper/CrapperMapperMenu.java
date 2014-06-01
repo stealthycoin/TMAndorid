@@ -66,7 +66,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		toiletList = new ArrayList<HashMap<String, String>>();
 		list=(ListView)findViewById(R.id.list);
 		
-
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, toiletList);        
         list.setAdapter(adapter);
