@@ -214,7 +214,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		JSONObject jObject = null;
 		JSONArray jArray = null;
 
-		Log.v("TAG", "WE IN!");
+
 
 		try {
 			jArray = new JSONArray(result);
@@ -222,15 +222,15 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.v("TAG", "Before for loop");
+
 				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
-					Log.v("TAG", "WE in FOR LOOP" + i);
+
 					HashMap<String, String> map = new HashMap<String, String>();
 					try{
-						Log.v("TAG", "OF COURSE YOU ARLSKD");
+
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
-						Log.v("TAG", "I am a turtle\"" );
+
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
@@ -244,7 +244,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						map.put("date", date);
 						map.put("up_down_rank", updown);
 						
-						Log.v("TAG", "MUPIE: " + map.toString());
+
 						
 						reviewlist.add(map);
 						
@@ -253,7 +253,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						e.printStackTrace();
 					}
 				}
-				Log.v("TAG", "PWEEEEH: " + reviewlist.toString());
+
 				adapter.notifyDataSetChanged();
 				//list=(ListView)findViewById(R.id.list_reviews);
 	
