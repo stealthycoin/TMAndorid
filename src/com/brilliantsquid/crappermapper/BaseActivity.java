@@ -48,7 +48,8 @@ public class BaseActivity extends Activity {
             // help action
             return true;
         case R.id.action_Emergency:
-        	intent = new Intent(this,CrapperMapperEmergency.class);
+        	
+        	intent = new Intent(this,CrapperMapperSingleToiletView.class);
 		    startActivity(intent);
         	return true;
         case R.id.action_Map:
