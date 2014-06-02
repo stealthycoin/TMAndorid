@@ -3,17 +3,13 @@ package com.brilliantsquid.crappermapper;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Button;
 import android.widget.Toast;
 import android.view.View;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.location.Location;
-import android.util.Log;
 
 public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterface
 {
