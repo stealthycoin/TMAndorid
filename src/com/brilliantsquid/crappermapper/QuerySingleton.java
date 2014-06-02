@@ -14,6 +14,7 @@ import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.CookieHandler;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -188,6 +189,9 @@ public class QuerySingleton implements GetCallbackInterface {
 			catch (ConnectException e) {
 				return "ERROR: Network Connectivity Issue...";
 			}
+			catch (SocketTimeoutException e) {
+				return "ERROR: Spent too much time waiting...";
+			}
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
@@ -314,7 +318,10 @@ public class QuerySingleton implements GetCallbackInterface {
 		
 		protected void onPostExecute(String result) {
 			if (callback != null) {
-				if (result.startsWith("ERROR")) {
+				if (result == null) {
+					callback.onPostError("Null result");
+				}
+				else if (result.startsWith("ERROR")) {
 					callback.onPostError(result.substring(result.indexOf(':')+1));
 				} 
 				else {

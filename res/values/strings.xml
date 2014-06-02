@@ -19,5 +19,6 @@
     <string name="title_activity_crapper_mapper_single_toilet_view">CrapperMapperSingleToiletView</string>
     <string name="title_activity_crapper_mapper_signup">CrapperMapperSignup</string>
     <string name="title_activity_crapper_mapper_submit_review">Write a review</string>
+    <string name="title_activity_crapper_mapper_user_out">CrapperMapperUserOut</string>
 
 </resources>
