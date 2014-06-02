@@ -46,7 +46,7 @@ public class CrapperMapperAdd extends BaseActivity implements PostCallbackInterf
 					String n = name.getText().toString();
 					boolean m = male.isChecked();
 					boolean f = female.isChecked();
-					Toast.makeText(CrapperMapperAdd.this, "CurrentLoc is not null", Toast.LENGTH_LONG).show();
+
 					//roll up request and send it away!
 					Map<String,String> args = new HashMap<String,String>();
 					args.put("name", n);
