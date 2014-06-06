@@ -9,39 +9,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class LazyReviewAdapter extends BaseAdapter {
+public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 		
 	    
-	    private Activity activity;
+	    private Context context;
+	    private int resourceid;
 	    private ArrayList<HashMap<String, String>> data;
 	    private static LayoutInflater inflater=null;
 	    
-	    public LazyReviewAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
-	        activity = a;
-	        data=d;
-	        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    }
-
-	    public int getCount() {
-	        return data.size();
-	    }
-
-	    public Object getItem(int position) {
-	        return position;
-	    }
-
-	    public long getItemId(int position) {
-	        return Integer.valueOf(data.get(position).get("id"));
+	    public LazyReviewAdapter(Context ctx, int resid, ArrayList<HashMap<String, String>> d) {
+	    	super(ctx, resid, d);
+	        context = ctx;
+	        resourceid = resid;
+	        data = d;
+	        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    }
 	    
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        View vi=convertView;
 	        if(convertView==null)
-	            vi = inflater.inflate(R.layout.review, null);
+	            vi = inflater.inflate(resourceid, null);
 	        
 	        ArrayList<ImageView> al = new ArrayList<ImageView>();
 	        ImageView stars1 = (ImageView)vi.findViewById(R.id.star1_rev); //stars

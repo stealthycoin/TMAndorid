@@ -48,7 +48,6 @@ public class QuerySingleton implements GetCallbackInterface {
 	
 	private HttpCookie csrf;
 	private String sessionID;
-	private HttpURLConnection connection;
 	
 	private final String TAG = "qs";
 	
@@ -102,7 +101,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	}
 
 	public void sendGet(String s_url, GetCallbackInterface callback) {
-		new getTask(callback, null).execute(s_url);
+		new getTask(callback, null);
 	}
 	
 	public void sendGet(String s_url, GetCallbackInterface callback, JavaIsATerribleLanguageWrapper jiatlw) {
@@ -118,7 +117,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	}
 
 	public void sendPost(String s_url, Map<String,String> variables, PostCallbackInterface callback) {
-		Log.v(TAG,"Firing post");
+		Log.v(TAG,"Firing post " + s_url);
 		//encapsulate all these args into a JavaIsATerribleLanguageWrapper
 		//and pass them along for the ride
 		//that way we can get them in the callback and execute the post
@@ -164,7 +163,8 @@ public class QuerySingleton implements GetCallbackInterface {
 		protected String doInBackground(String... arg0) {
 			try {
 				URL url = new URL(targetSite + "/" + arg0[0]);
-				connection = (HttpURLConnection) url.openConnection();
+				
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 				connection.setConnectTimeout(1000);
 				if (sessionID != null) {
 					connection.setRequestProperty("Cookies", "sessionid=" + sessionID);
@@ -181,8 +181,11 @@ public class QuerySingleton implements GetCallbackInterface {
 	    		while ((line = br.readLine()) != null) {
 	    			sb.append(line);
 	    		}
+	    		in.close();
 	    		result = sb.toString();
 	    		parseCSRF(result);
+	    		
+	    		connection.disconnect();
 	    		
 	    		return result;
 	    	}
@@ -234,9 +237,11 @@ public class QuerySingleton implements GetCallbackInterface {
 		protected String doInBackground(String... arg0) {
 			try {
 				URL url = new URL(targetSite + "/" + arg0[0]);
-				connection = (HttpURLConnection) url.openConnection();
+				
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 				connection.setConnectTimeout(1000);
 				connection.setRequestMethod("POST");
+				connection.setRequestProperty("Connection", "close");
 				connection.setDoInput(true);
 				connection.setDoOutput(true);
 				
@@ -269,18 +274,18 @@ public class QuerySingleton implements GetCallbackInterface {
 						userpass = variables.get("username") + "\n" + variables.get("password");
 					}
 				}
+				
 				OutputStream out = new BufferedOutputStream(connection.getOutputStream());
 				out.write(queryset.toString().getBytes(Charset.forName("UTF-8")));
 				out.close();
 				
 				InputStream in = new BufferedInputStream(connection.getInputStream());
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
+				
 				String line, result = "";
 	    		while ((line = br.readLine()) != null) {
 	    			result += line;
 	    		}
-
 	    		in.close();
 	    		
 	    		//if we need to set the session id cookie
@@ -300,6 +305,8 @@ public class QuerySingleton implements GetCallbackInterface {
 	    			}
 	    		}
 	    		
+	    		connection.disconnect();
+	    		
 	    		return result;
 				
 			}
@@ -312,6 +319,10 @@ public class QuerySingleton implements GetCallbackInterface {
 			}
 			catch (IOException e) {
 				e.printStackTrace();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				Toast.makeText(null, "Other Exception thrown...", Toast.LENGTH_LONG).show();
 			}
 			return null;
 		}

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,13 +24,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
 
 	private QuerySingleton qs;
+	private gps location;
 	
 	private TextView name;
 	
@@ -46,13 +47,15 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private ImageView stars4;
 	private ImageView stars5;
 	
-	private HashMap<String, String> toilet; 
+	private HashMap<String, String> toilet; //toilet data
 	private LazyReviewAdapter adapter;
+	private HashMap<String,String> vars; //filter data
 	
-	private ArrayList<HashMap<String, String>> reviewlist;
+	private ArrayList<HashMap<String, String>> reviewlist; //review data
 	private ListView list;
 	
 	private final String TAG = "VIEW";
+	private boolean listPosted = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		
 		reviewlist = new ArrayList<HashMap<String, String>>();
 		list = (ListView)findViewById(R.id.list_reviews);
-		adapter=new LazyReviewAdapter(this, reviewlist); 
+		adapter=new LazyReviewAdapter(this, R.layout.review, reviewlist); 
 		list.setAdapter(adapter);
 
 		qs = QuerySingleton.getInstance();
@@ -97,35 +100,18 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
         
         Utilities.display_stars(al, rev);
 		
-		Log.v("TAG","Toilet: " + toilet.toString());
+		Log.v(TAG,"Toilet: " + toilet.toString());
 		
-		
-		//start query for reviews
-		Map<String,String> vars2 = new HashMap<String,String>();
+		//set filter for query of current toilet
+		vars = new HashMap<String,String>();
 		try {
 			JSONObject obj = new JSONObject();
 			obj.put("toilet", toilet.get(CrapperMapperMenu.KEY_ID));
-			vars2.put("filters", obj.toString());
+			vars.put("filters", obj.toString());
 		}
 		catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		//apply javascript design pattern, GO TEAM AQUA FORCE
-		final Context that = this;
-		//start loading the reviews asap
-		qs.sendPost("api/Review/get/", vars2, new PostCallbackInterface() {
-			@Override
-			public void onPostFinished(String result) {
-				Log.v(TAG, "Hey man we got a result: " + result);
-				summon_list(result);
-			}
-
-			@Override
-			public void onPostError(String error) {
-				Toast.makeText(that, "Failed to download reviews...", Toast.LENGTH_LONG).show();
-			}
-		});
 		
 		if(0 < Integer.parseInt(toilet.get(CrapperMapperMenu.KEY_REVIEWS))){
 			Toast.makeText(this, "Loading Reviews...", Toast.LENGTH_LONG).show();
@@ -159,6 +145,51 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%s,%s",lat,lng); 
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 		this.startActivity(intent);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		// Refresh star rating, # of reviews, distance, and review list
+		
+		location = new gps (this);
+		
+		//queryReviews();
+		
+		//query server for updated info on this toilet
+		HashMap<String, String> variables = new HashMap<String,String>();
+		
+		variables.put("start", "0");
+        variables.put("current_lat", toilet.get(CrapperMapperMenu.KEY_LAT));
+        variables.put("current_lng", toilet.get(CrapperMapperMenu.KEY_LNG));
+		variables.put("end",String.valueOf(1));
+		variables.put("filters", "{}");
+		qs.sendPost("api/Toilet/get/", variables, CrapperMapperSingleToiletView.this);
+		
+	}
+	
+	@Override
+	public void onPause() {
+		location.stopUsingGPS();
+		adapter.clear();
+		super.onPause();
+	}
+	
+	public void queryReviews() {
+		//query server for updated review list
+		final Context that = this;
+		qs.sendPost("api/Review/get/", vars, new PostCallbackInterface() {
+			@Override
+			public void onPostFinished(String result) {
+				Log.v(TAG, "Hey man we got a result: " + result);
+				summon_list(result);
+			}
+
+			@Override
+			public void onPostError(String error) {
+				Toast.makeText(that, "Failed to download reviews...", Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 	
 	public void addReview(View v){
@@ -203,23 +234,36 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 
 	@Override
 	public void onPostFinished(String result) {
+		//Refresh star rating, # of reviews, distance for this toilet
 		try {
 			JSONArray array = new JSONArray(result);
-			for (int i = 0 ; i < array.length(); i++) {
-				JSONObject o = array.getJSONObject(i);
-				JSONObject fields = o.getJSONObject("fields");
-				name.setText("Name: " + fields.getString("name"));	
-				//rating.setRating((int)Float.parseFloat(fields.getString("rating")));
-				//rating.setEnabled(false);
-				//rating.setText("Rating: " + fields.getString("rating"));
-				lat = fields.getString("lat");
-				lng = fields.getString("lng");
-			}
+			JSONObject o = array.getJSONObject(0);
+			JSONObject fields = o.getJSONObject("fields");
+			
+			double rating = fields.getDouble("rating");
+			String numrevs = fields.getString("numberOfReviews");
+			
+			double lat = fields.getDouble("lat");
+			double lng = fields.getDouble("lng");
+			double lat_i = location.getLatitude();
+			double lng_i = location.getLongitude();
+			
+			double dist = Utilities.gps2m(lat_i, lng_i, lat, lng);
+			
+			ArrayList<ImageView> al = new ArrayList<ImageView>();
+	        
+	        al.add(stars1);al.add(stars2);al.add(stars3);al.add(stars4);al.add(stars5);
+	        Utilities.display_stars(al, rating);
+	        
+	        reviews.setText("Reviews: " + numrevs);
+	        distance.setText(String.format("%.1f mi", Double.valueOf(dist)));
 		}
 		catch (JSONException e) {
+			e.printStackTrace();
 		}
-		Log.v(TAG, result);
-		//summon_list(result);
+		Log.v("VW-PostFinished with:", result+"\n\n");
+		
+		queryReviews();
 	}
 	
 	public void summon_list(String result){
@@ -289,5 +333,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }
