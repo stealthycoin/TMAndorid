@@ -144,6 +144,12 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     		//Toast.makeText(CrapperMapperMenu.this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
     	}
     }
+    
+    @Override
+    protected void onPause() {
+    	firstTick = false;
+    	super.onPause();
+    }
 
     
 	@Override

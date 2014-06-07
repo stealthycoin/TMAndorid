@@ -35,7 +35,7 @@ PostCallbackInterface,
 GetCallbackInterface, 
 OnInfoWindowClickListener
 {    
- private static final String TAG = null;
+	private static final String TAG = null;
 	// Google Map
     private GoogleMap googleMap;
     private double lat;
@@ -176,7 +176,7 @@ OnInfoWindowClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        //initializeMap();
+        initializeMap();
     }
  
     @Override
