@@ -226,7 +226,10 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		JSONObject obj=new JSONObject();
 		
 		location = loc;
-		
+		if (location == null) { //bad things are happening and we don't know our current location
+			Toast.makeText(this, "Could not get current location.", Toast.LENGTH_LONG).show();
+			return; //gtfo
+		}
 		//get a few toilets, should send current location
 		variables.put("start",String.valueOf(start));
         variables.put("current_lat", String.valueOf(loc.getLatitude()));
