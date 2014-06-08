@@ -147,8 +147,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			//loaded from a map, we only know the pk in this case need to make a query for the data
 			JSONObject obj = new JSONObject();
 			try {
-				Log.v(TAG, intent.getStringExtra("pk"));
-				obj.put("pk", intent.getStringExtra("pk"));
+				Log.v(TAG, intent.getStringExtra("id"));
+				obj.put("pk", intent.getStringExtra("id"));
 				Map<String,String> vars = new HashMap<String,String>();
 				vars.put("start","0");
 				vars.put("end","1");
@@ -220,7 +220,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	
 	@Override
 	public void onPause() {
-		location.stopUsingGPS();
 		adapter.clear();
 		super.onPause();
 	}

@@ -44,7 +44,7 @@ public class QuerySingleton implements GetCallbackInterface {
 	private static QuerySingleton instance = null;
 	private static Context context;
 	
-	private static int WAIT_TIME = 1000;
+	private static int WAIT_TIME = 2000;
 	
 	private CookieManager cm;
 	
