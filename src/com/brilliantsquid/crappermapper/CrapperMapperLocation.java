@@ -70,7 +70,6 @@ OnInfoWindowClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
- 
     }
     
     /**
@@ -81,8 +80,6 @@ OnInfoWindowClickListener
 
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
-
-            
             if (location != null){
             	lat = location.getLatitude();
             	lng = location.getLongitude();
@@ -94,7 +91,8 @@ OnInfoWindowClickListener
             	//show current location with blue dot and enable find me button in top right of map
             	googleMap.setMyLocationEnabled(true); // false to disable
             	googleMap.setOnInfoWindowClickListener(this);
-            }else{
+            }
+            else{
             	Log.v("HEY", "FUCKER");
             }
             

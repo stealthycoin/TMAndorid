@@ -52,6 +52,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private HashMap<String,String> vars; //filter data
 	
 	private ArrayList<HashMap<String, String>> reviewlist; //review data
+	private ArrayList<ImageView> al; //to store the stars
 	private ListView list;
 	
 	private final String TAG = "VIEW";
@@ -77,7 +78,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
         reviews = (TextView)findViewById(R.id.reviews_page); // reviews
         
 		
-		ArrayList<ImageView> al = new ArrayList<ImageView>();
+		al = new ArrayList<ImageView>();
         stars1 = (ImageView)findViewById(R.id.star1_page); //stars
         stars2 = (ImageView)findViewById(R.id.star2_page);
         stars3 = (ImageView)findViewById(R.id.star3_page);
@@ -89,55 +90,114 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		Intent intent = getIntent();
 		toilet = (HashMap<String,String>)intent.getSerializableExtra("data");
 		
-		double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_STARS));
-        
-        String dist = toilet.get(CrapperMapperMenu.KEY_DISTANCE);
-        
-        name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
-        
-        reviews.setText("Reviews: " + toilet.get(CrapperMapperMenu.KEY_REVIEWS));
-        distance.setText(String.format("%.1f mi", Double.valueOf(dist)));
-        
-        Utilities.display_stars(al, rev);
-		
-		Log.v(TAG,"Toilet: " + toilet.toString());
-		
-		//set filter for query of current toilet
-		vars = new HashMap<String,String>();
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("toilet", toilet.get(CrapperMapperMenu.KEY_ID));
-			vars.put("filters", obj.toString());
-		}
-		catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		if(0 < Integer.parseInt(toilet.get(CrapperMapperMenu.KEY_REVIEWS))){
-			Toast.makeText(this, "Loading Reviews...", Toast.LENGTH_LONG).show();
-		}else{
-			Toast.makeText(this, "No Reviews Exist...", Toast.LENGTH_LONG).show();
-		}
-		
-		
-		//male symbol
-		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("true") &&
-			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("false")) {
-			gender.setImageResource(R.drawable.toilet_men);
+		if (toilet != null) {
+			//loaded from the main menu, we are passed a map object so we can easily load everything
+			double rev = Double.valueOf(toilet.get(CrapperMapperMenu.KEY_STARS));
+	        
+	        String dist = toilet.get(CrapperMapperMenu.KEY_DISTANCE);
+	        
+	        name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
+	        
+	        reviews.setText("Reviews: " + toilet.get(CrapperMapperMenu.KEY_REVIEWS));
+	        distance.setText(String.format("%.1f mi", Double.valueOf(dist)));
+	        
+	        Utilities.display_stars(al, rev);
 			
+			Log.v(TAG,"Toilet: " + toilet.toString());
+			
+			//set filter for query of current toilet
+			vars = new HashMap<String,String>();
+			try {
+				JSONObject obj = new JSONObject();
+				obj.put("toilet", toilet.get(CrapperMapperMenu.KEY_ID));
+				vars.put("filters", obj.toString());
+			}
+			catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			if(0 < Integer.parseInt(toilet.get(CrapperMapperMenu.KEY_REVIEWS))){
+				Toast.makeText(this, "Loading Reviews...", Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(this, "No Reviews Exist...", Toast.LENGTH_LONG).show();
+			}
+			
+			
+			//male symbol
+			if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("true") &&
+				toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("false")) {
+				gender.setImageResource(R.drawable.toilet_men);
+				
+			}
+			//female symbol
+			if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("false") &&
+				toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("true")) {
+				gender.setImageResource(R.drawable.toilet_women);
+			}else{
+				gender.setImageResource(R.drawable.toilet_both);
+			}
+			
+			name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
+			
+			
+			lat = toilet.get(CrapperMapperMenu.KEY_LAT);
+			lng = toilet.get(CrapperMapperMenu.KEY_LNG);
+		} 
+		else {
+			//loaded from a map, we only know the pk in this case need to make a query for the data
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("pk", intent.getStringExtra("pk"));
+				Map<String,String> vars = new HashMap<String,String>();
+				vars.put("start","0");
+				vars.put("end","1");
+				vars.put("filters", obj.toString());
+
+		        qs.sendPost("api/Toilet/get/", vars, new PostCallbackInterface() {
+
+					@Override
+					public void onPostFinished(String result) {
+						try {
+							JSONArray jarr = new JSONArray(result);
+							JSONObject tData = jarr.getJSONObject(0);
+							//get the data from the JSON object to the interface
+							name.setText(tData.getString("name"));
+							boolean male = Boolean.valueOf(tData.getString("male"));
+							boolean female = Boolean.valueOf(tData.getString("female"));
+							//male symbol
+							if (male && !female) {
+								gender.setImageResource(R.drawable.toilet_men);
+							}
+							//female symbol
+							else if (!male && female) {
+								gender.setImageResource(R.drawable.toilet_women);
+							}else{
+								gender.setImageResource(R.drawable.toilet_both);
+							}
+							//review value
+							Utilities.display_stars(al, tData.getDouble("rating"));
+							//lat and lng
+							lat = tData.getString("lat");
+							lng = tData.getString("lng");
+							
+						} catch (JSONException e) {
+							Toast.makeText(CrapperMapperSingleToiletView.this, "Invalid server response.", Toast.LENGTH_LONG).show();
+							finish();
+						}
+					}
+
+					@Override
+					public void onPostError(String error) {
+						Toast.makeText(CrapperMapperSingleToiletView.this, "", Toast.LENGTH_LONG).show();
+					}
+		        	
+		        });
+			}
+			catch (JSONException e) {
+				Toast.makeText(this, "Error on with google maps.", Toast.LENGTH_SHORT).show();
+				finish();
+			}
 		}
-		//female symbol
-		if (toilet.get(CrapperMapperMenu.KEY_MALE).equals("false") &&
-			toilet.get(CrapperMapperMenu.KEY_FEMALE).equals("true")) {
-			gender.setImageResource(R.drawable.toilet_women);
-		}else{
-			gender.setImageResource(R.drawable.toilet_both);
-		}
-		
-		name.setText(toilet.get(CrapperMapperMenu.KEY_TOILET));
-		
-		lat = toilet.get(CrapperMapperMenu.KEY_LAT);
-		lng = toilet.get(CrapperMapperMenu.KEY_LNG);
 	}
 
 	public void getDirections(View v) {
@@ -267,11 +327,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	}
 	
 	public void summon_list(String result){
-		
-		JSONObject jObject = null;
 		JSONArray jArray = null;
-
-
 
 		try {
 			jArray = new JSONArray(result);
@@ -316,10 +372,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 				adapter.notifyDataSetChanged();
 				//list=(ListView)findViewById(R.id.list_reviews);
 	
-				// Getting adapter by passing xml data ArrayList
-		               
-		        
-		        		
+				// Getting adapter by passing xml data ArrayList	        		
 	}
 
 	@Override
