@@ -147,6 +147,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			//loaded from a map, we only know the pk in this case need to make a query for the data
 			JSONObject obj = new JSONObject();
 			try {
+				Log.v(TAG, intent.getStringExtra("pk"));
 				obj.put("pk", intent.getStringExtra("pk"));
 				Map<String,String> vars = new HashMap<String,String>();
 				vars.put("start","0");
@@ -213,21 +214,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	@Override
 	public void onResume() {
 		super.onResume();
-		// Refresh star rating, # of reviews, distance, and review list
-		
-		location = new gps (this);
-		
-		//queryReviews();
-		
-		//query server for updated info on this toilet
-		HashMap<String, String> variables = new HashMap<String,String>();
-		
-		variables.put("start", "0");
-        variables.put("current_lat", toilet.get(CrapperMapperMenu.KEY_LAT));
-        variables.put("current_lng", toilet.get(CrapperMapperMenu.KEY_LNG));
-		variables.put("end",String.valueOf(1));
-		variables.put("filters", "{}");
-		qs.sendPost("api/Toilet/get/", variables, CrapperMapperSingleToiletView.this);
+		//should refresh data here TODO
 		
 	}
 	
