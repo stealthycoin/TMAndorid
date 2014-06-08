@@ -73,8 +73,9 @@ public class CrapperMapperSubmitReview extends BaseActivity implements PostCallb
 			vars.put("content", review.getText().toString());
 			vars.put("rank", String.valueOf((int)rating.getRating()));
 			qs.sendPost("api/review/create/", vars, this);
+			finish();
 		}
-		finish();
+		
 	}
 	
 	@Override
