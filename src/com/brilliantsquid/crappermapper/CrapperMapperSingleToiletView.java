@@ -221,7 +221,21 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	@Override
 	public void onResume() {
 		super.onResume();
+		// Refresh star rating, # of reviews, distance, and review list
 		
+		location = new gps(this);
+		
+		//queryReviews();
+		
+		//query server for updated info on this toilet
+		HashMap<String, String> variables = new HashMap<String,String>();
+		
+		variables.put("start", "0");
+		variables.put("current_lat", toilet.get(CrapperMapperMenu.KEY_LAT));
+		variables.put("current_lng", toilet.get(CrapperMapperMenu.KEY_LNG));
+		variables.put("end",String.valueOf(1));
+		variables.put("filters", "{}");
+		qs.sendPost("api/Toilet/get/", variables, CrapperMapperSingleToiletView.this);
 	}
 	
 	@Override
@@ -330,7 +344,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			e.printStackTrace();
 		}
 
-				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
+				for(int i = jArray.length()-1; jArray!= null && i >= 0; --i){
 
 					HashMap<String, String> map = new HashMap<String, String>();
 					try{
@@ -338,11 +352,13 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
 
+						
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
 						String date_t = fields.getString("date");
 						String updown = fields.getString("up_down_rank");
+						String review_pk = obj.getString("pk");
 						
 						// This does things. Things m'lady wouldn't understand
 						// For real though, it just parses out the usless data at the first "T"
@@ -352,8 +368,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						map.put("content", content);
 						map.put("date", date);
 						map.put("up_down_rank", updown);
-						
-
+						map.put("pk",review_pk);
 						
 						reviewlist.add(map);
 						
