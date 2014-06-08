@@ -156,7 +156,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		location = new gps (this);
 		
 		// Inform the user of status
-		Toast.makeText(this, "Refreshing List...", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Refreshing List...", Toast.LENGTH_SHORT).show();
 		
 		//query server for updated info on this toilet
 		HashMap<String, String> variables = new HashMap<String,String>();

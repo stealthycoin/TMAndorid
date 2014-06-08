@@ -74,7 +74,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         
      // these are members in the Activity class
         toastHandler = new Handler();
-        toastRunnable = new Runnable() {public void run() {Toast.makeText(CrapperMapperMenu.this,"Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();}};
+        toastRunnable = new Runnable() {public void run() {Toast.makeText(CrapperMapperMenu.this,"Loading Nearby Restrooms...", Toast.LENGTH_SHORT).show();}};
         //Toast.makeText(CrapperMapperMenu.this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
         
         //setup list stuff. HAHA just no problem.
