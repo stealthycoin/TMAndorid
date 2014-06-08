@@ -246,6 +246,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	
 	public void queryReviews() {
 		//query server for updated review list
+		reviewlist.clear();
 		final Context that = this;
 		qs.sendPost("api/Review/get/", vars, new PostCallbackInterface() {
 			@Override
