@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
@@ -47,6 +48,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private boolean canLoadMore;
     private boolean callbackFromRefresh;
     private gps location;
+    private boolean sort_rating;
+    
+    RadioButton r_rating;
     
     private Handler toastHandler;
     private Runnable toastRunnable;
@@ -66,6 +70,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         firstTick = true;
         callbackFromRefresh = true;
         canLoadMore = false;
+        sort_rating = false;
         
      // these are members in the Activity class
         toastHandler = new Handler();
@@ -79,6 +84,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, toiletList);        
         list.setAdapter(adapter);
+        
+        r_rating = (RadioButton) findViewById(R.id.radio_rating);
         
      // Click event for single list row
         list.setOnItemClickListener(new OnItemClickListener() {
@@ -171,6 +178,16 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		canLoadMore = true;
 	}
 	
+	public void do_filter(View v){
+		if(r_rating.isChecked()){
+			sort_rating = true;
+		}else{
+			sort_rating = false;
+		}
+		toiletList.clear();
+		adapter.notifyDataSetChanged();
+		server_request(location, 0, 10);
+	}
 	
 	/**
 	 * This summons the toilet list view based on the HTTP Post results
@@ -240,6 +257,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         variables.put("current_lng", String.valueOf(location2.getLongitude()));
 		variables.put("end",String.valueOf(end));
 		variables.put("filters", obj.toString());
+		if(sort_rating == true){
+			variables.put("sortby", "-rating");
+		}
         qs.sendPost("api/Toilet/get/", variables, this);
         //Toast.makeText(this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
 	}
