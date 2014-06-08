@@ -186,7 +186,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		}
 		toiletList.clear();
 		adapter.notifyDataSetChanged();
-		server_request(location, 0, 10);
+		server_request(location, 0, loadedCount);
 	}
 	
 	/**
