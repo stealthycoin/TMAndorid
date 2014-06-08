@@ -52,10 +52,6 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
 		Intent intent = null;
 		QuerySingleton qs = QuerySingleton.getInstance();
         switch (item.getItemId()) {
-        case R.id.action_search:
-        	intent = new Intent(this,CrapperMapperMenu.class);
-		    startActivity(intent);
-            return true;
         case R.id.action_new:
         	intent = new Intent(this,CrapperMapperAdd.class);
 		    startActivity(intent);
@@ -64,19 +60,8 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
             // help action
             return true;
         case R.id.action_Emergency:
-        	Toast.makeText(this, "Finding nearest restroom, one moment...", Toast.LENGTH_LONG).show();
+        	Toast.makeText(this, "Finding nearest restroom, one moment...", Toast.LENGTH_SHORT).show();
         	send_for_emergency_room(location);
-        	/*
-    		MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
-    		    @Override
-    		    public void gotLocation(Location location){
-    		    	baseLocation = location;
-    		        send_for_emergency_room(location);
-    		    }
-    		};
-    		MyLocation myLocation = new MyLocation();
-    		myLocation.getLocation(this, locationResult, true);*/
-
         	return true;
         case R.id.action_Map:
 
