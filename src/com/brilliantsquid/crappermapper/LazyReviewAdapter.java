@@ -25,7 +25,6 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	    private static LayoutInflater inflater=null;
 	    private double updownNum;
 	    private QuerySingleton qs;
-        private TextView reviews;
         private int position;
         HashMap<String, String> review;
     	HashMap<String, String> variables;
@@ -38,12 +37,11 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    }
 	    
-	    public View getView(int pos, View convertView, ViewGroup parent) {
+	    public View getView(final int position, View convertView, ViewGroup parent) {
 	        View vi=convertView;
 	        qs = QuerySingleton.getInstance();
 	        if(convertView==null)
 	            vi = inflater.inflate(resourceid, null);
-	        position = pos;
 	        ArrayList<ImageView> al = new ArrayList<ImageView>();
 	        ImageView stars1 = (ImageView)vi.findViewById(R.id.star1_rev); //stars
 	        ImageView stars2 = (ImageView)vi.findViewById(R.id.star2_rev);
@@ -51,7 +49,7 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        ImageView stars4 = (ImageView)vi.findViewById(R.id.star4_rev);
 	        ImageView stars5 = (ImageView)vi.findViewById(R.id.star5_rev);
 	        TextView date = (TextView)vi.findViewById(R.id.review_date);
-	        reviews = (TextView)vi.findViewById(R.id.review_reviews); // reviews
+	        final TextView reviews = (TextView)vi.findViewById(R.id.review_reviews); // reviews
 	        TextView review_text = (TextView)vi.findViewById(R.id.review_text);
 	        ImageButton good = (ImageButton)vi.findViewById(R.id.imageButton1);
 	        ImageButton bad = (ImageButton)vi.findViewById(R.id.imageButton2);
@@ -80,7 +78,7 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
         			variables = new HashMap<String,String>();
         			variables.put("review_pk", (String)v.getTag(R.id.PK));
 	        		if(qs.loggedIn()){
-	        	        
+	        			
 	        			updownNum++;	        			
 	        			reviews.setText(String.valueOf(updownNum));
 	        			qs.sendPost("api/review/upvote/", variables, new PostCallbackInterface() {
@@ -108,6 +106,7 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
         			variables = new HashMap<String,String>();
         			variables.put("review_pk", (String)v.getTag(R.id.PK));
 	        		if(qs.loggedIn()){
+	        			
 	        			updownNum--;	        			
 	        			reviews.setText(String.valueOf(updownNum));
 	        			qs.sendPost("api/review/downvote/", variables, new PostCallbackInterface() {
