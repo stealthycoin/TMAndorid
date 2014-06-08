@@ -126,23 +126,6 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         QuerySingleton.setContext(this);
         toastHandler.post(toastRunnable);
         server_request(location, 0, 10);
-        
-        /*
-        MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
-            @Override
-            public void gotLocation(Location newLocation){
-                location = newLocation;
-                toastHandler.post(toastRunnable);
-                server_request(location, 0, 10);
-                //Toast.makeText(CrapperMapperMenu.this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
-            }
-        };
-        Toast.makeText(this, "Getting Location...", Toast.LENGTH_SHORT).show();
-        MyLocation myLocation = new MyLocation();
-        myLocation.getLocation(this, locationResult);
-        */
-        //try to log the user in
-        //CrapperMapperUser.login(this);
     }
     
     @Override
