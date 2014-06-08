@@ -152,9 +152,11 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		super.onResume();
 		// Refresh star rating, # of reviews, distance, and review list
 		
+		// Get location data
 		location = new gps (this);
 		
-		//queryReviews();
+		// Inform the user of status
+		Toast.makeText(this, "Refreshing List...", Toast.LENGTH_SHORT).show();
 		
 		//query server for updated info on this toilet
 		HashMap<String, String> variables = new HashMap<String,String>();
