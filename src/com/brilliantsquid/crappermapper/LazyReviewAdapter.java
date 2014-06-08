@@ -3,6 +3,10 @@ package com.brilliantsquid.crappermapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -69,22 +73,25 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        good.setTag(R.id.PK, review.get("pk"));
 	        bad.setTag(R.id.PK, review.get("pk"));
 	        
-	        
-	        
 	        //call server url to do stuff with the review_pkr
-
 	        good.setOnClickListener(new View.OnClickListener() {             	
 	        	public void onClick(View v) {
         			variables = new HashMap<String,String>();
         			variables.put("review_pk", (String)v.getTag(R.id.PK));
 	        		if(qs.loggedIn()){
-	        			
 	        			updownNum++;	        			
-	        			reviews.setText(String.valueOf(updownNum));
+	        			reviews.setText(String.valueOf((int)updownNum));
 	        			qs.sendPost("api/review/upvote/", variables, new PostCallbackInterface() {
 	        				@Override
 	        				public void onPostFinished(String result) {
 	        					Log.v("Fucker", "Hey man we got a result: " + result);
+	        					try {
+	        						JSONArray jarr = new JSONArray(result);
+	        						JSONObject jobj = jarr.getJSONObject(0);
+	        						reviews.setText(jobj.getJSONObject("fields").getString("up_down_rank"));
+	        					}
+	        					catch (JSONException e) {
+	        					}
 	        				}
 
 	        				@Override
@@ -95,8 +102,6 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        		}else{
 	        			Toast.makeText(context, "You must be logged in.", Toast.LENGTH_LONG).show();
 	        		}
-	        		
-	        		
 	        	}                
             });
 	        
@@ -108,11 +113,18 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        		if(qs.loggedIn()){
 	        			
 	        			updownNum--;	        			
-	        			reviews.setText(String.valueOf(updownNum));
+	        			reviews.setText(String.valueOf((int)updownNum));
 	        			qs.sendPost("api/review/downvote/", variables, new PostCallbackInterface() {
 	        				@Override
 	        				public void onPostFinished(String result) {
 	        					Log.v("Fucker", "Hey man we got a result: " + result);
+	        					try {
+	        						JSONArray jarr = new JSONArray(result);
+	        						JSONObject jobj = jarr.getJSONObject(0);
+	        						reviews.setText(jobj.getJSONObject("fields").getString("up_down_rank"));
+	        					}
+	        					catch (JSONException e) {
+	        					}
 	        				}
 
 	        				@Override
