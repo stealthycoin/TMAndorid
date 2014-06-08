@@ -46,7 +46,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private boolean firstTick;
     private boolean canLoadMore;
     private boolean callbackFromRefresh;
+    private boolean sort_rating;
     private Location location;
+    
     
     private Handler toastHandler;
     private Runnable toastRunnable;
@@ -65,6 +67,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         firstTick = true;
         callbackFromRefresh = true;
         canLoadMore = false;
+        sort_rating = true;
         
      // these are members in the Activity class
         toastHandler = new Handler();
@@ -227,6 +230,9 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         variables.put("current_lng", String.valueOf(loc.getLongitude()));
 		variables.put("end",String.valueOf(end));
 		variables.put("filters", obj.toString());
+		if(sort_rating == true){
+			variables.put("sortby", "-rating");
+		}
         qs.sendPost("api/Toilet/get/", variables, this);
         //Toast.makeText(this, "Loading Nearby Restrooms...", Toast.LENGTH_LONG).show();
 	}

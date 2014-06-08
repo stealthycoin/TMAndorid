@@ -45,7 +45,7 @@ public class LazyAdapter extends BaseAdapter {
         
         ArrayList<ImageView> al = new ArrayList<ImageView>();
         TextView title = (TextView)vi.findViewById(R.id.toilet); // title
-        TextView distance = (TextView)vi.findViewById(R.id.distance); //distance
+        TextView distance = (TextView)vi.findViewById(R.id.radio_distance); //distance
         ImageView stars1 = (ImageView)vi.findViewById(R.id.star1); //stars
         ImageView stars2 = (ImageView)vi.findViewById(R.id.star2);
         ImageView stars3 = (ImageView)vi.findViewById(R.id.star3);
