@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
@@ -49,6 +50,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private boolean sort_rating;
     private Location location;
     
+    RadioButton r_rating;
     
     private Handler toastHandler;
     private Runnable toastRunnable;
@@ -67,7 +69,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         firstTick = true;
         callbackFromRefresh = true;
         canLoadMore = false;
-        sort_rating = true;
+        sort_rating = false;
         
      // these are members in the Activity class
         toastHandler = new Handler();
@@ -81,6 +83,8 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, toiletList);        
         list.setAdapter(adapter);
+        
+        r_rating = (RadioButton) findViewById(R.id.radio_rating);
         
      // Click event for single list row
         list.setOnItemClickListener(new OnItemClickListener() {
@@ -164,6 +168,16 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		canLoadMore = true;
 	}
 	
+	public void do_filter(View v){
+		if(r_rating.isChecked()){
+			sort_rating = true;
+		}else{
+			sort_rating = false;
+		}
+		toiletList.clear();
+		toiletList.notifyAll();
+		server_request(location, 0, 10);
+	}
 	
 	/**
 	 * This summons the toilet list view based on the HTTP Post results

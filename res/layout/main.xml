@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:fadingEdge="horizontal"
+    android:onClick="do_filter"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -49,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
+            android:onClick="do_filter"
             android:text="Refresh" />
 
     </LinearLayout>
