@@ -25,8 +25,9 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	    private static LayoutInflater inflater=null;
 	    private double updownNum;
 	    private QuerySingleton qs;
-	    private String pk;
         private TextView reviews;
+        private int position;
+        HashMap<String, String> review;
     	HashMap<String, String> variables;
 	    
 	    public LazyReviewAdapter(Context ctx, int resid, ArrayList<HashMap<String, String>> d) {
@@ -37,12 +38,12 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    }
 	    
-	    public View getView(int position, View convertView, ViewGroup parent) {
+	    public View getView(int pos, View convertView, ViewGroup parent) {
 	        View vi=convertView;
 	        qs = QuerySingleton.getInstance();
 	        if(convertView==null)
 	            vi = inflater.inflate(resourceid, null);
-	        
+	        position = pos;
 	        ArrayList<ImageView> al = new ArrayList<ImageView>();
 	        ImageView stars1 = (ImageView)vi.findViewById(R.id.star1_rev); //stars
 	        ImageView stars2 = (ImageView)vi.findViewById(R.id.star2_rev);
@@ -58,7 +59,7 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        //LOL WTF IS HAPPENING
 	        al.add(stars1);al.add(stars2);al.add(stars3);al.add(stars4);al.add(stars5);
 	        
-	        HashMap<String, String> review = new HashMap<String, String>();
+	        review = new HashMap<String, String>();
 	        review = data.get(position);
 	        
 	        //Double value of the reviews
@@ -67,18 +68,19 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        date.setText(review.get("date"));
 	        reviews.setText(review.get("up_down_rank"));
 	        review_text.setText(review.get("content"));
+	        good.setTag(R.id.PK, review.get("pk"));
+	        bad.setTag(R.id.PK, review.get("pk"));
 	        
-	        variables = new HashMap<String,String>();
-			variables.put("review_pk", review.get("pk"));
 	        
 	        
-	        //call server url to do stuff with the review_pk and then set up clicklistener
-
+	        //call server url to do stuff with the review_pkr
 
 	        good.setOnClickListener(new View.OnClickListener() {             	
 	        	public void onClick(View v) {
-	        		
+        			variables = new HashMap<String,String>();
+        			variables.put("review_pk", (String)v.getTag(R.id.PK));
 	        		if(qs.loggedIn()){
+	        	        
 	        			updownNum++;	        			
 	        			reviews.setText(String.valueOf(updownNum));
 	        			qs.sendPost("api/review/upvote/", variables, new PostCallbackInterface() {
@@ -103,6 +105,8 @@ public class LazyReviewAdapter extends ArrayAdapter<HashMap<String, String>> {
 	        bad.setOnClickListener(new View.OnClickListener() {	        	
 	        	public void onClick(View v) {
 	        		
+        			variables = new HashMap<String,String>();
+        			variables.put("review_pk", (String)v.getTag(R.id.PK));
 	        		if(qs.loggedIn()){
 	        			updownNum--;	        			
 	        			reviews.setText(String.valueOf(updownNum));

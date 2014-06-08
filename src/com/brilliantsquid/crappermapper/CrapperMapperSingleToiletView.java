@@ -278,7 +278,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			e.printStackTrace();
 		}
 
-				for(int i = 0; jArray!= null && i < jArray.length(); ++i){
+				for(int i = jArray.length()-1; jArray!= null && i >= 0; --i){
 
 					HashMap<String, String> map = new HashMap<String, String>();
 					try{
