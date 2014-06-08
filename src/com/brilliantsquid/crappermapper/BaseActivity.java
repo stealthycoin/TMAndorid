@@ -23,12 +23,14 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
 
 	private QuerySingleton qs;
 	private Location baseLocation;
+	private gps location;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
 		qs = QuerySingleton.getInstance();
+		location = new gps(this);
 	}
 
     @Override
@@ -63,6 +65,8 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
             return true;
         case R.id.action_Emergency:
         	Toast.makeText(this, "Finding nearest restroom, one moment...", Toast.LENGTH_LONG).show();
+        	send_for_emergency_room(location);
+        	/*
     		MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
     		    @Override
     		    public void gotLocation(Location location){
@@ -71,7 +75,7 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
     		    }
     		};
     		MyLocation myLocation = new MyLocation();
-    		myLocation.getLocation(this, locationResult, true);
+    		myLocation.getLocation(this, locationResult, true);*/
 
         	return true;
         case R.id.action_Map:
@@ -99,12 +103,12 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
         }
 	}
 	
-	public void send_for_emergency_room(Location location) {
+	public void send_for_emergency_room(gps location2) {
     	Map<String,String> vars = new HashMap<String,String>();
     	vars.put("start","0");
     	vars.put("end","1");
-    	vars.put("current_lat", String.valueOf(location.getLatitude()));
-    	vars.put("current_lng", String.valueOf(location.getLongitude()));
+    	vars.put("current_lat", String.valueOf(location2.getLatitude()));
+    	vars.put("current_lng", String.valueOf(location2.getLongitude()));
     	vars.put("filters", "{}");
     	qs.sendPost("api/Toilet/get/", vars, new PostCallbackInterface() {
 
@@ -127,8 +131,8 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
 					//Get location and calculate distance
 					double lat = Double.parseDouble(fields.getString("lat"));
 					double lng = Double.parseDouble(fields.getString("lng"));
-					double lat_i =  baseLocation.getLatitude();
-					double lng_i =  baseLocation.getLongitude();
+					double lat_i =  location.getLatitude();
+					double lng_i =  location.getLongitude();
 					
 					double distance = Utilities.gps2m(lat_i, lng_i, lat, lng);
 					

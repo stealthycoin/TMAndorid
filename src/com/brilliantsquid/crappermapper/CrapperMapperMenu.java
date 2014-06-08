@@ -46,7 +46,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     private boolean firstTick;
     private boolean canLoadMore;
     private boolean callbackFromRefresh;
-    private Location location;
+    private gps location;
     
     private Handler toastHandler;
     private Runnable toastRunnable;
@@ -61,6 +61,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        location = new gps(this);
         loadedCount = 10;
         firstTick = true;
         callbackFromRefresh = true;
@@ -116,7 +117,10 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
+        toastHandler.post(toastRunnable);
+        server_request(location, 0, 10);
         
+        /*
         MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
             @Override
             public void gotLocation(Location newLocation){
@@ -129,7 +133,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         Toast.makeText(this, "Getting Location...", Toast.LENGTH_SHORT).show();
         MyLocation myLocation = new MyLocation();
         myLocation.getLocation(this, locationResult);
-        
+        */
         //try to log the user in
         CrapperMapperUser.login(this);
     }
@@ -221,19 +225,19 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 		}
 	}
 	
-	public void server_request(Location loc, int start, int end) {
+	public void server_request(gps location2, int start, int end) {
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
 		
-		location = loc;
+		location = location2;
 		if (location == null) { //bad things are happening and we don't know our current location
 			Toast.makeText(this, "Could not get current location.", Toast.LENGTH_LONG).show();
 			return; //gtfo
 		}
 		//get a few toilets, should send current location
 		variables.put("start",String.valueOf(start));
-        variables.put("current_lat", String.valueOf(loc.getLatitude()));
-        variables.put("current_lng", String.valueOf(loc.getLongitude()));
+        variables.put("current_lat", String.valueOf(location2.getLatitude()));
+        variables.put("current_lng", String.valueOf(location2.getLongitude()));
 		variables.put("end",String.valueOf(end));
 		variables.put("filters", obj.toString());
         qs.sendPost("api/Toilet/get/", variables, this);
