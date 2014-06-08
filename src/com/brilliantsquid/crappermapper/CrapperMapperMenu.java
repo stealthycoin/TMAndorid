@@ -142,7 +142,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
         myLocation.getLocation(this, locationResult);
         */
         //try to log the user in
-        CrapperMapperUser.login(this);
+        //CrapperMapperUser.login(this);
     }
     
     @Override
