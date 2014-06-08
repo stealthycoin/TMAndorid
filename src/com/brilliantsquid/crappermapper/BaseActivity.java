@@ -64,21 +64,29 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
         	send_for_emergency_room(location);
         	return true;
         case R.id.action_Map:
-
-	    Intent intentLoc = new Intent(this,CrapperMapperLocation.class);
-	    startActivity(intentLoc);
-
+        	
+        	if(android.os.Build.VERSION.SDK_INT >= 11){
+        		Intent intentLoc = new Intent(this,CrapperMapperLocation.class);
+        		startActivity(intentLoc);
+        	}else{
+        		Toast.makeText(this, "Minimum API 11 is required to use Maps", Toast.LENGTH_SHORT).show();
+        	}
         	return true;
         case R.id.action_account:
-        	if (qs.loggedIn()) {
-        		intent = new Intent(this,CrapperMapperUserIn.class);
-        		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-    		    startActivity(intent);
-        	} else {
-        		intent = new Intent(this,CrapperMapperUserOut.class);
-        		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-    		    startActivity(intent);
+        	if(android.os.Build.VERSION.SDK_INT >= 11){
+        		if (qs.loggedIn()) {
+        			intent = new Intent(this,CrapperMapperUserIn.class);
+        			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        			startActivity(intent);
+        		} else {
+        			intent = new Intent(this,CrapperMapperUserOut.class);
+        			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        			startActivity(intent);
+        		}
+        	}else{
+        		Toast.makeText(this, "Minimum API 11 is required to Login", Toast.LENGTH_SHORT).show();
         	}
+        	
         	return true;
         case R.id.action_settings:
         	
