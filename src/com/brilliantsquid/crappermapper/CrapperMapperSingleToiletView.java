@@ -159,7 +159,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 					public void onPostFinished(String result) {
 						try {
 							JSONArray jarr = new JSONArray(result);
-							JSONObject tData = jarr.getJSONObject(0);
+							JSONObject data = jarr.getJSONObject(0);
+							JSONObject tData = data.getJSONObject("fields"); 
 							//get the data from the JSON object to the interface
 							name.setText(tData.getString("name"));
 							boolean male = Boolean.valueOf(tData.getString("male"));
@@ -179,6 +180,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 							//lat and lng
 							lat = tData.getString("lat");
 							lng = tData.getString("lng");
+							//get number of reviews
+							reviews.setText("Reviews: " + tData.getString("numberOfReviews"));
 							
 						} catch (JSONException e) {
 							Toast.makeText(CrapperMapperSingleToiletView.this, "Invalid server response.", Toast.LENGTH_LONG).show();
@@ -189,8 +192,8 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 					@Override
 					public void onPostError(String error) {
 						Toast.makeText(CrapperMapperSingleToiletView.this, "", Toast.LENGTH_LONG).show();
+						finish();
 					}
-		        	
 		        });
 			}
 			catch (JSONException e) {
