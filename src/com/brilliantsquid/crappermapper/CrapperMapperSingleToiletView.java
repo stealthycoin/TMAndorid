@@ -152,7 +152,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		super.onResume();
 		// Refresh star rating, # of reviews, distance, and review list
 		
-		location = new gps (this);
+		location = new gps(this);
 		
 		//queryReviews();
 		
@@ -271,8 +271,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		JSONObject jObject = null;
 		JSONArray jArray = null;
 
-
-
 		try {
 			jArray = new JSONArray(result);
 		} catch (JSONException e) {
@@ -288,11 +286,13 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						JSONObject obj = jArray.getJSONObject(i);
 						JSONObject fields = obj.getJSONObject("fields");
 
+						
 						//Parse out json data
 						String rank = fields.getString("rank");
 						String content = fields.getString("content");
 						String date_t = fields.getString("date");
 						String updown = fields.getString("up_down_rank");
+						String review_pk = obj.getString("pk");
 						
 						// This does things. Things m'lady wouldn't understand
 						// For real though, it just parses out the usless data at the first "T"
@@ -302,8 +302,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 						map.put("content", content);
 						map.put("date", date);
 						map.put("up_down_rank", updown);
-						
-
+						map.put("pk",review_pk);
 						
 						reviewlist.add(map);
 						
