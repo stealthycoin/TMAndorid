@@ -44,6 +44,8 @@ public class QuerySingleton implements GetCallbackInterface {
 	private static QuerySingleton instance = null;
 	private static Context context;
 	
+	private static int WAIT_TIME = 2000;
+	
 	private CookieManager cm;
 	
 	private HttpCookie csrf;
@@ -165,7 +167,7 @@ public class QuerySingleton implements GetCallbackInterface {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				
 				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setConnectTimeout(1000);
+				connection.setConnectTimeout(WAIT_TIME);
 				if (sessionID != null) {
 					connection.setRequestProperty("Cookies", "sessionid=" + sessionID);
 				}
@@ -239,7 +241,7 @@ public class QuerySingleton implements GetCallbackInterface {
 				URL url = new URL(targetSite + "/" + arg0[0]);
 				
 				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setConnectTimeout(1000);
+				connection.setConnectTimeout(WAIT_TIME);
 				connection.setRequestMethod("POST");
 				connection.setRequestProperty("Connection", "close");
 				connection.setDoInput(true);
