@@ -106,6 +106,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 				JSONObject obj = new JSONObject();
 				obj.put("toilet", toilet.get(CrapperMapperMenu.KEY_ID));
 				vars.put("filters", obj.toString());
+				queryReviews();
 			}
 			catch (JSONException e) {
 				e.printStackTrace();
@@ -144,7 +145,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			try {
 				Log.v(TAG, intent.getStringExtra("id"));
 				obj.put("pk", intent.getStringExtra("id"));
-				Map<String,String> vars = new HashMap<String,String>();
+				vars = new HashMap<String,String>();
 				vars.put("start","0");
 				vars.put("end","1");
 				vars.put("filters", obj.toString());
@@ -178,6 +179,17 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 							lng = tData.getString("lng");
 							//get number of reviews
 							reviews.setText("Reviews: " + tData.getString("numberOfReviews"));
+							
+							vars.clear();
+							try {
+								JSONObject obj = new JSONObject();
+								obj.put("toilet", CrapperMapperSingleToiletView.this.getIntent().getStringExtra("id"));
+								vars.put("filters", obj.toString());
+								queryReviews();
+							}
+							catch (JSONException e) {
+								e.printStackTrace();
+							}
 							
 						} catch (JSONException e) {
 							Toast.makeText(CrapperMapperSingleToiletView.this, "Invalid server response.", Toast.LENGTH_LONG).show();
@@ -228,7 +240,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 				Log.v(TAG, "Hey man we got a result: " + result);
 				summon_list(result);
 			}
-
 			@Override
 			public void onPostError(String error) {
 				Toast.makeText(that, "Failed to download reviews...", Toast.LENGTH_LONG).show();
