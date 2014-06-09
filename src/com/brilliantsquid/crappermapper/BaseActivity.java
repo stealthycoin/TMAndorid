@@ -57,9 +57,6 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
 	    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 	    startActivity(intent);
 	    return true;
-        case R.id.action_help:
-            // help action
-            return true;
         case R.id.action_Emergency:
 	    Toast.makeText(this, "Finding nearest restroom, one moment...", Toast.LENGTH_SHORT).show();
 	    send_for_emergency_room(location);
