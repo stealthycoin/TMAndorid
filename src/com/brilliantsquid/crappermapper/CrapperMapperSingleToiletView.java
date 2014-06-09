@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CrapperMapperSingleToiletView extends BaseActivity implements GetCallbackInterface, PostCallbackInterface {
+public class CrapperMapperSingleToiletView extends BaseActivity {
 
 	private QuerySingleton qs;
 	private gps location;
@@ -53,6 +53,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	private final String TAG = "VIEW";
 	private boolean listPosted = false;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -297,11 +298,6 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	}
 
 	@Override
-	public void onDownloadFinished(String result) {
-		Log.v(TAG, result);
-	}
-
-	@Override
 	public void onPostFinished(String result) {
 		//Refresh star rating, # of reviews, distance for this toilet
 		try {
@@ -384,19 +380,4 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 	
 				// Getting adapter by passing xml data ArrayList	        		
 	}
-
-	@Override
-	public void onPostError(String error) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onGetError(String error) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
 }
