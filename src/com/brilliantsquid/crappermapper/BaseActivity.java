@@ -1,4 +1,4 @@
-xspackage com.brilliantsquid.crappermapper;
+package com.brilliantsquid.crappermapper;
 
 
 import java.io.Serializable;
