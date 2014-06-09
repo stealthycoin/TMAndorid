@@ -215,6 +215,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 		//gives user choice of maps or a browser
 		String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%s,%s",lat,lng); 
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		this.startActivity(intent);
 	}
 	
@@ -271,6 +272,7 @@ public class CrapperMapperSingleToiletView extends BaseActivity implements GetCa
 			intent.putExtra("pk", toilet.get("id"));
 			intent.putExtra("num_reviews", toilet.get(CrapperMapperMenu.KEY_REVIEWS));
 			intent.putExtra("rank", toilet.get(CrapperMapperMenu.KEY_STARS));
+			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			this.startActivity(intent);
 		}
 	}

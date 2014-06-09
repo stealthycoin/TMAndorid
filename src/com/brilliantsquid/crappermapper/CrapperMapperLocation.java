@@ -206,6 +206,7 @@ OnInfoWindowClickListener
 	public void onInfoWindowClick(Marker marker) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent(CrapperMapperLocation.this, CrapperMapperSingleToiletView.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		intent.putExtra("id", marker.getSnippet());
 		startActivity(intent);
 	}

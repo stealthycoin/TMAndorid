@@ -51,6 +51,7 @@ public class CrapperMapperUserIn extends BaseActivity
 		catch (FileNotFoundException e) {
 			Intent intent = new Intent(this, CrapperMapperUserOut.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 		}
 		catch (IOException e) {
@@ -64,6 +65,7 @@ public class CrapperMapperUserIn extends BaseActivity
             getBaseContext().deleteFile("logindata");
             Intent intent = new Intent(getApplicationContext(), CrapperMapperUserOut.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
 			}
 		});
