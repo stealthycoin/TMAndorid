@@ -232,12 +232,18 @@ public class CrapperMapperSingleToiletView extends BaseActivity {
 		//query server for updated info on this toilet
 		HashMap<String, String> variables = new HashMap<String,String>();
 		
-		variables.put("start", "0");
-		variables.put("current_lat", toilet.get(CrapperMapperMenu.KEY_LAT));
-		variables.put("current_lng", toilet.get(CrapperMapperMenu.KEY_LNG));
-		variables.put("end",String.valueOf(1));
-		variables.put("filters", "{}");
-		qs.sendPost("api/Toilet/get/", variables, CrapperMapperSingleToiletView.this);
+		
+		try {
+			variables.put("start", "0");
+			variables.put("current_lat", toilet.get(CrapperMapperMenu.KEY_LAT));
+			variables.put("current_lng", toilet.get(CrapperMapperMenu.KEY_LNG));
+			variables.put("end",String.valueOf(1));
+			variables.put("filters", "{}");
+			qs.sendPost("api/Toilet/get/", variables, CrapperMapperSingleToiletView.this);
+		}
+		catch (Exception e) {
+			//muffle
+		}
 	}
 	
 	@Override

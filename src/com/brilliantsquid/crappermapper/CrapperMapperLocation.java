@@ -35,7 +35,7 @@ PostCallbackInterface,
 GetCallbackInterface, 
 OnInfoWindowClickListener
 {    
-	private static final String TAG = null;
+	private static final String TAG = "MAP";
 	// Google Map
     private GoogleMap googleMap;
     private double lat;
@@ -60,16 +60,7 @@ OnInfoWindowClickListener
         qs = QuerySingleton.getInstance();
         QuerySingleton.setContext(this);
         
-        location = new gps(this);
-        server_request();
         
-        try {
-            // Loading map
-            initializeMap();
- 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     
     /**
@@ -93,7 +84,7 @@ OnInfoWindowClickListener
             	googleMap.setOnInfoWindowClickListener(this);
             }
             else{
-            	Log.v("HEY", "FUCKER");
+            	Log.v("HEY", "null");
             }
             
 
@@ -141,27 +132,9 @@ OnInfoWindowClickListener
 		Map<String,String> variables = new HashMap<String, String>();
 		JSONObject obj=new JSONObject();
 	
-		try {
-			Log.v(TAG, "Logging in from saved data");
-			FileInputStream fs = this.openFileInput("logindata");
-			StringBuilder builder = new StringBuilder();
-			int ch;
-			while((ch = fs.read()) != -1){
-			    builder.append((char)ch);
-			}
-			qs.setSessionID(builder.toString());
-		}
-		catch (FileNotFoundException e) {
-			Log.v(TAG, "Loggin in user as admin");
-			variables.put("username", "toilet");
-			variables.put("password", "jcrowepoops667");
-			qs.sendPost("api/user/login/", variables, this);
-		}
-		catch (IOException e) {
-			//it shouldn't do this unless it fails to read the file after the file exists
-			e.printStackTrace();
-		}
 
+		
+		Log.v("HEY", "SERVER REQUEST");
         //variables.clear();
         variables.put("start","0");
         variables.put("current_lat", String.valueOf(location.getLatitude()));
@@ -174,7 +147,15 @@ OnInfoWindowClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        initializeMap();
+        location = new gps(this);
+        server_request();
+        
+        try {
+            initializeMap();
+ 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
  
     @Override
@@ -197,7 +178,7 @@ OnInfoWindowClickListener
 		while(googleMap == null){
 			Thread.yield();
 		}
-		
+		Log.v("HEY", "Finished:" + result);
 		toiletFinder(result);
 		
 	}
@@ -219,6 +200,7 @@ OnInfoWindowClickListener
 
 	@Override
 	public void onPostError(String error) {
+		Log.v(TAG,"ERROR: "+ error);
 		// TODO Auto-generated method stub
 		
 	}
