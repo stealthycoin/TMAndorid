@@ -35,9 +35,11 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
         
         if (!qs.loggedIn()) {
         	Intent intent = new Intent(CrapperMapperUser.this, CrapperMapperUserOut.class);
+        	intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
         } else {
         	Intent intent = new Intent(CrapperMapperUser.this, CrapperMapperUserIn.class);
+        	intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
         }
         
@@ -95,6 +97,7 @@ public class CrapperMapperUser extends BaseActivity implements PostCallbackInter
 			}
 			catch (FileNotFoundException e) {
 				Intent intent = new Intent(ctx, CrapperMapperUserOut.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				ctx.startActivity(intent);
 			}
 			catch (IOException e) {

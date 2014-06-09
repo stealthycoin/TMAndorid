@@ -96,7 +96,7 @@ public class CrapperMapperMenu extends BaseActivity implements PostCallbackInter
 				
 				//for testing the review submission TODO put this shit back
 				Intent intent = new Intent(CrapperMapperMenu.this, CrapperMapperSingleToiletView.class);
-				
+				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				intent.putExtra("id", String.valueOf(id));
 				intent.putExtra("data", (Serializable)toiletList.get(position));
 				startActivity(intent);

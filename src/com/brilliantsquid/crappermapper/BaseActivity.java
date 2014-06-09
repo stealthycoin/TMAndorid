@@ -54,6 +54,7 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
         switch (item.getItemId()) {
         case R.id.action_new:
         	intent = new Intent(this,CrapperMapperAdd.class);
+        	intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		    startActivity(intent);
         	return true;
         case R.id.action_help:
@@ -66,16 +67,19 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
         case R.id.action_Map:
 
 	    Intent intentLoc = new Intent(this,CrapperMapperLocation.class);
+	    intentLoc.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 	    startActivity(intentLoc);
 
         	return true;
         case R.id.action_account:
         	if (qs.loggedIn()) {
         		intent = new Intent(this,CrapperMapperUserIn.class);
+        		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     		    startActivity(intent);
         	} else {
         		intent = new Intent(this,CrapperMapperUserOut.class);
+        		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     		    startActivity(intent);
         	}
@@ -134,6 +138,7 @@ public class BaseActivity extends Activity implements PostCallbackInterface {
 					map.put(CrapperMapperMenu.KEY_LNG, String.valueOf(lng));
 					
 					intent.putExtra("data", (Serializable)map);
+					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
 					
 				} catch (JSONException e) {
